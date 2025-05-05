@@ -1,0 +1,25 @@
+SCREENS:
+
+Login: shared preferences per mantenere il login salvato;
+
+	Homepage: Sezione 'progresso', button per andare sullo screen delle consegne, SE SI RIESCE rendere la pagina scrollable e inserire i grafici;
+
+		Drawer: ListView con profilo, shop, about us, logout
+
+
+			ProfilePage: cambio username, settare password, privacy, anagrafica.
+	
+			About us: 
+	
+		Consegne (scelta mense): ListView per scegliere la mensa, VEDERE SE AGGIUNGERE LA MAPPA CON I CONTRASSEGNI DELLE MENSE. Se sì, si può accedere alla localizzazione del dispositivo (telefono);hunger 
+
+			Pagina scelta pacco: ListView con freccetta e menù espandibile (Una volta che si espande, mettere la mappa per mostrare dov'è l'indirizzo), poi si apre il banner per accettare (vedere se sviluppare), scelta 'mezzo' (piedi o bici)
+	
+				Riepilogo ordine dove scegliere il mezzo per scegliere 3 icone
+
+					Pagina consegna: pulsante termina consegna che fa tornare alla Homepage E SALVA I DATI DELLA CONSEGNA (QUALI?), poi banner per vedere i dati della consegna (quanti km, quanto tempo).
+
+		
+		
+			
+	
