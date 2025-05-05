@@ -1,4 +1,4 @@
-SCREENS: 	VIRGINIA LORENZO VALENTINO
+SCREENS: 	VIRGINIA2 LORENZO VALENTINO
 
 
 Login: shared preferences per mantenere il login salvato;
