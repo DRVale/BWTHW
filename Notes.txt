@@ -18,8 +18,3 @@ Login: shared preferences per mantenere il login salvato;
 				Riepilogo ordine dove scegliere il mezzo per scegliere 3 icone
 
 					Pagina consegna: pulsante termina consegna che fa tornare alla Homepage E SALVA I DATI DELLA CONSEGNA (QUALI?), poi banner per vedere i dati della consegna (quanti km, quanto tempo).
-
-		
-		
-			
-	
