@@ -1,6 +1,27 @@
-SCREENS: 	VIRGINIA2 LORENZO VALENTINO
-BRANCH LORENZO AGGIUNTA
+Visti il Target 2.2 e gli Indicators (2.2.1, 2.2.2, 2.2.3), l'unica strada che possiamo prendere (mantenendo la stessa idea delle consegne dalla mensa) è indirizzare queste consegne a centri specifici per bambini sotto i cinque anni o persone anziane.
+Se però andiamo a vedere la description dell'SDG 2 (vedere sotto), si parla molto anche di ridurre food losses and waste e malnutrition (possiamo quindi giocarcela sul fatto che la mensa preveda pasti equilibrati pianificati da dietologi esperti).
 
+
+SDG 2 Description:
+
+'As the world population continues to grow, much more effort and innovation will be urgently needed in order to sustainably increase agricultural production, improve the global supply chain, DECREASE FOOD LOSSES AND WASTE, and ensure that all who are suffering from hunger and MALNUTRITION have access to NUTRITIOUS FOOD.'
+
+The UN Secretary-General’s Zero Hunger Challenge launched at Rio+20 called on governments, civil society, faith communities, the private sector, and research institutions to unite to end hunger and eliminate the worst forms of malnutrition.
+The Zero Hunger Challenge has since garnered widespread support from many member States and other entities. It calls for:
+
+	-Zero stunted children under the age of two (Se ce la giochiamo con gli orfanotrofi o strutture specifiche allora possiamo puntare anche su questo punto)
+	-100% access to adequate food all year round (Per quanto possibile, le mense forniscono tutto il cibo (di qualità) avanzato)
+	-All food systems are sustainable (?)
+	-100% increase in smallholder productivity and income (?)
+	-Zero loss or waste of food (Scopo principale)
+
+The Sustainable Development Goal to “End hunger, achieve food security and improved nutrition and promote sustainable agriculture” (SDG2) recognizes the inter linkages among supporting sustainable agriculture, empowering small farmers, promoting gender equality, ending rural poverty, ensuring healthy lifestyles, tackling climate change, and other issues addressed within the set of 17 Sustainable Development Goals in the Post-2015 Development Agenda.
+
+Beyond adequate calories intake, proper nutrition has other dimensions that deserve attention, including micronutrient availability and healthy diets. Inadequate micronutrient intake of mothers and infants can have long-term developmental impacts. Unhealthy diets and lifestyles are closely linked to the growing incidence of non-communicable diseases in both developed and developing countries.
+
+_______________________________________________________________________________________________________________________________________________________________________
+
+SCREENS:
 
 Login: shared preferences per mantenere il login salvato;
 
@@ -20,3 +41,5 @@ Login: shared preferences per mantenere il login salvato;
 				Riepilogo ordine dove scegliere il mezzo per scegliere 3 icone
 
 					Pagina consegna: pulsante termina consegna che fa tornare alla Homepage E SALVA I DATI DELLA CONSEGNA (QUALI?), poi banner per vedere i dati della consegna (quanti km, quanto tempo).
+
+
