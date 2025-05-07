@@ -67,5 +67,5 @@ class HomePage extends StatelessWidget {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Counterpage(title: 'maracaibo')));
   }//_toCalendarPage
 
-
+  // ciao
 } //HomePage
