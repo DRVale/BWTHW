@@ -49,9 +49,10 @@ class _LoginPageState extends State<LoginPage> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(100)
                   ),
-                  label: Center(
-                    child: Text('Password')
-                  ),
+                  labelText: 'Password',
+                  // label: Center(
+                  //   child: Text('Password')
+                  // ),
                   hintText: 'Enter password',
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                 ),
