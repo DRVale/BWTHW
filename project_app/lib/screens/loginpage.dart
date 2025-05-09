@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_app/screens/homepage.dart';
 //import 'package:project_app/screens/HomePage.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
@@ -67,8 +68,15 @@ class _LoginPageState extends State<LoginPage> {
               width: 250,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
-                onPressed: () {
-                  Impact().loggingIn(userController.text, passwordController.text);
+                onPressed: () async {
+                  final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
+                  if(loginCode == 200){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                  }else{
+                    ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text('Wrong username or password')));
+                  }
                 },
                 child: Text(
                   'Login',
