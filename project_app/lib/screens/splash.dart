@@ -11,10 +11,12 @@ class Splash extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () => _checkLogin(context));
     return Scaffold(
         body: Center(
-            child: Image.asset(
-      'assets/logo.png',
-      scale: 4,
-    )));
+          child: Image.asset(
+          'assets/papa.jpeg',
+          scale: 4,
+        )
+      )
+    );
   }
 
   // Method for navigation SplashPage -> ExposurePage
