@@ -19,18 +19,16 @@ class Splash extends StatelessWidget {
 
   // Method for navigation SplashPage -> ExposurePage
   void _toHomePage(BuildContext context) {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
   } 
 
   // Method for navigation SplashPage -> LoginPage
   void _toLoginPage(BuildContext context) {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: ((context) => LoginPage())));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => LoginPage())));
   } 
 
   // Method for checking if the user has still valid tokens
-  // If yes, navigate to ExposurePage, if not, navigate to LoginPage
+  // If yes, navigate to Homepage, if not, navigate to LoginPage
   void _checkLogin(BuildContext context) async {
     final result = await Impact().refreshTokens();
     if (result == 200) {
