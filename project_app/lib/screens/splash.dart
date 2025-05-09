@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pollutrack/screens/exposure.dart';
-import 'package:pollutrack/screens/login.dart';
-import 'package:pollutrack/utils/impact.dart';
+import 'package:project_app/screens/homepage.dart';
+import 'package:project_app/screens/loginpage.dart';
+import 'package:project_app/utils/impact.dart';
 
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
@@ -20,13 +20,13 @@ class Splash extends StatelessWidget {
   // Method for navigation SplashPage -> ExposurePage
   void _toExposurePage(BuildContext context) {
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => const Exposure()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
   } 
 
   // Method for navigation SplashPage -> LoginPage
   void _toLoginPage(BuildContext context) {
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: ((context) => Login())));
+        .pushReplacement(MaterialPageRoute(builder: ((context) => LoginPage())));
   } 
 
   // Method for checking if the user has still valid tokens
