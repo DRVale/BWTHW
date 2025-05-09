@@ -19,28 +19,42 @@ class HomePage extends StatelessWidget {
       ),
       
       body: Center(
-          child: Text('login_flow'),
+          child: Text('')
         ),
 
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('login_flow'),
+            Container( // Refactored into a container so we can adjust the size of the header
+              //height: 70,
+              child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Text('Drawer_name'),
+                  // INCLUDERE IMMAGINE DEL PROFILO O QUALCOSA CHE CENTRI CON L'UTENTE
+                ),
             ),
+            
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () => _toLoginPage(context),
-            ),
-            ListTile(
-              leading: Icon(Icons.plus_one),
+              //leading: Icon(Icons.plus_one),
               title: Text('Counterpage'),
+              trailing: Icon(Icons.arrow_left),
               onTap: () => _toCounterPage(context),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              title: Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.red
+                ),
+              ),
+              onTap: () => _toLoginPage(context),
             ),
           ],
         ),
@@ -48,7 +62,7 @@ class HomePage extends StatelessWidget {
     );
   } //build
 
-  void _toLoginPage(BuildContext context)async{
+  void _toLoginPage(BuildContext context) async {
 
     final logoutReset = await SharedPreferences.getInstance();
     await logoutReset.remove('username');
@@ -64,8 +78,8 @@ class HomePage extends StatelessWidget {
     //Pop the drawer first 
     Navigator.pop(context);
     //Then pop the HomePage
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Counterpage(title: 'maracaibo')));
+    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Counterpage(title: 'maracaibo')));
   }//_toCalendarPage
 
-  // ciao
+
 } //HomePage

@@ -31,24 +31,32 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 controller: userController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                  border: OutlineInputBorder(),
+                  labelText: 'Email',
+                  hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
 
             Padding(
               padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 15),
+                left: 70, right: 70, top: 15, bottom: 15),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: 
               TextField(
                 obscureText: true,
+                textAlign: TextAlign.center,
                 controller: passwordController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter password'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100)
+                  ),
+                  labelText: 'Password',
+                  // label: Center(
+                  //   child: Text('Password')
+                  // ),
+                  hintText: 'Enter password',
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                ),
               ),
             ),
 
