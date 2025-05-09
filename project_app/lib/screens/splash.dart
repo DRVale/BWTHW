@@ -11,16 +11,14 @@ class Splash extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () => _checkLogin(context));
     return Scaffold(
         body: Center(
-          child: Image.asset(
-          'assets/papa.jpeg',
-          scale: 4,
-        )
-      )
-    );
+            child: Image.asset(
+      'assets/papa.jpeg',
+      scale: 4,
+    )));
   }
 
   // Method for navigation SplashPage -> ExposurePage
-  void _toExposurePage(BuildContext context) {
+  void _toHomePage(BuildContext context) {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
   } 
@@ -36,7 +34,7 @@ class Splash extends StatelessWidget {
   void _checkLogin(BuildContext context) async {
     final result = await Impact().refreshTokens();
     if (result == 200) {
-      _toExposurePage(context);
+      _toHomePage(context);
     } else {
       _toLoginPage(context);
     }
