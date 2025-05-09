@@ -29,7 +29,11 @@ class CustomNavigationBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            InkWell(
+
+            onTap: goToPage1,
+
+            child: Container(
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.black),
@@ -43,36 +47,42 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: IconButton(
-                  onPressed: goToPage1,
-                  icon: Icon(Icons.auto_graph)
-                ),
+                child: Icon(Icons.auto_graph)
               ),
               //color: Colors.red,
             ),
+
+
+            ),
+            
             Container(
               height: 100,
               width: screenWidth/3,
               //color: Colors.red,
             ),
-            Container(
+
+            InkWell(
+            
+            onTap: goToPage2,
+
+            child: Container(
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.black),
                   right: BorderSide(color: Colors.black),
                 ),
-                borderRadius: BorderRadius.only(topRight: Radius.circular(50))
+                borderRadius: BorderRadius.only(topRight: Radius.elliptical(70, 30))
               ),
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: IconButton(
-                  onPressed: goToPage2,
-                  icon: Icon(Icons.history)
-                ),
+                child: Icon(Icons.history)
               ),
               //color: Colors.red,
             )
+
+            )
+            
           ],
         ),
       ),
