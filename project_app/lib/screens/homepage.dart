@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:project_app/screens/counterpage.dart';
 import 'package:project_app/screens/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:project_app/models/expandibletilelist.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,17 +11,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    print('${HomePage.routename} built');
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(HomePage.routename),
+        title: Center(
+          child: Text(HomePage.routename),
+        ),
       ),
       
       body: Center(
-          child: Text('')
-        ),
+        child: ListView(
+          children: [
+            ExpandableListTile(
+              packageType: "Piccolo",
+              address: 'Via Roma 2',
+              actions: [
+                Text('Ciao'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 100,
+                  children: [
+                    Text('Address'),
+                    Text('Modalità'),
+                  ],
+                ),
+                ElevatedButton(onPressed: () {}, child: Text("Action 2")),
+              ],
+            ),
+            ExpandableListTile(
+              packageType: "Grande",
+              address: 'Via Roma 15',
+              actions: [
+                ElevatedButton(onPressed: () {}, child: Text("Edit")),
+                ElevatedButton(onPressed: () {}, child: Text("Delete")),
+              ],
+            ),
+          ],
+        )
+      ),
 
       drawer: Drawer(
         child: ListView(
@@ -39,9 +66,9 @@ class HomePage extends StatelessWidget {
             
             ListTile(
               //leading: Icon(Icons.plus_one),
-              title: Text('Counterpage'),
-              trailing: Icon(Icons.arrow_left),
-              onTap: () => _toCounterPage(context),
+              title: Text('Profile'),
+              trailing: Icon(Icons.person),
+              onTap: () => _toProfilePage(context),
             ),
             ListTile(
               leading: Icon(
@@ -59,6 +86,33 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+
+      
+      // CAMIARE CON CLASSE CUSTOM
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (value) {
+          print('Funziona');
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.auto_graph),
+            label: 'Graphs'
+            
+            
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'New delivery'
+                        
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History'
+            
+          ),
+          
+        ]
+      ),
     );
   } //build
 
@@ -67,6 +121,8 @@ class HomePage extends StatelessWidget {
     final logoutReset = await SharedPreferences.getInstance();
     await logoutReset.remove('username');
     await logoutReset.remove('password');
+    await logoutReset.remove('access');
+    await logoutReset.remove('refresh');
 
     //Pop the drawer first 
     Navigator.pop(context);
@@ -74,7 +130,7 @@ class HomePage extends StatelessWidget {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }//_toCalendarPage
 
-  void _toCounterPage(BuildContext context){
+  void _toProfilePage(BuildContext context){
     //Pop the drawer first 
     Navigator.pop(context);
     //Then pop the HomePage
