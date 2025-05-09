@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -82,12 +83,32 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loggingIn()async{
+    //final url = 'https://impact.dei.unipd.it/bwthw/gate/v1/token/';
+    final url = Impact.baseURL + Impact.tokenURL;
+    final uri = Uri.parse(url);
+    // NB: creo corpo per la richiesta: Metodo post richiede parametro body CORREGGERE CREDENZIALI
+    final body = {'username': userController.text, 'password': passwordController.text};
+    //Richiesta completa di uri e body
+    final response = await http.post(uri, body: body);  
+    //richiesta token è post: attenzione a inserire user e psw nella richiesta. body come parametro del metodo post
+    // Controllo status code
+    print(response.statusCode);
 
-    if(userController.text == 'ciao' && passwordController.text == 'baluba'){
+    if(response.statusCode == 200){
 
+      final decodedResponse = jsonDecode(response.body); // conversione formato Json
+      //print(decodedResponse['access']);
+
+      //Interrogo SharedPreferences
       final credentials = await SharedPreferences.getInstance();
+
+      // Salvo le credenziali
       credentials.setString('username', userController.text); 
       credentials.setString('password', passwordController.text); 
+
+      // Salvo token d'accesso e di refresh
+      credentials.setString('access', decodedResponse['access']); 
+      credentials.setString('refresh', decodedResponse['refresh']); 
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
     }
