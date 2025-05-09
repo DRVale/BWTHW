@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_app/screens/optionspage.dart';
 //import 'package:project_app/screens/loginpage.dart';
 //import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/screens/splash.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // invece di un builder normale utilizzo un future builder
-      home: Splash()
+      // home: Splash()
+      home: OptionsPage()
     );
   }
 
