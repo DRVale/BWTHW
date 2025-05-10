@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // invece di un builder normale utilizzo un future builder
-      // home: Splash()
-      home: OptionsPage()
+      home: Splash()
+      //home: OptionsPage()
     );
   }
 

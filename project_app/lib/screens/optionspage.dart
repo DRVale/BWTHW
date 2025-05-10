@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/graphpage.dart';
 import 'package:project_app/screens/historypage.dart';
-import 'package:project_app/models/customnavigationbar.dart';
+import 'package:project_app/models/expandibletilelist.dart';
 
 
 class OptionsPage extends StatelessWidget {
@@ -16,30 +16,42 @@ class OptionsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('OptionsPage'),
       ),
-      body: CustomNavigationBar(
-        goToPage1: () => _toGraphPage(context), 
-        goToPage2: () => _toHistoryPage(context),
-      ),
-      floatingActionButton: ElevatedButton(
-        child: Icon(Icons.add),
-        onPressed: (){},
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-          iconSize: 27,
-          iconColor: Colors.black,
-          backgroundColor: Colors.red,
 
-        ),
+      body: Center(
+        child: ListView(
+          children: [
+            ExpandableListTile(
+              packageType: "Piccolo",
+              address: 'Via Roma 2',
+              actions: [
+                Text('Ciao'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 100,
+                  children: [
+                    Text('Address'),
+                    Text('Modalità'),
+                  ],
+                ),
+                ElevatedButton(onPressed: () {}, child: Text("Action 2")),
+              ],
+            ),
+            ExpandableListTile(
+              packageType: "Grande",
+              address: 'Via Roma 15',
+              actions: [
+                ElevatedButton(onPressed: () {}, child: Text("Edit")),
+                ElevatedButton(onPressed: () {}, child: Text("Delete")),
+              ],
+            ),
+          ],
+        )
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      
     );
     
   }
 
-  void _toGraphPage(BuildContext context){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GraphPage()));
-  }
-  void _toHistoryPage(BuildContext context){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryPage()));
-  }
+
 }

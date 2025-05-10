@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'package:project_app/screens/counterpage.dart';
 import 'package:project_app/screens/loginPage.dart';
+import 'package:project_app/screens/graphpage.dart';
+import 'package:project_app/screens/historypage.dart';
+import 'package:project_app/screens/canteenpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project_app/models/expandibletilelist.dart';
+import 'package:project_app/models/customnavigationbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,36 +21,29 @@ class HomePage extends StatelessWidget {
         ),
       ),
       
-      body: Center(
-        child: ListView(
-          children: [
-            ExpandableListTile(
-              packageType: "Piccolo",
-              address: 'Via Roma 2',
-              actions: [
-                Text('Ciao'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 100,
-                  children: [
-                    Text('Address'),
-                    Text('Modalità'),
-                  ],
-                ),
-                ElevatedButton(onPressed: () {}, child: Text("Action 2")),
-              ],
-            ),
-            ExpandableListTile(
-              packageType: "Grande",
-              address: 'Via Roma 15',
-              actions: [
-                ElevatedButton(onPressed: () {}, child: Text("Edit")),
-                ElevatedButton(onPressed: () {}, child: Text("Delete")),
-              ],
-            ),
-          ],
-        )
+      
+      body: Container(
+        child: CustomNavigationBar(
+          goToPage1: () => _toGraphPage(context), 
+          goToPage2: () => _toHistoryPage(context),
+        ),
       ),
+      floatingActionButton: ElevatedButton(
+        child: Icon(Icons.add),
+        onPressed: ()=> _toCanteenPage(context),
+        onLongPress: (){
+          ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text('Go to delivery page')));
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+          iconSize: 27,
+          iconColor: Colors.black,
+          backgroundColor: Colors.red,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
       drawer: Drawer(
         child: ListView(
@@ -86,33 +82,27 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-
-      
+     
       // CAMIARE CON CLASSE CUSTOM
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          print('Funziona');
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_graph),
-            label: 'Graphs'
-            
-            
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'New delivery'
-                        
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History'
-            
-          ),
-          
-        ]
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   onTap: (value) {
+      //     print('Funziona');
+      //   },
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.auto_graph),
+      //       label: 'Graphs'
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.add),
+      //       label: 'New delivery'
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.history),
+      //       label: 'History'
+      //     ),
+      //   ]
+      // ),
     );
   } //build
 
@@ -137,5 +127,14 @@ class HomePage extends StatelessWidget {
     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Counterpage(title: 'maracaibo')));
   }//_toCalendarPage
 
+  void _toGraphPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GraphPage()));
+  }
+  void _toHistoryPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryPage()));
+  }
+  void _toCanteenPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CanteenPage()));
+  }
 
 } //HomePage
