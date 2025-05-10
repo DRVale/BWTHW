@@ -20,6 +20,18 @@ class OptionsPage extends StatelessWidget {
         goToPage1: () => _toGraphPage(context), 
         goToPage2: () => _toHistoryPage(context),
       ),
+      floatingActionButton: ElevatedButton(
+        child: Icon(Icons.add),
+        onPressed: (){},
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+          iconSize: 27,
+          iconColor: Colors.black,
+          backgroundColor: Colors.red,
+
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
     
   }

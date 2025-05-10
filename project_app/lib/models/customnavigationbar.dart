@@ -38,6 +38,7 @@ class CustomNavigationBar extends StatelessWidget {
                 border: Border(
                   top: BorderSide(color: Colors.black),
                   left: BorderSide(color: Colors.black),
+                  //right: BorderSide(width: 0)
                 ),
                 //borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
                 borderRadius: BorderRadius.only(topLeft: Radius.elliptical(70, 30)) // A me così piace di più che dritta
@@ -58,6 +59,11 @@ class CustomNavigationBar extends StatelessWidget {
             Container(
               height: 100,
               width: screenWidth/3,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.black)
+                )
+              ),              
               //color: Colors.red,
             ),
 
@@ -70,6 +76,7 @@ class CustomNavigationBar extends StatelessWidget {
                 border: Border(
                   top: BorderSide(color: Colors.black),
                   right: BorderSide(color: Colors.black),
+                  //left: BorderSide(width: 0)
                 ),
                 borderRadius: BorderRadius.only(topRight: Radius.elliptical(70, 30))
               ),
