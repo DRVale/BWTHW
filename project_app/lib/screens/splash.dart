@@ -3,6 +3,7 @@ import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/screens/loginpage.dart';
 import 'package:project_app/utils/impact.dart';
 
+
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
 
@@ -11,7 +12,14 @@ class Splash extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () => _checkLogin(context));
     return Scaffold(
         body: Center(
-            child: Text('Loading')));
+            child: Column(
+              children: [
+                Image.asset('assets/PastOn.png',scale: 4,),
+                Text('Loading')
+              ]
+            ) 
+            )
+            );
   }
 
   // Method for navigation SplashPage -> ExposurePage
