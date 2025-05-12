@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 249, 244, 197),
       appBar: AppBar(
         title: Text("Login Page"),
       ),
@@ -30,13 +30,25 @@ class _LoginPageState extends State<LoginPage> {
 
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(
+                left: 70, right: 70, top: 15, bottom: 15),
               child: TextField(
+                textAlign: TextAlign.center,
                 controller: userController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
                   labelText: 'Email',
-                  hintText: 'Enter valid email id as abc@gmail.com'),
+                  labelStyle: TextStyle(color: Colors.green),
+                  hintText: 'Enter valid email ',
+                  hintStyle: TextStyle(color: Colors.green),
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                )
               ),
             ),
 
@@ -50,14 +62,20 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.center,
                 controller: passwordController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100)
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green,width: 2.0),
                   ),
                   labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.green),
                   // label: Center(
                   //   child: Text('Password')
                   // ),
                   hintText: 'Enter password',
+                  hintStyle: TextStyle(color: Colors.green),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                 ),
               ),
@@ -65,9 +83,13 @@ class _LoginPageState extends State<LoginPage> {
 
             Container(
               height: 50,
-              width: 250,
+              width: 100,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 107, 165, 109),
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: () async {
                   final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
                   if(loginCode == 200){
