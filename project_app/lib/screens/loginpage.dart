@@ -19,13 +19,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 249, 244, 197),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
         title: Text("Login Page"),
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
 
             Padding(
@@ -47,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                   labelStyle: TextStyle(color: Colors.green),
                   hintText: 'Enter valid email ',
                   hintStyle: TextStyle(color: Colors.green),
+                  prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                 )
               ),
@@ -76,7 +78,9 @@ class _LoginPageState extends State<LoginPage> {
                   // ),
                   hintText: 'Enter password',
                   hintStyle: TextStyle(color: Colors.green),
+                  prefixIcon: Icon(Icons.password,color: Colors.green,size: 17,),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
+                  
                 ),
               ),
             ),
@@ -100,8 +104,12 @@ class _LoginPageState extends State<LoginPage> {
                   ..showSnackBar(SnackBar(content: Text('Wrong username or password')));
                   }
                 },
-                child: Text(
-                  'Login',
+                child: Row(
+                  children: [
+                    Text('Login', style: TextStyle(fontSize: 13),),
+                    SizedBox(width: 2 ),
+                    Icon(Icons.login,size: 14,),
+                  ],
                 ),
               ),
             ),
