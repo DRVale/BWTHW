@@ -76,7 +76,7 @@ class _CanteenPageState extends State<CanteenPage> {
   }
 
   void _toBoxPage(BuildContext context, {required String mensa}){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxPage()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxPage(mensa: mensa)));
   }
 }
 
