@@ -11,11 +11,16 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () => _checkLogin(context));
     return Scaffold(
+       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         body: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/PastOn.png',scale: 4,),
-                Text('Loading')
+                Image.asset('assets/PastOn-2.png', scale: 1, ),
+                Text('PastOn',style: TextStyle(color: Colors.green,fontSize: 20),),
+                SizedBox(height: 100,),
+                Text('Loading...', style: TextStyle(color: Colors.green,fontSize: 11, )  )
+                
               ]
             ) 
             )
