@@ -22,53 +22,56 @@ class _CanteenPageState extends State<CanteenPage> {
       body: Column(
         children: [
           Text('Pick a canteen'),
-          ListView(
-            children: [
-              ListTile(
-                //leading: Icon(Icons.plus_one),
-                title: Text('Piovego'),
-                trailing: Icon(Icons.arrow_right_alt),
-                onTap: (){
-                  final String id_mensa = 'Piovego';
-                  _toBoxPage(context,mensa: id_mensa);
-                },
-              ),
-
-              ListTile(
-                //leading: Icon(Icons.plus_one),
-                title: Text('Murialdo'),
-                trailing: Icon(Icons.arrow_right_alt),
-                onTap: (){
-                  final String id_mensa = 'Murialdo';
-                  _toBoxPage(context,mensa: id_mensa);
-                },
-              ),
-
-              ListTile(
-                title: Text('PioX',
-                  style: TextStyle(
-                    color: Colors.red
+          Expanded(
+            child:
+              ListView(
+                children: [
+                  ListTile(
+                    //leading: Icon(Icons.plus_one),
+                    title: Text('Piovego'),
+                    trailing: Icon(Icons.arrow_right_alt),
+                    onTap: (){
+                      final String id_mensa = 'Piovego';
+                      _toBoxPage(context,mensa: id_mensa);
+                    },
                   ),
-                ),
-                onTap: (){
-                  final String id_mensa = 'PioX';
-                  _toBoxPage(context,mensa: id_mensa);
-                },
-              ),
 
-              ListTile(
-                title: Text('Belzoni',
-                  style: TextStyle(
-                    color: Colors.red
+                  ListTile(
+                    //leading: Icon(Icons.plus_one),
+                    title: Text('Murialdo'),
+                    trailing: Icon(Icons.arrow_right_alt),
+                    onTap: (){
+                      final String id_mensa = 'Murialdo';
+                      _toBoxPage(context,mensa: id_mensa);
+                    },
                   ),
-                ),
-                onTap: (){
-                  final String id_mensa = 'Belzoni';
-                  _toBoxPage(context, mensa: id_mensa);
-                },
-              ),
-            ]
-          )
+
+                  ListTile(
+                    title: Text('PioX',
+                      style: TextStyle(
+                        color: Colors.red
+                      ),
+                    ),
+                    onTap: (){
+                      final String id_mensa = 'PioX';
+                      _toBoxPage(context,mensa: id_mensa);
+                    },
+                  ),
+
+                  ListTile(
+                    title: Text('Belzoni',
+                      style: TextStyle(
+                        color: Colors.red
+                      ),
+                    ),
+                    onTap: (){
+                      final String id_mensa = 'Belzoni';
+                      _toBoxPage(context, mensa: id_mensa);
+                    },
+                  ),
+                ]
+              )
+          ),
       ],
         
       )
