@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
           iconSize: 27,
           iconColor: Colors.black,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.green,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

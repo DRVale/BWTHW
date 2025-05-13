@@ -34,6 +34,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // invece di un builder normale utilizzo un future builder
       home: Splash()
+
+      // Username: grWTWvehjO
+      // Password: 12345678!
+
       //home: OptionsPage()
     );
   }
