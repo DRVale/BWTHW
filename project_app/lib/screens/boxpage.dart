@@ -5,7 +5,7 @@ import 'package:project_app/models/expandibletilelist.dart';
 class BoxPage extends StatefulWidget {
 
   final String mensa;
-  
+
   const BoxPage({super.key, required this.mensa});
 
   @override
@@ -55,7 +55,7 @@ class _BoxPageState extends State<BoxPage> {
                       }),
                       child: DeliveryMethod(
                         isSelected: isBikeSelected, 
-                        icon: Icon(Icons.pedal_bike), 
+                        iconType: Icons.pedal_bike, 
                         method: 'Bike'
                       ),
                     ),
@@ -67,7 +67,7 @@ class _BoxPageState extends State<BoxPage> {
                       }),
                       child: DeliveryMethod(
                         isSelected: isFootSelected, 
-                        icon: Icon(Icons.man), 
+                        iconType: Icons.man, 
                         method: 'On Foot'
                       ),
                     ),
@@ -79,7 +79,7 @@ class _BoxPageState extends State<BoxPage> {
                       }),
                       child: DeliveryMethod(
                         isSelected: isRunningSelected, 
-                        icon: Icon(Icons.run_circle_outlined), 
+                        iconType: Icons.run_circle_outlined, 
                         method: 'Running'
                       ),
                     )
