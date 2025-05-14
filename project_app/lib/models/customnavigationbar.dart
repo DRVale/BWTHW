@@ -48,7 +48,7 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.auto_graph)
+                child: Icon(Icons.auto_graph,color: Colors.black,size: 30,)
               ),
               //color: Colors.red,
             ),
@@ -83,7 +83,7 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.history)
+                child: Icon(Icons.history,color: Colors.black, size: 30,)
               ),
               //color: Colors.red,
             )
