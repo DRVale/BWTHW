@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class DeliveryMethod extends StatelessWidget {
 
   final bool isSelected;
-  final Widget icon;
+  final IconData iconType;
   final String method;
 
   const DeliveryMethod({
     Key? key,
     required this.isSelected,
-    required this.icon,
+    required this.iconType,
     required this.method,
   }) : super(key: key);
 
@@ -29,7 +29,10 @@ class DeliveryMethod extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          icon,
+          Icon(
+            iconType,
+            color: isSelected? Colors.green : Colors.black,
+          ),
           Text(
             method,
             style: TextStyle(
