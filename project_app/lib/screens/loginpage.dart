@@ -20,15 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(
-        title: Text("Login Page"),
-        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-
+            Image.asset('assets/logo_nome.png', scale: 1, ),
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(
@@ -53,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                 )
               ),
             ),
-
+            SizedBox(height: 5,),
             Padding(
               padding: const EdgeInsets.only(
                 left: 70, right: 70, top: 15, bottom: 15),
@@ -84,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-
+            SizedBox(height: 20,),
             Container(
               height: 50,
               width: 100,
