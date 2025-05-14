@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/screens/loginpage.dart';
 import 'package:project_app/utils/impact.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Splash extends StatelessWidget {
@@ -18,7 +19,7 @@ class Splash extends StatelessWidget {
               children: [
                 Image.asset('assets/PastOn.gif', scale: 1.5, ),
                 SizedBox(height: 2,),
-                Text('PastOn',style: TextStyle(color: Colors.green,fontSize: 50,fontWeight:FontWeight.bold ),),
+                Text('PastOn',style: TextStyle(color: Colors.green,fontSize: 50,fontWeight:FontWeight.bold, fontFamily: 'Roboto' ),),
                 SizedBox(height: 20,),
                 Text('Loading...', style: TextStyle(color: Colors.green,fontSize: 11, )  )
                 
@@ -29,9 +30,10 @@ class Splash extends StatelessWidget {
   }
 
   // Method for navigation SplashPage -> ExposurePage
-  void _toHomePage(BuildContext context) {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomePage()));
-  } 
+  void _toHomePage(BuildContext context)  {
+    
+     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
+  }
 
   // Method for navigation SplashPage -> LoginPage
   void _toLoginPage(BuildContext context) {
