@@ -8,16 +8,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/models/customnavigationbar.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  
+  const HomePage({Key? key,}) : super(key: key);
 
   static const routename = 'Homepage';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         title: Center(
-          child: Text(HomePage.routename),
+          child:
+          Row(
+            children: [
+              Text('Ciao,  ', style: TextStyle(fontSize: 30, fontFamily: 'Roboto',fontWeight: FontWeight.bold, color: Colors.green,),),
+              SizedBox(width: 5,),
+              Icon(Icons.handshake_outlined, color: Colors.yellow,)
+            ],
+          )
+          
         ),
       ),
       
@@ -29,7 +40,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: ElevatedButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,size: 30,),
         onPressed: ()=> _toCanteenPage(context),
         onLongPress: (){
           ScaffoldMessenger.of(context)
@@ -39,13 +50,14 @@ class HomePage extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
           iconSize: 27,
-          iconColor: Colors.black,
+          iconColor: Colors.white,
           backgroundColor: Colors.green,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
       drawer: Drawer(
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -55,7 +67,7 @@ class HomePage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.blue,
                   ),
-                  child: Text('Drawer_name'),
+                  child: Text('Menu'),
                   // INCLUDERE IMMAGINE DEL PROFILO O QUALCOSA CHE CENTRI CON L'UTENTE
                 ),
             ),
@@ -67,14 +79,16 @@ class HomePage extends StatelessWidget {
               onTap: () => _toProfilePage(context),
             ),
             ListTile(
-              leading: Icon(
+              trailing: Icon(
                 Icons.logout,
-                color: Colors.red,
+                color: Colors.red, 
+                size: 15, weight: 10,
               ),
               title: Text(
                 'Logout',
                 style: TextStyle(
-                  color: Colors.red
+                  color: Colors.red,
+                  fontSize: 15,
                 ),
               ),
               onTap: () => _toLoginPage(context),
