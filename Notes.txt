@@ -45,5 +45,9 @@ Login: shared preferences per mantenere il login salvato;
 _______________________________________________________________________________________________________________________________________________________________________
 
 REFRESH TOKEN:
-
 (Detto dal prof) Una cosa carina è appena si apre l'app check della validità del refresh token. Se non è valido, redirect alla loginpage
+
+BoxPage:
+Si potrebbe fare una lista (tramite listbuilder) di box nella boxpage, per poter idealmente aggiungere o togliere box. Ci starebbe togliere una box una volta finita la consegna
+
+Appunti vale: accorpare expandabletilelist e deliverymethod in un'unica classe (box). Fatto ciò si può fare una lista di box

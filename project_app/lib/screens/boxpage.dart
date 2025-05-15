@@ -5,11 +5,15 @@ import 'package:project_app/models/expandibletilelist.dart';
 import 'package:project_app/screens/deliverypage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class BoxPage extends StatefulWidget {
 
   final String mensa;
 
-  const BoxPage({super.key, required this.mensa});
+  const BoxPage({
+    super.key, 
+    required this.mensa,
+  });
 
   @override
   State<BoxPage> createState() => _BoxPageState();
@@ -72,4 +76,12 @@ class _BoxPageState extends State<BoxPage> {
     final sp = await SharedPreferences.getInstance();
     sp.setString('deliveryMethod', selectedMethod);
   }
+}
+
+void saveDeliveryMethod(String selectedMethod) async {
+
+  // Initialize shared preferences and store delivery method value
+  final sp = await SharedPreferences.getInstance();
+  sp.setString('deliveryMethod', selectedMethod); 
+
 }
