@@ -2,18 +2,26 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/models/expandibletilelist.dart';
 import 'package:project_app/models/deliverymethod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:project_app/screens/boxpage.dart';
 
 class Box extends StatefulWidget {
 
   final String address;
-
   final String packageType;
 
   const Box({
     super.key,
     required this.address,
     required this.packageType,
+    bool? isSelected,
   });
+
+  String setMethod(String method){
+    String selectedMethod = method;
+    return selectedMethod;
+  } 
 
   @override
   State<Box> createState() => _BoxState();
@@ -21,14 +29,20 @@ class Box extends StatefulWidget {
 
 class _BoxState extends State<Box> {
 
+  String selectedMethod = '';
+
+  
+
   bool isBikeSelected = false;
   bool isFootSelected = false;
   bool isRunningSelected = false;
 
-  String selectedMethod = '';
-
   @override
   Widget build(BuildContext context) {
+
+    final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
+
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -36,26 +50,21 @@ class _BoxState extends State<Box> {
           packageType: widget.packageType,
           address: widget.address,
           actions: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   spacing: 0,
-            //   children: [
-            //     Text('Address'),
-            //     Text('Modalità'),
-            //   ],
-            // ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
                 InkWell(
-                  onTap: () => setState(() async {
+                  onTap: () => setState((){
                     isBikeSelected = !isBikeSelected;
                     isFootSelected = false;
                     isRunningSelected = false;
 
-                    selectedMethod = 'Bici';
+                    if (isBikeSelected) {
+                      deliveryMethodNotifier.updateMethod('Bici');
+                    } else if (!isFootSelected && !isRunningSelected) {
+                      deliveryMethodNotifier.updateMethod(null); // Or some default value
+                    }
                     
                     // Salvare l'opzione nelle shared_preferences per utilizzarla quando si pescano i dati
                     // OPPURE si può passare il valore di selectedMethod alla pagina successiva tramite navigator.
@@ -73,7 +82,11 @@ class _BoxState extends State<Box> {
                     isFootSelected = !isFootSelected;
                     isRunningSelected = false;
 
-                    selectedMethod = 'Camminata';
+                    if (isFootSelected) {
+                      deliveryMethodNotifier.updateMethod('Camminata');
+                    } else if (!isBikeSelected && !isRunningSelected) {
+                      deliveryMethodNotifier.updateMethod(null); // Or some default value
+                    }
                   }),
                   child: DeliveryMethod(
                     isSelected: isFootSelected, 
@@ -87,7 +100,11 @@ class _BoxState extends State<Box> {
                     isFootSelected = false;
                     isRunningSelected = !isRunningSelected;
 
-                    selectedMethod = 'Corsa';
+                    if (isRunningSelected) {
+                      deliveryMethodNotifier.updateMethod('Corsa');
+                    } else if (!isFootSelected && !isBikeSelected) {
+                      deliveryMethodNotifier.updateMethod(null); // Or some default value
+                    }
                   }),
                   child: DeliveryMethod(
                     isSelected: isRunningSelected, 
@@ -101,5 +118,7 @@ class _BoxState extends State<Box> {
         ),
       ]
     );
-  }
+  }  
+
+  
 }

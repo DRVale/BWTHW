@@ -4,6 +4,7 @@ import 'package:project_app/models/deliverymethod.dart';
 import 'package:project_app/models/expandibletilelist.dart';
 import 'package:project_app/screens/deliverypage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 
 class BoxPage extends StatefulWidget {
@@ -53,10 +54,35 @@ class _BoxPageState extends State<BoxPage> {
               children: [
                 box_list[index],
                 ElevatedButton(
-                  onPressed: (){
-                    _toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType);
+                  onPressed: () async {
 
-                    //print(box_list[index].address);
+                    final selectedMethod = Provider.of<DeliveryMethodNotifier>(context, listen: false).selectedDeliveryMethod;
+
+                    final sp = await SharedPreferences.getInstance();
+                    sp.setString('deliveryMethod', selectedMethod!);
+
+                    //saveDeliveryMethod(box_list[index].)
+                    //_toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType);
+
+                    print(sp.getString('deliveryMethod'));
+
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context){
+                        return Container(
+                          padding: EdgeInsets.all(160),
+                          height: double.infinity,
+                          //width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('prova'),
+                              ElevatedButton(onPressed: (){}, child: Text('Conferma'))
+                            ],
+                          )
+                        );
+                      },
+                    ); 
                   },
                   child: Text('Conferma'))
               ],
@@ -71,17 +97,20 @@ class _BoxPageState extends State<BoxPage> {
   void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
   }
-
-  void saveDeliveryMethod(String selectedMethod)async{
-    final sp = await SharedPreferences.getInstance();
-    sp.setString('deliveryMethod', selectedMethod);
-  }
 }
 
-void saveDeliveryMethod(String selectedMethod) async {
 
-  // Initialize shared preferences and store delivery method value
-  final sp = await SharedPreferences.getInstance();
-  sp.setString('deliveryMethod', selectedMethod); 
+class DeliveryMethodNotifier extends ChangeNotifier{
+  String ?_selectedMethod;
 
+  String? get selectedDeliveryMethod => _selectedMethod;
+  
+  String? getDeliveryMethod(){
+    return _selectedMethod;
+  }
+
+  void updateMethod(String? method){
+    _selectedMethod = method;
+    notifyListeners();
+  }
 }

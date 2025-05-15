@@ -10,7 +10,8 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 15), () => _checkLogin(context));
+    //Future.delayed(const Duration(seconds: 15), () => _checkLogin(context));
+    Future.delayed(const Duration(seconds: 1), () => _checkLogin(context));
     return Scaffold(
        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         body: Center(
