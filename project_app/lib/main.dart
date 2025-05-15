@@ -7,6 +7,14 @@ import 'package:project_app/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:project_app/screens/boxpage.dart';
 
+ 
+
+
+
+
+
+ 
+
 void main() {
   runApp(const MyApp());
 }
