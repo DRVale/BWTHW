@@ -51,3 +51,7 @@ BoxPage:
 Si potrebbe fare una lista (tramite listbuilder) di box nella boxpage, per poter idealmente aggiungere o togliere box. Ci starebbe togliere una box una volta finita la consegna
 
 Appunti vale: accorpare expandabletilelist e deliverymethod in un'unica classe (box). Fatto ciò si può fare una lista di box
+
+
+
+https://impact.dei.unipd.it/bwthw/data/v1/exercise/patients/grWTWvehjO/day/2025-04-22/

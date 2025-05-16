@@ -70,12 +70,14 @@ class _BoxPageState extends State<BoxPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
+                          scrollable: true,
                           title: Text("Recap"),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text("• Option 1"),
                               Text("• Option 2"),
+
                             ],
                           ),
                           actions: [
