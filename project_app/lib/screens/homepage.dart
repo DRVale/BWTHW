@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Ciao, $_username',
+                'Hello, $_username',
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Roboto',
