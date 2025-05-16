@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                  foregroundColor: Colors.white,
+                  foregroundColor: Colors.black54,
                 ),
                 onPressed: () async {
                   final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
