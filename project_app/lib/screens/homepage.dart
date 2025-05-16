@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             ..showSnackBar(SnackBar(content: Text('Go to delivery page')));
         },
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
           backgroundColor: Colors.green,
           
         ),
