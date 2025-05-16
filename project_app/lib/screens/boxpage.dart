@@ -80,8 +80,8 @@ class _BoxPageState extends State<BoxPage> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text("Close"),
+                              onPressed: () => _toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType),
+                              child: Text("Confirm"),
                             ),
                           ],
                         );
@@ -117,7 +117,7 @@ class _BoxPageState extends State<BoxPage> {
   }
 
   void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
   }
 }
 
