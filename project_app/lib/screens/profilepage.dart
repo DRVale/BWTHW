@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(title: const Text('Change name',style: TextStyle(color: Colors.black54),),
+      appBar: AppBar(title: const Text('Change name',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
