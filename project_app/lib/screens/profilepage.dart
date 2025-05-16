@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                  foregroundColor: Colors.white,),
+                  foregroundColor: Colors.black54,),
               onPressed: _saveUsername,
               child: const Text('Salva'),
             ),
