@@ -134,20 +134,20 @@ class _HomePageState extends State<HomePage> {
               
             ),
             ListTile(
-              title: Text('Profile',style: TextStyle(color: Colors.grey),),
-              trailing: Icon(Icons.person, color: Colors.grey,),
+              title: Text('Profile',style: TextStyle(color: Colors.black54),),
+              trailing: Icon(Icons.person, color: Colors.black54,),
               onTap: () => _toProfilePage(context),
             ),
             ListTile(
-              title: Text('About us',style: TextStyle(color: Colors.grey),),
-              trailing: Icon(Icons.group,color: Colors.grey,),
+              title: Text('About us',style: TextStyle(color: Colors.black54),),
+              trailing: Icon(Icons.group,color: Colors.black54,),
               onTap: () => _toAboutUsPage(context),
             ),
             ListTile(
-              trailing: Icon(Icons.logout, color: Colors.grey, ),
+              trailing: Icon(Icons.logout, color: Colors.black54, ),
               title: Text(
                 'Logout',
-                style: TextStyle(color: Colors.grey, ),
+                style: TextStyle(color: Colors.black54, ),
               ),
               onTap: () => _toLoginPage(context),
             ),
