@@ -1,5 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requestedData.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:project_app/utils/impact.dart';
+//import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:http/http.dart' as http;
 
 class DeliveryPage extends StatefulWidget {
 
@@ -55,12 +60,31 @@ class _DeliveryPageState extends State<DeliveryPage> {
             Text('Indirizzo di consegna: '),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _stopTimer,
+              onPressed: (){
+                _stopTimer;
+
+              },
               child: Text("Ferma Timer"),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<List<Distance>?> requestDate()async{
+    List<Distance>? result;
+
+    // //check accesso 
+    // final sp = await SharedPreferences.getInstance();
+    // var access = sp.getString('access');
+
+    // //If access token is expired, refresh it
+    // if(JwtDecoder.isExpired(access!)){
+    //   await refreshTokens();
+    //   access = sp.getString('access');
+    // }//if
+
+    
   }
 }

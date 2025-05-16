@@ -11,6 +11,10 @@ class Impact {
   static const tokenURL = 'gate/v1/token/';
   static const refreshURL = 'gate/v1/refresh/';
 
+  // patient username: Jpefaq6m58
+  static const exerciseURL = '/data/v1/exercise/patients/Jpefaq6m58/';
+ 
+
   // oppure posso creare degli URL più lunghi, ex gateURL 
 
   Future<int> refreshTokens()async{
