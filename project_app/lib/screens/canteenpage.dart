@@ -15,54 +15,71 @@ class _CanteenPageState extends State<CanteenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
-        title: Text('CanteenPage'),
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+        title: Text('Pick a canteen: ',style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold), ),
       ),
       body: Column(
         children: [
-          Text('Pick a canteen'),
+          Text('Choose a canteen for your new delivery: ', style: TextStyle(color: Colors.green, fontSize: 15),),
+          SizedBox(height: 50,),
           Expanded(
             child:
               ListView(
                 children: [
                   ListTile(
-                    //leading: Icon(Icons.plus_one),
-                    title: Text('Piovego'),
-                    trailing: Icon(Icons.arrow_right_alt),
+                    leading: Icon(Icons.add_home, color: Colors.black54, size: 20),
+                    title: Text('Canteen: Piovego',style: TextStyle(
+                        color: Colors.black54
+                      ),),
+                      subtitle: Text('Address: Viale Giuseppe Colombo, 1, 35131 Padova PD',style: TextStyle(fontSize: 9),),
+                    trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
                     onTap: (){
                       final String id_mensa = 'Piovego';
                       _toBoxPage(context,mensa: id_mensa);
                     },
                   ),
-
+                  SizedBox(height: 20,),
                   ListTile(
-                    //leading: Icon(Icons.plus_one),
-                    title: Text('Murialdo'),
-                    trailing: Icon(Icons.arrow_right_alt),
+                    leading: Icon(Icons.add_home,color: Colors.black54,size: 20,),
+                    title: Text('Canteen: Murialdo', style: TextStyle(
+                        color: Colors.black54
+                      ),),
+                      subtitle: Text('Address: Via Antonio Grassi, 42, 35129 Padova PD',style: TextStyle(fontSize: 9),),
+                    trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
                     onTap: (){
                       final String id_mensa = 'Murialdo';
                       _toBoxPage(context,mensa: id_mensa);
                     },
                   ),
+                  SizedBox(height: 20,),
 
                   ListTile(
-                    title: Text('PioX',
+                    leading: Icon(Icons.add_home,color: Colors.black54, size: 20),
+                    title: Text('Canteen: PioX',
                       style: TextStyle(
-                        color: Colors.red
+                        color: Colors.black54
                       ),
                     ),
+                    subtitle: Text('Address: Via Antonio Francesco Bonporti, 20, 35141 Padova PD',style: TextStyle(fontSize: 9),),
+                    trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
                     onTap: (){
                       final String id_mensa = 'PioX';
                       _toBoxPage(context,mensa: id_mensa);
                     },
                   ),
+                  SizedBox(height: 20,),
 
                   ListTile(
-                    title: Text('Belzoni',
+                    leading: Icon(Icons.add_home,color: Colors.black54, size: 20),
+                    title: Text('Canteen: Belzoni',
                       style: TextStyle(
-                        color: Colors.red
+                        color: Colors.black54
                       ),
                     ),
+                    subtitle: Text('Address: Via Giambattista Belzoni, 146, 35121 Padova PDD',style: TextStyle(fontSize: 9),),
+                    trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
                     onTap: (){
                       final String id_mensa = 'Belzoni';
                       _toBoxPage(context, mensa: id_mensa);
