@@ -43,9 +43,15 @@ class _BoxPageState extends State<BoxPage> {
     // ];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Mensa: ${widget.mensa}')),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+        title: Text('Selected: ${widget.mensa}',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
+      ),
       body: Center(
-        child: ListView.builder(
+        child:
+
+        ListView.builder(
           itemCount: box_list.length,
           // itemBuilder: (context, index) => box_list[index],
           itemBuilder: (context, index){
