@@ -19,12 +19,12 @@ class _CanteenPageState extends State<CanteenPage> {
       appBar: AppBar(
 
         backgroundColor:const Color.fromARGB(255, 250, 250, 238),
-        title: Text('1) PICK A CANTEEN ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold), ),
+        title: Text('Pick a canteen ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold), ),
       ),
       body: Column(
         children: [
-          SizedBox(height: 30,),
-          Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.bold),),
+          SizedBox(height: 16,),
+          Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
           SizedBox(height: 40,),
           Expanded(
             child:
