@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Roboto',
-                  fontWeight: FontWeight.bold,
+                  
                   color: Colors.green,
                 ),
               ),
@@ -99,6 +99,7 @@ class _HomePageState extends State<HomePage> {
         goToPage2: () => _toHistoryPage(context),
       ),
       floatingActionButton: ElevatedButton(
+
         child: Icon(Icons.add, size: 30, color: Colors.white,),
         onPressed: () => _toCanteenPage(context),
         onLongPress: () {
@@ -109,6 +110,7 @@ class _HomePageState extends State<HomePage> {
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
           backgroundColor: Colors.green,
+          
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -132,20 +134,20 @@ class _HomePageState extends State<HomePage> {
               
             ),
             ListTile(
-              title: Text('Profile'),
-              trailing: Icon(Icons.person),
+              title: Text('Profile',style: TextStyle(color: Colors.grey),),
+              trailing: Icon(Icons.person, color: Colors.grey,),
               onTap: () => _toProfilePage(context),
             ),
             ListTile(
-              title: Text('About us'),
-              trailing: Icon(Icons.group),
+              title: Text('About us',style: TextStyle(color: Colors.grey),),
+              trailing: Icon(Icons.group,color: Colors.grey,),
               onTap: () => _toAboutUsPage(context),
             ),
             ListTile(
-              trailing: Icon(Icons.logout, color: Colors.red, size: 15),
+              trailing: Icon(Icons.logout, color: Colors.grey, ),
               title: Text(
                 'Logout',
-                style: TextStyle(color: Colors.red, fontSize: 15),
+                style: TextStyle(color: Colors.grey, ),
               ),
               onTap: () => _toLoginPage(context),
             ),
