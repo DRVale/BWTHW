@@ -35,6 +35,7 @@ class CustomNavigationBar extends StatelessWidget {
 
             child: Container(
               decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
                   top: BorderSide(color: Colors.black),
                   left: BorderSide(color: Colors.black),
@@ -48,7 +49,7 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.auto_graph,color: Colors.black,size: 30,)
+                child: Icon(Icons.auto_graph,color: const Color.fromARGB(255, 255, 255, 255),size: 35,)
               ),
               //color: Colors.red,
             ),
@@ -60,6 +61,7 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
                   top: BorderSide(color: Colors.black)
                 )
@@ -72,7 +74,9 @@ class CustomNavigationBar extends StatelessWidget {
             onTap: goToPage2,
 
             child: Container(
+              
               decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
                   top: BorderSide(color: Colors.black),
                   right: BorderSide(color: Colors.black),
@@ -83,7 +87,7 @@ class CustomNavigationBar extends StatelessWidget {
               height: 100,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.history,color: Colors.black, size: 30,)
+                child: Icon(Icons.history,color: Colors.white, size: 35,)
               ),
               //color: Colors.red,
             )
