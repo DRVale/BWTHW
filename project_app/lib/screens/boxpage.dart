@@ -66,23 +66,45 @@ class _BoxPageState extends State<BoxPage> {
 
                     print(sp.getString('deliveryMethod'));
 
-                    showModalBottomSheet(
+                    showDialog(
                       context: context,
-                      builder: (context){
-                        return Container(
-                          padding: EdgeInsets.all(160),
-                          height: double.infinity,
-                          //width: double.infinity,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Recap"),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('prova'),
-                              ElevatedButton(onPressed: (){}, child: Text('Conferma'))
+                              Text("• Option 1"),
+                              Text("• Option 2"),
                             ],
-                          )
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text("Close"),
+                            ),
+                          ],
                         );
                       },
-                    ); 
+                    );
+
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   builder: (context){
+                    //     return Container(
+                    //       padding: EdgeInsets.all(160),
+                    //       height: double.infinity,
+                    //       width: double.infinity,
+                    //       child: Column(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           // Text('prova'),
+                    //           // ElevatedButton(onPressed: (){}, child: Text('Conferma'))
+                    //         ],
+                    //       )
+                    //     );
+                    //   },
+                    // ); 
                   },
                   child: Text('Conferma'))
               ],
@@ -105,9 +127,9 @@ class DeliveryMethodNotifier extends ChangeNotifier{
 
   String? get selectedDeliveryMethod => _selectedMethod;
   
-  String? getDeliveryMethod(){
-    return _selectedMethod;
-  }
+  // String? getDeliveryMethod(){
+  //   return _selectedMethod;
+  // }
 
   void updateMethod(String? method){
     _selectedMethod = method;
