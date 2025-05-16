@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:project_app/models/requestedData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
-//import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'dart:convert';
 
 class DeliveryPage extends StatefulWidget {
 
@@ -37,7 +39,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
     });
   }
 
-  void _stopTimer() {
+  void stop() {
     _timer?.cancel();
   }
 
@@ -61,8 +63,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: (){
-                _stopTimer;
-
+                stop();
+                requestDate();
               },
               child: Text("Ferma Timer"),
             ),
@@ -75,16 +77,41 @@ class _DeliveryPageState extends State<DeliveryPage> {
   Future<List<Distance>?> requestDate()async{
     List<Distance>? result;
 
-    // //check accesso 
-    // final sp = await SharedPreferences.getInstance();
-    // var access = sp.getString('access');
+    //check accesso 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
 
-    // //If access token is expired, refresh it
-    // if(JwtDecoder.isExpired(access!)){
-    //   await refreshTokens();
-    //   access = sp.getString('access');
-    // }//if
+    //If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }//if
 
+
+     //Create the (representative) request
+    final day = '2024-05-04';
+    final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    //Get the response
+    print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    //check response
+    if (response.statusCode == 200) {
+      final decodedResponse = jsonDecode(response.body);
+      result = [];
+      for (var i = 0; i < decodedResponse['data']['data'].length; i++) {
+        result.add(Distance.fromJson(decodedResponse['data']['date'], decodedResponse['data']['data'][i]));
+      }//for
+      //print(result);
+    } //if
+    else{
+      result = null;
+    }//else
     
+    //Return the result
+    return result;
   }
 }
