@@ -47,10 +47,10 @@ class CustomNavigationBar extends StatelessWidget {
                 // POI POSSIAMO CAMBIARE ALTEZZA E CURVATURA
               ),
               //height: screenHeight,
-              height: 90,
+              height: 70,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.auto_graph,color: Colors.black54 ,size: 35,)
+                child: Icon(Icons.auto_graph,color: Colors.black54 ,size: 30,)
               ),
               //color: Colors.red,
             ),
@@ -59,7 +59,7 @@ class CustomNavigationBar extends StatelessWidget {
             ),
             
             Container(
-              height: 90,
+              height: 70,
               width: screenWidth/3,
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 147, 223, 149),
@@ -88,16 +88,16 @@ class CustomNavigationBar extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.only(topRight: Radius.elliptical(100,100),bottomRight:Radius.elliptical(100, 100) )
               ),
-              height: 90,
+              height: 70,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.history,color: Colors.black54, size: 35,)
+                child: Icon(Icons.history,color: Colors.black54, size: 30,)
               ),
               //color: Colors.red,
             )
 
             ),
-           SizedBox(height: 145,) 
+           SizedBox(height: 140,) 
           ],
         ),
       ),
