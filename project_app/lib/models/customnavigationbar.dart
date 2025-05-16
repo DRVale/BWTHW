@@ -35,21 +35,22 @@ class CustomNavigationBar extends StatelessWidget {
 
             child: Container(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 147, 223, 149),
+                color:  const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
-                  top: BorderSide(color: Colors.black),
-                  left: BorderSide(color: Colors.black),
+                  top: BorderSide(color: Colors.green),
+                  left: BorderSide(color: Colors.green),
+                  bottom: BorderSide(color: Colors.green),
                   //right: BorderSide(width: 0)
                 ),
                 //borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
-                borderRadius: BorderRadius.only(topLeft: Radius.elliptical(70, 30)) // A me così piace di più che dritta
+                borderRadius: BorderRadius.only(topLeft: Radius.elliptical(100, 100), bottomLeft: Radius.elliptical(100, 100),) // A me così piace di più che dritta
                 // POI POSSIAMO CAMBIARE ALTEZZA E CURVATURA
               ),
               //height: screenHeight,
-              height: 100,
+              height: 90,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.auto_graph,color: const Color.fromARGB(255, 255, 255, 255),size: 35,)
+                child: Icon(Icons.auto_graph,color: Colors.black54 ,size: 35,)
               ),
               //color: Colors.red,
             ),
@@ -58,12 +59,13 @@ class CustomNavigationBar extends StatelessWidget {
             ),
             
             Container(
-              height: 100,
+              height: 90,
               width: screenWidth/3,
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
-                  top: BorderSide(color: Colors.black)
+                  top: BorderSide(color: Colors.green),
+                  bottom: BorderSide(color: Colors.green),
                 )
               ),              
               //color: Colors.red,
@@ -78,22 +80,24 @@ class CustomNavigationBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 147, 223, 149),
                 border: Border(
-                  top: BorderSide(color: Colors.black),
-                  right: BorderSide(color: Colors.black),
+                  top: BorderSide(color: Colors.green),
+                  right: BorderSide(color: Colors.green),
+                  bottom: BorderSide(color: Colors.green),
+
                   //left: BorderSide(width: 0)
                 ),
-                borderRadius: BorderRadius.only(topRight: Radius.elliptical(70, 30))
+                borderRadius: BorderRadius.only(topRight: Radius.elliptical(100,100),bottomRight:Radius.elliptical(100, 100) )
               ),
-              height: 100,
+              height: 90,
               width: screenWidth/3,
               child: Center(
-                child: Icon(Icons.history,color: Colors.white, size: 35,)
+                child: Icon(Icons.history,color: Colors.black54, size: 35,)
               ),
               //color: Colors.red,
             )
 
-            )
-            
+            ),
+           SizedBox(height: 145,) 
           ],
         ),
       ),
