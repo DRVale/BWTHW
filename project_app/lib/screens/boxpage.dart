@@ -59,7 +59,7 @@ class _BoxPageState extends State<BoxPage> {
                     final selectedMethod = Provider.of<DeliveryMethodNotifier>(context, listen: false).selectedDeliveryMethod;
 
                     final sp = await SharedPreferences.getInstance();
-                    sp.setString('deliveryMethod', selectedMethod!);
+                    sp.setString('deliveryMethod', selectedMethod!); 
 
                     //saveDeliveryMethod(box_list[index].)
                     //_toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType);
