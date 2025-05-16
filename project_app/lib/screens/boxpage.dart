@@ -43,9 +43,15 @@ class _BoxPageState extends State<BoxPage> {
     // ];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Mensa: ${widget.mensa}')),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+        title: Text('Selected: ${widget.mensa}',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
+      ),
       body: Center(
-        child: ListView.builder(
+        child:
+
+        ListView.builder(
           itemCount: box_list.length,
           // itemBuilder: (context, index) => box_list[index],
           itemBuilder: (context, index){
@@ -59,7 +65,7 @@ class _BoxPageState extends State<BoxPage> {
                     final selectedMethod = Provider.of<DeliveryMethodNotifier>(context, listen: false).selectedDeliveryMethod;
 
                     final sp = await SharedPreferences.getInstance();
-                    sp.setString('deliveryMethod', selectedMethod!);
+                    sp.setString('deliveryMethod', selectedMethod!); 
 
                     //saveDeliveryMethod(box_list[index].)
                     //_toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType);
@@ -82,8 +88,8 @@ class _BoxPageState extends State<BoxPage> {
                           ),
                           actions: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text("Close"),
+                              onPressed: () => _toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType),
+                              child: Text("Confirm"),
                             ),
                           ],
                         );
@@ -119,7 +125,7 @@ class _BoxPageState extends State<BoxPage> {
   }
 
   void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
   }
 }
 

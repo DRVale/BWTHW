@@ -39,19 +39,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(title: const Text('Modifica nome'),
+      appBar: AppBar(title: const Text('Change name',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text('Inserisci il tuo nuovo nome:'),
+            const Text('Insert your new name:',style: TextStyle(color: Colors.black54),),
             const SizedBox(height: 10),
             TextField(
+              cursorColor: Colors.black,
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'Nuovo nome',
                 labelStyle: TextStyle(color: Colors.green),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)
+                ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.green)
                 )
@@ -61,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                  foregroundColor: Colors.white,),
+                  foregroundColor: Colors.black54,),
               onPressed: _saveUsername,
               child: const Text('Salva'),
             ),

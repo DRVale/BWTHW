@@ -11,6 +11,20 @@ class Impact {
   static const tokenURL = 'gate/v1/token/';
   static const refreshURL = 'gate/v1/refresh/';
 
+  // Username: grWTWvehjO
+  // Password: 12345678!
+  static String username = 'grWTWvehjO';
+  static String password = '12345678!';
+
+  // patient username: Jpefaq6m58
+  static String patientUsername = 'Jpefaq6m58';
+
+  // URL richiesta dati
+  // DISTANCE
+  static const distanceURL = 'data/v1/distance/patients/';
+
+ 
+
   // oppure posso creare degli URL più lunghi, ex gateURL 
 
   Future<int> refreshTokens()async{

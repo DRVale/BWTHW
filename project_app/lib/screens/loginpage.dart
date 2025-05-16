@@ -26,11 +26,15 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Image.asset('assets/logo_nome.png', scale: 1, ),
+            SizedBox(height: 30,),
+            Text('Welcome', textAlign: TextAlign.left, style: TextStyle(color: Colors.black54),),
+            SizedBox(height: 5,),
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(
                 left: 70, right: 70, top: 15, bottom: 15),
               child: TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 controller: userController,
                 decoration: InputDecoration(
@@ -57,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: 
               TextField(
+                cursorColor: Colors.black,
                 obscureText: true,
                 textAlign: TextAlign.center,
                 controller: passwordController,
@@ -89,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                  foregroundColor: Colors.white,
+                  foregroundColor: Colors.black54,
                 ),
                 onPressed: () async {
                   final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
