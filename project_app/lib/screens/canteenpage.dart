@@ -14,22 +14,24 @@ class _CanteenPageState extends State<CanteenPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( 
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-        title: Text('Pick a canteen: ',style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold), ),
+
+        backgroundColor:const Color.fromARGB(255, 250, 250, 238),
+        title: Text('1) PICK A CANTEEN ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold), ),
       ),
       body: Column(
         children: [
-          Text('Choose a canteen for your new delivery: ', style: TextStyle(color: Colors.green, fontSize: 15),),
-          SizedBox(height: 50,),
+          SizedBox(height: 30,),
+          Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.bold),),
+          SizedBox(height: 40,),
           Expanded(
             child:
               ListView(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.add_home, color: Colors.black54, size: 20),
+                    leading: Icon(Icons.add_home, color: Colors.green, size: 20),
                     title: Text('Canteen: Piovego',style: TextStyle(
                         color: Colors.black54
                       ),),
@@ -42,7 +44,7 @@ class _CanteenPageState extends State<CanteenPage> {
                   ),
                   SizedBox(height: 20,),
                   ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.black54,size: 20,),
+                    leading: Icon(Icons.add_home,color: Colors.green,size: 20,),
                     title: Text('Canteen: Murialdo', style: TextStyle(
                         color: Colors.black54
                       ),),
@@ -56,7 +58,7 @@ class _CanteenPageState extends State<CanteenPage> {
                   SizedBox(height: 20,),
 
                   ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.black54, size: 20),
+                    leading: Icon(Icons.add_home,color: Colors.green, size: 20),
                     title: Text('Canteen: PioX',
                       style: TextStyle(
                         color: Colors.black54
@@ -72,13 +74,13 @@ class _CanteenPageState extends State<CanteenPage> {
                   SizedBox(height: 20,),
 
                   ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.black54, size: 20),
+                    leading: Icon(Icons.add_home,color: Colors.green, size: 20),
                     title: Text('Canteen: Belzoni',
                       style: TextStyle(
                         color: Colors.black54
                       ),
                     ),
-                    subtitle: Text('Address: Via Giambattista Belzoni, 146, 35121 Padova PDD',style: TextStyle(fontSize: 9),),
+                    subtitle: Text('Address: Via Giambattista Belzoni, 146, 35121 Padova PD',style: TextStyle(fontSize: 9),),
                     trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
                     onTap: (){
                       final String id_mensa = 'Belzoni';
