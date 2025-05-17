@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/graphpage.dart';
 import 'package:project_app/screens/historypage.dart';
-import 'package:project_app/models/expandibletilelist.dart';
+import 'package:project_app/models/expandablelisttile.dart';
 
 
 class OptionsPage extends StatelessWidget {

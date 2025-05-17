@@ -17,17 +17,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DeliveryMethodNotifier>(
-      create: (context) => DeliveryMethodNotifier(),
-      child: Consumer<DeliveryMethodNotifier>(
-        builder: (context, themeProvider, child) => MaterialApp(
-      // invece di un builder normale utilizzo un future builder
-          home: Splash()
+    return MaterialApp(
+
+      home: Splash()
 
       // Username: grWTWvehjO
       // Password: 12345678!
-        )
-      )
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return ChangeNotifierProvider<DeliveryMethodNotifier>(
+  //     create: (context) => DeliveryMethodNotifier(),
+  //     child: Consumer<DeliveryMethodNotifier>(
+  //       builder: (context, themeProvider, child) => MaterialApp(
+  //     // invece di un builder normale utilizzo un future builder
+  //         home: Splash()
+
+  //     // Username: grWTWvehjO
+  //     // Password: 12345678!
+  //       )
+  //     )
+  //   );
+  // }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project_app/models/requestedData.dart';
+import 'package:project_app/screens/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -64,7 +65,33 @@ class _DeliveryPageState extends State<DeliveryPage> {
             ElevatedButton(
               onPressed: (){
                 stop();
-                requestDate();
+                //await???????
+                // Future<List<Distance>?> listOfDistances = requestDate();
+                // int sumOfDistances = getTotalDistance(listOfDistances);
+
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: Text("Recap"),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text("• Option 1"),
+                          Text("• Option 2"),
+
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () =>_toHomePage(),
+                          child: Text("Confirm"),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: Text("Ferma Timer"),
             ),
@@ -90,6 +117,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
      //Create the (representative) request
     final day = '2024-05-04';
+    final startTime;
+    final endTime;
     final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/day/$day/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
@@ -104,7 +133,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
       result = [];
       for (var i = 0; i < decodedResponse['data']['data'].length; i++) {
         result.add(Distance.fromJson(decodedResponse['data']['date'], decodedResponse['data']['data'][i]));
-      }//for
+        print(result[i]);
+      } //for
       //print(result);
     } //if
     else{
@@ -113,5 +143,26 @@ class _DeliveryPageState extends State<DeliveryPage> {
     
     //Return the result
     return result;
+  }
+
+  // Future<int> _getFileLength(Future<List<Distance>> result) async {
+  //   return await result.then((value) {
+  //    return value.length;
+  //  });
+  // }
+
+
+  // int getTotalDistance(Future<List<Distance>?> result){
+  //   int sum = 0;
+  //   for(int i = 0; i < _getFileLength(); i++){
+  //     sum = sum + result[i].value;
+  //   }
+  //   return sum;
+  // }
+
+  void _toHomePage(){
+    // VEDERE STACK DEGLI SCREEN
+    // Navigator.pop(context);
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
   }
 }

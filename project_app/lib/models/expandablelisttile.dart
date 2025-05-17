@@ -24,8 +24,8 @@ class _ExpandableListTileState extends State<ExpandableListTile> {
     return Column(
       children: [
         ListTile(
-          
-          title: Text(widget.packageType+' '+widget.address),
+          leading: SizedBox(width: 50),
+          title: Center(child: Text(widget.address + ' - ' + widget.packageType)),
           trailing: IconButton(
             icon: Icon(isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right),
             onPressed: () {

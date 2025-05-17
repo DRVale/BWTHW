@@ -13,9 +13,13 @@ class Distance{
   
   @override
   String toString() {
-    return 'Steps(time: $timestamp, value: $value)';
+    return 'Distance(time: $timestamp, value: $value)';
   }//toString
   
+
+  // int getTotalDistance(List<Distance> result){
+  //   return 0 ;
+  // }
 }
 
 

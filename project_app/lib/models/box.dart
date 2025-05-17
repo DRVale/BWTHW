@@ -1,10 +1,11 @@
 //import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:project_app/models/expandibletilelist.dart';
+import 'package:project_app/models/expandablelisttile.dart';
 import 'package:project_app/models/deliverymethod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:project_app/screens/boxpage.dart';
+import 'package:project_app/screens/deliverypage.dart';
 
 class Box extends StatefulWidget {
 
@@ -31,8 +32,6 @@ class _BoxState extends State<Box> {
 
   String selectedMethod = '';
 
-  
-
   bool isBikeSelected = false;
   bool isFootSelected = false;
   bool isRunningSelected = false;
@@ -40,8 +39,7 @@ class _BoxState extends State<Box> {
   @override
   Widget build(BuildContext context) {
 
-    final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
-
+    //final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -50,75 +48,129 @@ class _BoxState extends State<Box> {
           packageType: widget.packageType,
           address: widget.address,
           actions: [
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () => setState((){
+                        isBikeSelected = !isBikeSelected;
+                        isFootSelected = false;
+                        isRunningSelected = false;
+
+                        if(isBikeSelected) selectedMethod = 'Bici';
+                        if(!isBikeSelected) selectedMethod = '';
                 
-                InkWell(
-                  onTap: () => setState((){
-                    isBikeSelected = !isBikeSelected;
-                    isFootSelected = false;
-                    isRunningSelected = false;
+                        // if (isBikeSelected) {
+                        //   deliveryMethodNotifier.updateMethod('Bici');
+                        // } else if (!isFootSelected && !isRunningSelected) {
+                        //   deliveryMethodNotifier.updateMethod(null); // Or some default value
+                        // }
+                        
+                        // Salvare l'opzione nelle shared_preferences per utilizzarla quando si pescano i dati
+                        // OPPURE si può passare il valore di selectedMethod alla pagina successiva tramite navigator.
+                        // In questo modo si può salvare tutto nelle shared preferences dopo.
+                      }),
+                      child: DeliveryMethod(
+                        isSelected: isBikeSelected, 
+                        iconType: Icons.pedal_bike, 
+                        method: 'Bike'
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => setState((){
+                        isBikeSelected = false;
+                        isFootSelected = !isFootSelected;
+                        isRunningSelected = false;
 
-                    if (isBikeSelected) {
-                      deliveryMethodNotifier.updateMethod('Bici');
-                    } else if (!isFootSelected && !isRunningSelected) {
-                      deliveryMethodNotifier.updateMethod(null); // Or some default value
-                    }
-                    
-                    // Salvare l'opzione nelle shared_preferences per utilizzarla quando si pescano i dati
-                    // OPPURE si può passare il valore di selectedMethod alla pagina successiva tramite navigator.
-                    // In questo modo si può salvare tutto nelle shared preferences dopo.
-                  }),
-                  child: DeliveryMethod(
-                    isSelected: isBikeSelected, 
-                    iconType: Icons.pedal_bike, 
-                    method: 'Bike'
-                  ),
+                        if(isFootSelected) selectedMethod = 'Camminata';
+                        if(!isFootSelected) selectedMethod = '';
+
+                      }),
+                      child: DeliveryMethod(
+                        isSelected: isFootSelected, 
+                        iconType: Icons.man, 
+                        method: 'On Foot'
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => setState((){
+                        isBikeSelected = false;
+                        isFootSelected = false;
+                        isRunningSelected = !isRunningSelected;
+
+                        if(isRunningSelected) selectedMethod = 'Corsa';
+                        if(!isRunningSelected) selectedMethod = '';
+                      }),
+                      child: DeliveryMethod(
+                        isSelected: isRunningSelected, 
+                        iconType: Icons.run_circle_outlined, 
+                        method: 'Running'
+                      ),
+                    )
+                  ]
                 ),
-                InkWell(
-                  onTap: () => setState((){
-                    isBikeSelected = false;
-                    isFootSelected = !isFootSelected;
-                    isRunningSelected = false;
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () async {
+                    final sp = await SharedPreferences.getInstance();
+                    sp.setString('deliveryMethod', selectedMethod); 
 
-                    if (isFootSelected) {
-                      deliveryMethodNotifier.updateMethod('Camminata');
-                    } else if (!isBikeSelected && !isRunningSelected) {
-                      deliveryMethodNotifier.updateMethod(null); // Or some default value
+                    if(selectedMethod == 'Bici' || selectedMethod == 'Camminata' || selectedMethod == 'Corsa'){
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            scrollable: true,
+                            title: Center(child: Text("Recap")),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('${widget.address} - ${widget.packageType}'),
+                                Text(selectedMethod),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => _toDeliveryPage(context, address: widget.address, packageType: widget.packageType),
+                                child: Text("Confirm"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                    } else {
+                      ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text('You must select a delivery method')));
                     }
-                  }),
-                  child: DeliveryMethod(
-                    isSelected: isFootSelected, 
-                    iconType: Icons.man, 
-                    method: 'On Foot'
-                  ),
+                  },
+                  child: Text('Conferma'),
+                  style: ElevatedButton.styleFrom(
+                    // textStyle: TextStyle(
+                    //   color: Colors.green
+                    // ),
+                    // backgroundColor: Color.fromARGB(10, 0, 255, 0),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.green
+
+                  )
                 ),
-                InkWell(
-                  onTap: () => setState((){
-                    isBikeSelected = false;
-                    isFootSelected = false;
-                    isRunningSelected = !isRunningSelected;
-
-                    if (isRunningSelected) {
-                      deliveryMethodNotifier.updateMethod('Corsa');
-                    } else if (!isFootSelected && !isBikeSelected) {
-                      deliveryMethodNotifier.updateMethod(null); // Or some default value
-                    }
-                  }),
-                  child: DeliveryMethod(
-                    isSelected: isRunningSelected, 
-                    iconType: Icons.run_circle_outlined, 
-                    method: 'Running'
-                  ),
-                )
-              ]
+              ],
             ),
           ],
         ),
       ]
     );
   }  
+
+  void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
+  }
 
   
 }
