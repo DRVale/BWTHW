@@ -20,17 +20,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadCurrentName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      _currentName = prefs.getString('username') ?? '';
+      _currentName = sp.getString('username') ?? '';
       _controller.text = _currentName;
     });
   }
 
   Future<void> _saveUsername() async {
     if (_controller.text.trim().isNotEmpty) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', _controller.text.trim());
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      await sp.setString('username', _controller.text.trim());
       Navigator.pop(context, true); 
     }
   }

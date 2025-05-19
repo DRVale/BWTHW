@@ -25,11 +25,11 @@ class _BoxPageState extends State<BoxPage> {
   bool isFootSelected = false;
   bool isRunningSelected = false;
   List<Box> box_list = [
-      Box(address: 'Via Roma 6', packageType: 'Small'),
-      Box(address: 'Via Gradenigo', packageType: 'Large'),
-      Box(address: 'Via Ugo Bassi', packageType: 'Huge'),
-      Box(address: 'Piazza Garibaldi', packageType: 'Medium'),
-    ];
+    Box(address: 'Via Roma 6', packageType: 'Small'),
+    Box(address: 'Via Gradenigo', packageType: 'Large'),
+    Box(address: 'Via Ugo Bassi', packageType: 'Huge'),
+    Box(address: 'Piazza Garibaldi', packageType: 'Medium'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -68,47 +68,6 @@ class _BoxPageState extends State<BoxPage> {
                     children: [
                       box_list[index],
 
-                      // QUESTO NON SERVE PIU
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                  
-                      //     final selectedMethod = Provider.of<DeliveryMethodNotifier>(context, listen: false).selectedDeliveryMethod;
-                  
-                      //     // NON NECESSARIO SALVARE NELLE SP, basta interrogare il provider
-                      //     final sp = await SharedPreferences.getInstance();
-                      //     sp.setString('deliveryMethod', selectedMethod!); 
-                  
-                      //     //saveDeliveryMethod(box_list[index].)
-                      //     //_toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType);
-                  
-                      //     print(sp.getString('deliveryMethod'));
-                  
-                      //     showDialog(
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return AlertDialog(
-                      //           scrollable: true,
-                      //           title: Text("Recap"),
-                      //           content: Column(
-                      //             mainAxisSize: MainAxisSize.min,
-                      //             children: [
-                      //               Text("• Option 1"),
-                      //               Text("• Option 2"),
-                  
-                      //             ],
-                      //           ),
-                      //           actions: [
-                      //             TextButton(
-                      //               onPressed: () => _toDeliveryPage(context, address: box_list[index].address, packageType: box_list[index].packageType),
-                      //               child: Text("Confirm"),
-                      //             ),
-                      //           ],
-                      //         );
-                      //       },
-                      //     );
-                      //   },
-                      //   child: Text('Conferma')
-                      // ),
                       SizedBox(height: 10),
                     ],
                   ),
@@ -128,15 +87,22 @@ class _BoxPageState extends State<BoxPage> {
   }
 }
 
+class XP_notifier extends ChangeNotifier{
+  double ?xp;
+
+  double? get totalxp => xp;
+
+  void updateXP(double newXP){
+    xp = newXP;
+    notifyListeners();
+  }
+}
+
 
 // class DeliveryMethodNotifier extends ChangeNotifier{
 //   String ?_selectedMethod;
 
 //   String? get selectedDeliveryMethod => _selectedMethod;
-  
-//   // String? getDeliveryMethod(){
-//   //   return _selectedMethod;
-//   // }
 
 //   void updateMethod(String? method){
 //     _selectedMethod = method;

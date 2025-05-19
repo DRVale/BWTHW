@@ -1,3 +1,4 @@
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/loginPage.dart';
@@ -25,6 +26,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadUsername();
+
+    // Prendere valore progress bar 
   }
 
   Future<void> _loadUsername() async {
@@ -94,10 +97,15 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: CustomNavigationBar(
-        goToPage1: () => _toGraphPage(context),
-        goToPage2: () => _toHistoryPage(context),
-      ),
+      body: 
+          //Consumer<XP_notifier>
+          CustomNavigationBar(
+            goToPage1: () => _toGraphPage(context),
+            goToPage2: () => _toHistoryPage(context),
+          ),
+        
+      
+      // FARE CUSTOM BOTTOM NAVIGATION BAR
       floatingActionButton: ElevatedButton(
 
         child: Icon(Icons.add, size: 40, color: Colors.black54,),
@@ -169,4 +177,54 @@ Color getRandomColor(){
   );
 }
 
+double getXP(String deliveryMethod, int distance, double speed){
 
+  double scoreCamminata = 0;
+  double scoreCorsa = 0;
+  double scoreBici = 0;
+  double distanceWeight = 0;
+  double speedWeight = 0;
+
+  // Consider different ranges for "Corsa", "Camminata", "Bici"
+  if(deliveryMethod == 'Camminata'){
+    if(distance < 1500) distanceWeight = 0.33;
+    if(distance > 1500 && distance < 3000) distanceWeight = 0.66;
+    if(distance > 3000) distanceWeight = 1;
+
+    if(speed < 1.5) speedWeight = 0.33;
+    if(speed > 1.5 && speed < 3) speedWeight = 0.66;
+    if(speed > 3) speedWeight = 1;
+
+    scoreCamminata = distanceWeight * speedWeight;
+  }
+
+  if(deliveryMethod == 'Corsa'){
+    if(distance < 2000) distanceWeight = 0.33;
+    if(distance > 2000 && distance < 5000) distanceWeight = 0.66;
+    if(distance > 5000) distanceWeight = 1;
+
+    // Convert speed into min/km
+    speed = 60 / speed;
+
+    if(speed > 8) speedWeight = 0.33;
+    if(speed > 5 && speed < 8) speedWeight = 0.66;
+    if(speed < 5) speedWeight = 1;
+
+    scoreCorsa = distanceWeight * speedWeight;
+  }
+
+  if(deliveryMethod == 'Bici'){
+    if(distance < 3000) distanceWeight = 0.33;
+    if(distance > 3000 && distance < 6000) distanceWeight = 0.66;
+    if(distance > 6000) distanceWeight = 1;
+
+    if(speed < 10) speedWeight = 0.33;
+    if(speed > 10 && speed < 16) speedWeight = 0.66;
+    if(speed > 16) speedWeight = 1;
+
+    scoreBici = distanceWeight * speedWeight;
+  }
+
+  double xp = scoreCamminata + scoreCorsa * 1.5 + scoreBici;
+  return xp;
+}

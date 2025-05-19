@@ -63,11 +63,25 @@ class _DeliveryPageState extends State<DeliveryPage> {
             Text('Indirizzo di consegna: '),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: (){
+              onPressed: () async {
                 stop();
+
                 //await???????
-                // Future<List<Distance>?> listOfDistances = requestDate();
+                Future<List<Distance>?> listOfDistances = requestDate();
                 // int sumOfDistances = getTotalDistance(listOfDistances);
+
+                
+                final sp = await SharedPreferences.getInstance();
+                String deliveryMethod = sp.getString('deliveryMethod')!; 
+
+                int sumOfDistances = 15000;
+                double avgSpeed = 14;
+
+                double xp = getXP(deliveryMethod, sumOfDistances, avgSpeed);
+                double totalXP = sp.getDouble('XP')!;
+
+                totalXP = totalXP + xp;
+                sp.setDouble('XP', totalXP); 
 
                 showDialog(
                   context: context,
@@ -78,8 +92,9 @@ class _DeliveryPageState extends State<DeliveryPage> {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("• Option 1"),
-                          Text("• Option 2"),
+                          Text("You obtained $xp XP"),
+                          Text("$sumOfDistances distance "),
+                          Text("$avgSpeed average speed"),
 
                         ],
                       ),

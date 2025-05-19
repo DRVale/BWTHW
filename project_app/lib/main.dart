@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
 
   // @override
   // Widget build(BuildContext context) {
-  //   return ChangeNotifierProvider<DeliveryMethodNotifier>(
-  //     create: (context) => DeliveryMethodNotifier(),
-  //     child: Consumer<DeliveryMethodNotifier>(
+  //   return ChangeNotifierProvider<XP_notifier>(
+  //     create: (context) => XP_notifier(),
+  //     child: Consumer<XP_notifier>(
   //       builder: (context, themeProvider, child) => MaterialApp(
   //     // invece di un builder normale utilizzo un future builder
   //         home: Splash()

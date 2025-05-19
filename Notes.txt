@@ -54,4 +54,66 @@ Appunti vale: accorpare expandabletilelist e deliverymethod in un'unica classe (
 
 
 
-https://impact.dei.unipd.it/bwthw/data/v1/exercise/patients/grWTWvehjO/day/2025-04-22/
+_______________________________________________________________________________________________________________________________________________________________________
+
+MetodoDelivery: Bici,
+Distanza: 1000 m,
+Velocità: 13.2 km/h,
+	
+
+MetodoDelivery: Bici,
+Distanza: 1000 m,
+Velocità: 20 km/h,
+
+MetodoDelivery: Bici,
+Distanza: 10000 m,
+Velocità: 13.2 km/h,
+
+MetodoDelivery: Bici,
+Distanza: 500 m,
+Velocità: 9.9 km/h,
+
+MetodoDelivery: Bici,
+Distanza: 2640 m,
+Velocità: 20 km/h,
+
+MetodoDelivery: Bici,
+Distanza: 700 m,
+Velocità: 6.6 km/h,
+
+MetodoDelivery: Corsa,
+Distanza: 5000 m,
+Velocità: 6.6 km/h,
+
+MetodoDelivery: Corsa,
+Distanza: 3300 m,
+Velocità: 6.6 km/h,
+
+MetodoDelivery: Corsa,
+Distanza: 3300 m,
+Velocità: 6.6 km/h,
+
+
+
+Funzione costo: (richiede elaborazione del file json)
+
+
+STAIRS?
+
+
+double calcolaXP(required metodoDelivery, required distanza, velocità?, HR?) {
+	// prendi il metodoDelivery dalle sp
+
+// INTERVALLI:
+misuro la velocità
+
+	bool deliveryBici = 1;
+
+	XP = 2 * deliveryBici * distanza + 1 * deliveryPiedi * distanza + 3 * deliveryCorsa * distanza * velocità * HR;
+}
+
+
+
+
+
+
