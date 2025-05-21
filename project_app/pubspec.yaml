@@ -35,6 +35,7 @@ dependencies:
   provider:
   jwt_decoder: 
   intl: 
+  syncfusion_flutter_charts:
   
 
   # The following adds the Cupertino Icons font to your application.
