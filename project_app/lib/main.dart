@@ -6,6 +6,7 @@ import 'package:project_app/screens/splash.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:project_app/screens/boxpage.dart';
+import 'package:project_app/providers/dataprovider.dart';
 
 
 void main() {
@@ -17,13 +18,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
-      home: Splash()
-
-      // Username: grWTWvehjO
-      // Password: 12345678!
+    return ChangeNotifierProvider(
+      create: (context) => DataProvider(),
+      child: MaterialApp(
+        home: Splash(),
+      ),
     );
+    
+    // return MaterialApp(
+
+    //   home: ChangeNotifierProvider(
+    //     create: (context) => DataProvider(),
+    //     child: Splash()
+    //   )
+
+    //   // Username: grWTWvehjO
+    //   // Password: 12345678!
+    // );
   }
 
   // @override

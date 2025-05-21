@@ -1,14 +1,21 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/loginPage.dart';
 import 'package:project_app/screens/graphpage.dart';
 import 'package:project_app/screens/historypage.dart';
 import 'package:project_app/screens/canteenpage.dart';
+import 'package:project_app/screens/optionspage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project_app/models/customnavigationbar.dart';
+import 'package:project_app/widgets/custombottomappbar.dart';
 import 'package:project_app/screens/profilepage.dart';
 import 'package:project_app/screens/aboutuspage.dart';
+
+
+// PROVA PER PROVIDER
+import 'package:provider/provider.dart';
+import 'package:project_app/providers/dataprovider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -87,7 +94,6 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Roboto',
-                  
                   color: Colors.green,
                 ),
               ),
@@ -97,31 +103,39 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: 
-          //Consumer<XP_notifier>
-          CustomNavigationBar(
-            goToPage1: () => _toGraphPage(context),
-            goToPage2: () => _toHistoryPage(context),
-          ),
-        
-      
-      // FARE CUSTOM BOTTOM NAVIGATION BAR
-      floatingActionButton: ElevatedButton(
 
-        child: Icon(Icons.add, size: 40, color: Colors.black54,),
-        onPressed: () => _toCanteenPage(context),
-        onLongPress: () {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text('Go to delivery page')));
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-          backgroundColor: Colors.green,
-          
+      body: Center(
+        child: ElevatedButton(
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
+          },
+          child: Text('Obtain distance data')
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      // body: Consumer<XP_notifier>
+      
+      // BNB and FAB
+      bottomNavigationBar: CustomBottomAppBar(
+             toPage1: () => _toGraphPage(context),
+             toPage2: () => _toHistoryPage(context),
+           ),
+
+      floatingActionButton: Container(
+        height: 100,
+        width: 100,
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: () => _toCanteenPage(context),
+            backgroundColor: Colors.green,
+            splashColor: Colors.yellow,
+            shape: CircleBorder(),
+            child: Icon(Icons.add, size: 40, color: Colors.black54,)
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
       drawer: Drawer(
         backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         child: ListView(

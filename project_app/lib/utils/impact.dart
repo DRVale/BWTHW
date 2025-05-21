@@ -1,10 +1,14 @@
-// Classe impact 
-// variabili statiche si riferiscono alla classe non all'oggetto 
-//import 'package:flutter/material.dart';
+// External packages 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'dart:io';
 import 'dart:convert';
 
+// Models
+import 'package:project_app/models/requesteddata.dart';
+
+// IMPACT CLASS
 class Impact {
   static const baseURL = 'https://impact.dei.unipd.it/bwthw/';
   static const pingURL = 'gate/v1/ping/';
@@ -88,5 +92,37 @@ Future<int> loggingIn(String username, String password)async{
   }
 
   return response.statusCode;
+  }
+
+  static Future<dynamic> fetchDistanceData(String day) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    // For debug
+    print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+    
+    // Return the response body
+    return result;
   }
 }

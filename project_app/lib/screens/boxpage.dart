@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_app/models/box.dart';
-import 'package:project_app/models/deliverymethod.dart';
+import 'package:project_app/widgets/box.dart';
+import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:project_app/screens/deliverypage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
