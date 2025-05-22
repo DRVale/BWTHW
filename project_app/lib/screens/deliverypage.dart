@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requestedData.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
+import 'package:project_app/providers/dataprovider.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class DeliveryPage extends StatefulWidget {
 
@@ -66,40 +70,48 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 // int sumOfDistances = getTotalDistance(listOfDistances);
 
                 final sp = await SharedPreferences.getInstance();
-                String deliveryMethod = sp.getString('deliveryMethod')!; 
+                String deliveryMethod = sp.getString('deliveryMethod')!;
 
+                DateTime ieri = DateTime.now().subtract(Duration(days: 1));
+                ieri = DateFormat('yyyy-MM-dd').parse('$ieri');
 
-                int sumOfDistances = 15000;
-                double avgSpeed = 14;
+                Provider.of<DataProvider>(context, listen: false).fetchDistanceData('2023-05-18');
+                Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, Provider.of<DataProvider>(context, listen: false).distances, 15);
 
-                double xp = getXP(deliveryMethod, sumOfDistances, avgSpeed);
-                double totalXP = sp.getDouble('XP')!;
+                // int sumOfDistances = 15000;
+                // double avgSpeed = 14;
+                
+                
+                //double xp = Provider.of<DataProvider>(context, listen: false).getXP(deliveryMethod,distance,speed);
+                //getXP(deliveryMethod, sumOfDistances, avgSpeed);
+                // double totalXP = sp.getDouble('XP')!;
 
-                totalXP = totalXP + xp;
-                sp.setDouble('XP', totalXP); 
-
+                // totalXP = totalXP + xp;
+                // sp.setDouble('XP', totalXP); 
+                
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
+                    return Consumer<DataProvider>(builder: (context, data, child) {
+                        return AlertDialog(
                       // scrollable: true,
-                      title: Text("Recap"),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("You obtained $xp XP"),
-                          Text("$sumOfDistances distance "),
-                          Text("$avgSpeed average speed"),
-
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () =>_toHomePage(),
-                          child: Text("Confirm"),
-                        ),
-                      ],
-                    );
+                          title: Text("Recap"),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("You obtained ${data.XP} XP"),
+                              Text("Total covered distance: ${data.getTotalDistance(data.distances)}"),
+                              //Text("$avgSpeed average speed"),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>_toHomePage(),
+                              child: Text("Confirm"),
+                            ),
+                          ],
+                        );
+                    });
                   },
                 );
               },
