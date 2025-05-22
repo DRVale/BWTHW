@@ -68,6 +68,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 final sp = await SharedPreferences.getInstance();
                 String deliveryMethod = sp.getString('deliveryMethod')!; 
 
+
                 int sumOfDistances = 15000;
                 double avgSpeed = 14;
 

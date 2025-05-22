@@ -27,6 +27,9 @@ class Impact {
   // DISTANCE
   static const distanceURL = 'data/v1/distance/patients/';
 
+  // EXERCISE
+  static const exerciseURL = '/data/v1/exercise/patients/';
+
  
 
   // oppure posso creare degli URL più lunghi, ex gateURL 
@@ -108,6 +111,38 @@ Future<int> loggingIn(String username, String password)async{
 
     //Create the (representative) request
     final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    // For debug
+    print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+    
+    // Return the response body
+    return result;
+  }
+
+  static Future<dynamic> fetchExerciseData(String day) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.exerciseURL + Impact.patientUsername + '/day/$day/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug

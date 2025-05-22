@@ -191,6 +191,8 @@ Color getRandomColor(){
   );
 }
 
+// Classe punteggio performance
+
 double getXP(String deliveryMethod, int distance, double speed){
 
   double scoreCamminata = 0;
