@@ -24,6 +24,14 @@ class DeliveryMethod extends StatelessWidget {
         border: Border.all(
           color: isSelected? Colors.green : Colors.black
         ),
+        boxShadow: [ if(isSelected) 
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          )
+        ]
       ),
 
       child: Column(

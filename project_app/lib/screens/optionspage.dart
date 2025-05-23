@@ -54,6 +54,8 @@ class OptionsPage extends StatelessWidget {
               }//else
             }),
 
+            Text(' ${Provider.of<DataProvider>(context, listen: false).distances.toString()}'),
+
           ],
         ),
       ),
