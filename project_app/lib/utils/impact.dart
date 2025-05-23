@@ -27,6 +27,11 @@ class Impact {
   // DISTANCE
   static const distanceURL = 'data/v1/distance/patients/';
 
+
+  // HEART RATE - RANGE
+  static const heartrateURL = '/data/v1/heart_rate/patients/'; 
+  
+
   // EXERCISE
   static const exerciseURL = '/data/v1/exercise/patients/';
 
@@ -143,6 +148,40 @@ Future<int> loggingIn(String username, String password)async{
 
     //Create the (representative) request
     final url = Impact.baseURL + Impact.exerciseURL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    // For debug
+    print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+    
+    // Return the response body
+    return result;
+  }
+
+
+  static Future<dynamic> fetchHeartRateData(String startTime, String endTime) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //'{username}/daterange/start_date/{start_date}/end_date/{end_date}/';
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.heartrateURL + Impact.patientUsername + '/daterange/start_date/$startTime/end_date/$endTime/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug

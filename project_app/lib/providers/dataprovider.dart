@@ -7,10 +7,23 @@ class DataProvider extends ChangeNotifier{
   List<Distance> distances = [];
   double ? XP;
   List<Exercise> exercisedata = [];
+  List<HeartRate> heartRate = [];
 
   // Provide Distance data
   void fetchDistanceData(String day) async {
     final data = await Impact.fetchDistanceData(day);
+
+    if(data != null){
+      for(var i = 1; i < data['data']['data'].length; i++){
+        distances.add(Distance.fromJson(data['data']['date'], data['data']['data'][i]));
+      }
+      notifyListeners();
+    }
+  }
+
+  void fetchHeartRateData(String startDate, String endDate) async {
+
+    final data = await Impact.fetchHeartRateData(startDate, endDate);
 
     if(data != null){
       for(var i = 1; i < data['data']['data'].length; i++){

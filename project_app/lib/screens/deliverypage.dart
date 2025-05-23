@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:project_app/models/requestedData.dart';
+import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
@@ -24,11 +24,13 @@ class DeliveryPage extends StatefulWidget {
 class _DeliveryPageState extends State<DeliveryPage> {
   Timer? _timer;
   int _seconds = 0;
+  String ?start_Date;
+  
 
   @override
   void initState() {
     super.initState();
-    _startTimer(); // Parte appena si entra nella pagina
+    _startTimer();
   }
 
   void _startTimer() {
@@ -37,6 +39,9 @@ class _DeliveryPageState extends State<DeliveryPage> {
         _seconds++;
       });
     });
+    DateTime startDate = DateTime.now().subtract(Duration(days: 1));
+    //startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+    start_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(startDate);
   }
 
   void stop() {
@@ -48,6 +53,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
     _timer?.cancel();
     super.dispose();
   }
+
+  // DateTime _timeAcquisition(){
+  //   //Prendo momento di inizio 
+  //   DateTime startDate = DateTime.now().subtract(Duration(days: 1));
+  //   startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+  //   //String start_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
+  //   return startDate;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +85,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 final sp = await SharedPreferences.getInstance();
                 String deliveryMethod = sp.getString('deliveryMethod')!;
 
-                DateTime ieri = DateTime.now().subtract(Duration(days: 1));
-                ieri = DateFormat('yyyy-MM-dd').parse('$ieri');
+                DateTime endDate = DateTime.now().subtract(Duration(days: 1));
+                endDate = DateFormat('yyyy-MM-dd').parse('$endDate');
+                String end_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(endDate);
 
-                Provider.of<DataProvider>(context, listen: false).fetchDistanceData('2023-05-18');
+                
+
+                Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(start_Date!,end_Date);
                 Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, Provider.of<DataProvider>(context, listen: false).distances, 15);
+                
+                
 
                 // int sumOfDistances = 15000;
                 // double avgSpeed = 14;

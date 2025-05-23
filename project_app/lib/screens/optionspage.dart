@@ -22,11 +22,11 @@ class OptionsPage extends StatelessWidget {
         child: Column(
           children: [
             Consumer<DataProvider>(builder: (context, data, child) {
-              if (data.distances.length == 0) {
+              if (data.heartRate.length == 0) {
                 return Text('Nothing to display, press the button to fetch the data');
               }//if
               else {
-                return DistanceDataPlot(distanceData: data.distances);
+                return HeartRateDataPlot(HeartRateData: data.heartRate);
               }//else
             }),
             ElevatedButton(
@@ -40,19 +40,19 @@ class OptionsPage extends StatelessWidget {
               child: Text('Prendi i dati'),
             ),
 
-            Consumer<DataProvider>(builder: (context, data, child) {
-              if (data.distances.length == 0) {
-                return Text('');
-              }else{
-                int dataLength = data.distances.length;
-                int totalDistance = 0;
-                for(var i = 0; i < dataLength; i++){
-                  totalDistance = totalDistance + data.distances[i].value;
-                }
+            // Consumer<DataProvider>(builder: (context, data, child) {
+            //   if (data.distances.length == 0) {
+            //     return Text('');
+            //   }else{
+            //     int dataLength = data.distances.length;
+            //     int totalDistance = 0;
+            //     for(var i = 0; i < dataLength; i++){
+            //       totalDistance = totalDistance + data.distances[i].value;
+            //     }
                 
-                return Text('The total distance is $totalDistance');
-              }//else
-            }),
+            //     return Text('The total distance is $totalDistance');
+            //   }//else
+            // }),
 
           ],
         ),
