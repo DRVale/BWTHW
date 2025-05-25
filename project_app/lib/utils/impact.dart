@@ -102,7 +102,41 @@ Future<int> loggingIn(String username, String password)async{
   return response.statusCode;
   }
 
-  static Future<dynamic> fetchDistanceData(String day) async{
+  static Future<dynamic> fetchDistanceDataRange(String startTime, String endTime) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/daterange/start_date/$startTime/end_date/$endTime/';
+
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    // For debug
+    print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+      print('Request successful');
+    }
+    
+    // Return the response body
+    return result;
+  }
+
+  static Future<dynamic> fetchDistanceDataDay(String day) async{
 
     // Check access 
     final sp = await SharedPreferences.getInstance();
@@ -129,7 +163,8 @@ Future<int> loggingIn(String username, String password)async{
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
-    
+    print(response.statusCode);
+
     // Return the response body
     return result;
   }

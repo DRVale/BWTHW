@@ -105,11 +105,16 @@ class _HomePageState extends State<HomePage> {
       ),
 
       body: Center(
-        child: ElevatedButton(
-          onPressed: (){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
-          },
-          child: Text('Obtain distance data')
+        child: Column(
+          children: [
+            
+            ElevatedButton(
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
+              },
+              child: Text('Obtain distance data')
+            ),
+          ],
         ),
       ),
 

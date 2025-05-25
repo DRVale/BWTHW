@@ -22,27 +22,44 @@ class DeliveryPage extends StatefulWidget {
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
+  Stopwatch _stopwatch = Stopwatch();
+  String _elapsedTime = "00:00:00";
+
   Timer? _timer;
   int _seconds = 0;
-  String ?start_Date;
+  String? startDate;
   
 
   @override
   void initState() {
     super.initState();
-    _startTimer();
+    //_startTimer();
+    _startStopwatch();
   }
 
-  void _startTimer() {
+  void _startStopwatch() {
+    _stopwatch.start();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        _seconds++;
+        _elapsedTime = '0${_stopwatch.elapsed.toString().substring(0, 7)}';
       });
     });
-    DateTime startDate = DateTime.now().subtract(Duration(days: 1));
+
+    DateTime start_date = DateTime.now().subtract(Duration(days: 1));
     //startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
-    start_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(startDate);
+    startDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(start_date);
   }
+
+  // void _startTimer() {
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       _seconds++;
+  //     });
+  //   });
+  //   DateTime start_date = DateTime.now().subtract(Duration(days: 1));
+  //   //startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+  //   startDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(start_date);
+  // }
 
   void stop() {
     _timer?.cancel();
@@ -70,7 +87,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Tempo trascorso: $_seconds s", style: TextStyle(fontSize: 24)),
+            Text("Tempo trascorso: $_elapsedTime", style: TextStyle(fontSize: 24)),
             SizedBox(height: 20),
             Text('Indirizzo di consegna: '),
             SizedBox(height: 20),
@@ -85,14 +102,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 final sp = await SharedPreferences.getInstance();
                 String deliveryMethod = sp.getString('deliveryMethod')!;
 
-                DateTime endDate = DateTime.now().subtract(Duration(days: 1));
-                endDate = DateFormat('yyyy-MM-dd').parse('$endDate');
-                String end_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(endDate);
+                DateTime endTime = DateTime.now().subtract(Duration(days: 1));
+                String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                
+                //Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(startDate!, endDate);
+                Provider.of<DataProvider>(context, listen: false).fetchDistanceData(startDate!, endDate);
 
-                Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(start_Date!,end_Date);
-                Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, Provider.of<DataProvider>(context, listen: false).distances, 15);
+                List<Distance> distance = Provider.of<DataProvider>(context, listen: false).distances;
+                Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, distance, 15);
                 
                 
 
@@ -117,7 +134,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("You obtained ${data.XP} XP"),
+                              Text("You obtained ${data.xp} XP"),
                               Text("Total covered distance: ${data.getTotalDistance(data.distances)}"),
                               //Text("$avgSpeed average speed"),
                             ],

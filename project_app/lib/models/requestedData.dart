@@ -9,7 +9,7 @@ class Distance{
 
   //Costruttore che elabora il Json della risposta, per l'output
   Distance.fromJson(String date, Map<String, dynamic> json) :
-    time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
+    time = DateFormat('yyyy-MM-dd hh:mm:ss').parse('$date ${json["time"]}'),
     value = int.parse(json["value"]);
   
   @override
@@ -43,12 +43,14 @@ class Exercise{
 class HeartRate{
   final DateTime time;
   final int value;
+  final int confidence;
 
-  HeartRate({required this.time,required this.value,});
+  HeartRate({required this.time, required this.value, required this.confidence});
 
   HeartRate.fromJson(String date, Map<String, dynamic> json) :
     time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
-    value = int.parse(json["value"]);
+    value = int.parse(json["value"]),
+    confidence = int.parse(json["confidence"]);
   
   @override
   String toString() {
