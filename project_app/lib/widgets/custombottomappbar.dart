@@ -17,6 +17,7 @@ class CustomBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //return BottomNavigationBar(items: items)
     return BottomAppBar(
       shape: const AutomaticNotchedShape(
           RoundedRectangleBorder(
@@ -30,8 +31,8 @@ class CustomBottomAppBar extends StatelessWidget {
       ),
       notchMargin: 5,
       color: const Color.fromARGB(255, 147, 223, 149),
-      elevation: 10,
       height: 80,
+      
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Row(
