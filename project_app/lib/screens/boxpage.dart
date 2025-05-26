@@ -48,9 +48,10 @@ class _BoxPageState extends State<BoxPage> {
         title: Text('Selected: ${widget.mensa}',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
       ),
       body: Center(
-        child:
-
+       child:
+        
         ListView.builder(
+          
           itemCount: box_list.length,
           // itemBuilder: (context, index) => box_list[index],
           itemBuilder: (context, index){
@@ -60,7 +61,7 @@ class _BoxPageState extends State<BoxPage> {
                 Container( //Aggiunto container per abbellire i pacchi
                   width: MediaQuery.sizeOf(context).width - 50,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: Colors.black54),
                     borderRadius: BorderRadius.all(Radius.circular(20)),                    
                   ),
                   child: Column(
@@ -78,7 +79,9 @@ class _BoxPageState extends State<BoxPage> {
           
           },
           ),
-        )
+        
+        ),
+      
     );
   }
 
