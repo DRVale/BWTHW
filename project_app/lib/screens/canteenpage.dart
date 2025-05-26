@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/boxpage.dart';
 
 class CanteenPage extends StatelessWidget {
-  const CanteenPage({super.key});
+   CanteenPage({super.key});
 
+List<Canteen> canteen_list = [
+    Canteen(canteenAndress: 'Via Roma 6', canteenName: 'Piovegio'),
+    Canteen(canteenAndress: 'Via Gradenigo', canteenName: 'Murialdo'),
+    Canteen(canteenAndress: 'Via Ugo Bassi', canteenName: 'Pio X'),
+    Canteen(canteenAndress: 'Piazza Garibaldi', canteenName: 'Belzoni'),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold( 
@@ -18,7 +24,40 @@ class CanteenPage extends StatelessWidget {
           Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
           SizedBox(height: 40,),
           Expanded(
-            child:
+            child: 
+                    ListView.builder(
+                  
+                  itemCount: canteen_list.length,
+                  // itemBuilder: (context, index) => box_list[index],
+                  itemBuilder: (context, index){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 10,),
+                        Container( //Aggiunto container per abbellire i pacchi
+                          width: MediaQuery.sizeOf(context).width - 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black54),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              canteen_list[index],
+
+                              SizedBox(height: 10),
+                            ],
+                      ),
+                        ),
+                      //SizedBox(height: 60)
+                      ],
+                );
+                  
+                  },
+          ),
+            
+            
+            /*
               ListView(
                 children: [
                   ListTile(
@@ -81,6 +120,8 @@ class CanteenPage extends StatelessWidget {
                 ]
               )
           ),
+          */
+      )
       ],
         
       )
@@ -95,6 +136,16 @@ class CanteenPage extends StatelessWidget {
 
 class Canteen{
   //final String addess;
+  final String canteenName;
+  final String canteenAndress;
+
+  const Canteen({
+    
+    required this.canteenName,
+    required this.canteenAndress,
+    
+  });
+
 
 
 }
