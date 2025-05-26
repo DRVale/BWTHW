@@ -135,7 +135,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text("You obtained ${data.xp} XP"),
-                              Text("Total covered distance: ${data.getTotalDistance(data.distances)}"),
+                              Text("Total covered distance: ${data.sumOfDistances}"),
                               //Text("$avgSpeed average speed"),
                             ],
                           ),

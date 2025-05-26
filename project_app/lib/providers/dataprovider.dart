@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/utils/impact.dart';
 import 'package:project_app/models/requesteddata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataProvider extends ChangeNotifier{
 
   List<Distance> distances = [];
   int sumOfDistances = 0;
   List<Distance> distancesDay = [];
-  double ? xp;
+  double xp = 0;
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
 
@@ -52,19 +53,24 @@ class DataProvider extends ChangeNotifier{
   // Get Distance Data of a whole day
   void fetchDistanceData(String time1, String? time2) async {
 
-    String day = '';
+    String day = time1;
 
     // Check if the input argument is an entire day or also includes the time
     if(time1.length > 10) day = time1.substring(0, 10);
 
-    final data = await Impact.fetchDistanceDataDay(day);
+    final data = await Impact.fetchDistanceData(day);
 
     if(data != null){
       for(var i = 1; i < data['data']['data'].length; i++){
         DateTime currentDateTime = DateTime.parse('${data['data']['date']} ${data['data']['data'][i]['time']}');
 
         // This condition checks if the times in the data are between the time range we are interested in
-        if(time2 != null && currentDateTime.compareTo(DateTime.parse(time1)) > 0 && currentDateTime.compareTo(DateTime.parse(time2)) < 0){
+        if(time2 != null && currentDateTime.compareTo(DateTime.parse(time1)) >= 0 && currentDateTime.compareTo(DateTime.parse(time2)) <= 0){
+          distances.add(Distance.fromJson(data['data']['date'], data['data']['data'][i]));
+        }
+
+        // If we do not include a second date, then the whole day is added to the list
+        if(time2 == null){
           distances.add(Distance.fromJson(data['data']['date'], data['data']['data'][i]));
         }
       }
@@ -72,22 +78,37 @@ class DataProvider extends ChangeNotifier{
     }
   }
   void getSumOfDistances(){
-    for(var i = 0; i < distances.length; i++){
-      sumOfDistances = sumOfDistances + distances[i].value;
+    if(sumOfDistances == 0){
+      for(var i = 0; i < distances.length; i++){
+        sumOfDistances = sumOfDistances + distances[i].value;
+      }
     }
   }
 
-  void fetchHeartRateData(String startDate, String endDate) async {
+  void fetchHeartRateData(String time1, String? time2) async {
 
-    final data = await Impact.fetchHeartRateData(startDate, endDate);
+    String day = time1;
+    if(time1.length > 10) day = time1.substring(0, 10);
+
+    final data = await Impact.fetchHeartRateData(day);
 
     if(data != null){
-      for(var i = 1; i < data['data']['data'].length; i++){
-        distances.add(Distance.fromJson(data['data']['date'], data['data']['data'][i]));
+      for(var i = 0; i < data['data']['data'].length; i++){
+        DateTime currentDateTime = DateTime.parse('${data['data']['date']} ${data['data']['data'][i]['time']}');
+
+        // This condition checks if the times in the data are between the time range we are interested in
+        if(time2 != null && currentDateTime.compareTo(DateTime.parse(time1)) >= 0 && currentDateTime.compareTo(DateTime.parse(time2)) <= 0){
+          heartRate.add(HeartRate.fromJson(data['data']['date'], data['data']['data'][i]));
+        }
+
+        if(time2 == null){
+          heartRate.add(HeartRate.fromJson(data['data']['date'], data['data']['data'][i]));
+        }
       }
       notifyListeners();
     }
   }
+
 
   // Delete Distance data
   void clearDistanceData(){
@@ -96,22 +117,36 @@ class DataProvider extends ChangeNotifier{
   }
 
   // Provide Exersice Data
-  void fetchExerciseData(String day) async {
+  void fetchExerciseData(String time1, String? time2) async {
+
+    String day = time1;
+    if(time1.length > 10) day = time1.substring(0, 10);
+    
     final data = await Impact.fetchExerciseData(day);
 
     if(data != null){
-      // for(var i = 1; i < data['data']['data'].length; i++){
-      //   exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]));
-      // }
-      exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data']['averageHeartRate']));
-      exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data']['distance']));
-      exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data']['speed']));
+      for(var i = 1; i < data['data']['data'].length; i++){
+        DateTime currentDateTime = DateTime.parse('${data['data']['date']} ${data['data']['data'][i]['time']}');
+
+        // This condition checks if the times in the data are between the time range we are interested in
+        if(time2 != null && currentDateTime.compareTo(DateTime.parse(time1)) > 0 && currentDateTime.compareTo(DateTime.parse(time2)) < 0){
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['averageHeartRate']));
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
+        }
+
+        if(time2 == null){
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['averageHeartRate']));
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
+          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
+        }
+      }
       notifyListeners();
     }
   }
 
 
-  void updateXP(String deliveryMethod, List<Distance> distance, double speed){
+  void updateXP(String deliveryMethod, List<Distance> distance, double speed) async {
 
     double scoreCamminata = 0;
     double scoreCorsa = 0;
@@ -119,17 +154,14 @@ class DataProvider extends ChangeNotifier{
     double distanceWeight = 0;
     double speedWeight = 0;
 
-    int dataLength = distance.length;
-    int distances = 0;
-      for(var i = 0; i < dataLength; i++){
-        distances = distances + distance[i].value;
-      }
+    getSumOfDistances();
+
 
     // Consider different ranges for "Corsa", "Camminata", "Bici"
     if(deliveryMethod == 'Camminata'){
-      if(distances < 1500) distanceWeight = 0.33;
-      if(distances > 1500 && distances < 3000) distanceWeight = 0.66;
-      if(distances > 3000) distanceWeight = 1;
+      if(sumOfDistances < 1500) distanceWeight = 0.33;
+      if(sumOfDistances > 1500 && sumOfDistances < 3000) distanceWeight = 0.66;
+      if(sumOfDistances > 3000) distanceWeight = 1;
 
       if(speed < 1.5) speedWeight = 0.33;
       if(speed > 1.5 && speed < 3) speedWeight = 0.66;
@@ -139,9 +171,9 @@ class DataProvider extends ChangeNotifier{
     }
 
     if(deliveryMethod == 'Corsa'){
-      if(distances < 2000) distanceWeight = 0.33;
-      if(distances > 2000 && distances < 5000) distanceWeight = 0.66;
-      if(distances > 5000) distanceWeight = 1;
+      if(sumOfDistances < 2000) distanceWeight = 0.33;
+      if(sumOfDistances > 2000 && sumOfDistances < 5000) distanceWeight = 0.66;
+      if(sumOfDistances > 5000) distanceWeight = 1;
 
       // Convert speed into min/km
       speed = 60 / speed;
@@ -154,9 +186,9 @@ class DataProvider extends ChangeNotifier{
     }
 
     if(deliveryMethod == 'Bici'){
-      if(distances < 3000) distanceWeight = 0.33;
-      if(distances > 3000 && distances < 6000) distanceWeight = 0.66;
-      if(distances > 6000) distanceWeight = 1;
+      if(sumOfDistances < 3000) distanceWeight = 0.33;
+      if(sumOfDistances > 3000 && sumOfDistances < 6000) distanceWeight = 0.66;
+      if(sumOfDistances > 6000) distanceWeight = 1;
 
       if(speed < 10) speedWeight = 0.33;
       if(speed > 10 && speed < 16) speedWeight = 0.66;
@@ -165,18 +197,19 @@ class DataProvider extends ChangeNotifier{
       scoreBici = distanceWeight * speedWeight;
     }
 
-    xp = scoreCamminata + scoreCorsa * 1.5 + scoreBici;
+    SharedPreferences sp = await SharedPreferences.getInstance();
+
+    double oldXP = 0;
+
+    if(sp.getDouble('XP') != null) {
+      oldXP = sp.getDouble('XP')!;
+    } else {
+      sp.setDouble('XP', oldXP);
+    }
+    
+    xp = scoreCamminata + scoreCorsa * 1.5 + scoreBici + oldXP;
     notifyListeners();
     
-  }
-
-  int getTotalDistance(List<Distance> distance){
-    int dataLength = distance.length;
-    int totaldistance = 0;
-      for(var i = 0; i < dataLength; i++){
-        totaldistance = totaldistance + distance[i].value;
-      }
-    return totaldistance;
   }
 
 }

@@ -28,18 +28,18 @@ class Impact {
   static const distanceURL = 'data/v1/distance/patients/';
 
 
-  // HEART RATE - RANGE
-  static const heartrateURL = '/data/v1/heart_rate/patients/'; 
+  // HEART RATE
+  static const heartrateURL = 'data/v1/heart_rate/patients/'; 
   
 
   // EXERCISE
-  static const exerciseURL = '/data/v1/exercise/patients/';
+  static const exerciseURL = 'data/v1/exercise/patients/';
 
  
 
   // oppure posso creare degli URL più lunghi, ex gateURL 
 
-  Future<int> refreshTokens()async{
+  Future<int> refreshTokens() async {
     final sp = await SharedPreferences.getInstance(); 
     final refresh_token = sp.getString('refresh');
 
@@ -74,7 +74,7 @@ class Impact {
 
 
 
-Future<int> loggingIn(String username, String password)async{
+Future<int> loggingIn(String username, String password) async {
     
   //final url = 'https://impact.dei.unipd.it/bwthw/gate/v1/token/';
   final url = Impact.baseURL + Impact.tokenURL;
@@ -136,7 +136,7 @@ Future<int> loggingIn(String username, String password)async{
     return result;
   }
 
-  static Future<dynamic> fetchDistanceDataDay(String day) async{
+  static Future<dynamic> fetchDistanceData(String day) async{
 
     // Check access 
     final sp = await SharedPreferences.getInstance();
@@ -190,6 +190,8 @@ Future<int> loggingIn(String username, String password)async{
 
     final response = await http.get(Uri.parse(url), headers: headers);
 
+    print('Exercise data response code: ${response.statusCode}');
+
     var result = null;
 
     // Check response code
@@ -202,7 +204,7 @@ Future<int> loggingIn(String username, String password)async{
   }
 
 
-  static Future<dynamic> fetchHeartRateData(String startTime, String endTime) async{
+  static Future<dynamic> fetchHeartRateData(String day) async{
 
     // Check access 
     final sp = await SharedPreferences.getInstance();
@@ -216,7 +218,7 @@ Future<int> loggingIn(String username, String password)async{
 
     //'{username}/daterange/start_date/{start_date}/end_date/{end_date}/';
     //Create the (representative) request
-    final url = Impact.baseURL + Impact.heartrateURL + Impact.patientUsername + '/daterange/start_date/$startTime/end_date/$endTime/';
+    final url = Impact.baseURL + Impact.heartrateURL + Impact.patientUsername + '/day/$day/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug
@@ -224,13 +226,15 @@ Future<int> loggingIn(String username, String password)async{
 
     final response = await http.get(Uri.parse(url), headers: headers);
 
+    print('Heart Rate data response code: ${response.statusCode}');
+
     var result = null;
 
     // Check response code
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
-    
+
     // Return the response body
     return result;
   }

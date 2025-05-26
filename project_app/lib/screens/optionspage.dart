@@ -24,19 +24,21 @@ class OptionsPage extends StatelessWidget {
           children: [
 
             // Data plot of distance
-            Consumer<DataProvider>(builder: (context, data, child) {
-              if (data.distances.length == 0) {
-                return Text('Nothing to display, press the button to fetch the data');
-              }//if
-              else {
-                // return DistanceDataPlot(distanceData: data.distancesDay);
-                var distance1 = data;
+            // Consumer<DataProvider>(builder: (context, data, child) {
+            //   if (data.distances.length == 0) {
+            //     return Text('Nothing to display, press the button to fetch the data');
+            //   }//if
+            //   else {
+            //     // return DistanceDataPlot(distanceData: data.distancesDay);
+            //     var distance_debug = data.distances;
+            //     var exercise_debug = data.exercisedata;
+            //     var heart_rate_debug = data.heartRate;
 
-                // For debug
-                print('Done');
-                return DistanceDataPlot(distanceData: data.distances);
-              }//else
-            }),
+            //     // For debug
+            //     print('Done');
+            //     return DistanceDataPlot(distanceData: data.distances);
+            //   }//else
+            // }),
 
             // Data plot of Heart Rate
             Consumer<DataProvider>(builder: (context, data, child) {
@@ -44,6 +46,12 @@ class OptionsPage extends StatelessWidget {
                 return Text('No Heart Rate Data to display');
               }//if
               else {
+                var distance_debug = data.distances;
+                var exercise_debug = data.exercisedata;
+                var heart_rate_debug = data.heartRate;
+
+                // For debug
+                print('Done');
                 return HeartRateDataPlot(heartRateData: data.heartRate);
               }//else
             }),
@@ -53,11 +61,15 @@ class OptionsPage extends StatelessWidget {
                 // Provider.of<DataProvider>(context, listen: false).fetchDistanceDataDay('2023-05-13');
                 // var distancesDay = Provider.of<DataProvider>(context, listen: false).distancesDay;
 
-                Provider.of<DataProvider>(context, listen: false).fetchDistanceData('2023-05-13 10:00:00', '2023-05-13 12:00:00');
+                // Provider.of<DataProvider>(context, listen: false).fetchDistanceData('2023-05-13 10:00:00', '2023-05-13 12:00:00');
+                Provider.of<DataProvider>(context, listen: false).fetchHeartRateData('2023-05-13 00:00:00', '2023-05-13 12:00:00');
 
-                // var distances = Provider.of<DataProvider>(context, listen: false).distances;
+                // PER GLI EXERCISE SERVONO INDICI PARTICOLARI
+                //Provider.of<DataProvider>(context, listen: false).fetchExerciseData('2023-05-13 00:00:00', '2023-05-13 20:00:00');
+
+                //var distances = Provider.of<DataProvider>(context, listen: false).distances;
                 // for debug
-                print('Done');
+                //print('Done');
               },
               
               child: Text('Prendi i dati'),
