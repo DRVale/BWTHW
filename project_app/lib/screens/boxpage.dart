@@ -47,10 +47,14 @@ class _BoxPageState extends State<BoxPage> {
         backgroundColor: const Color.fromARGB(255, 250, 250, 238),
         title: Text('Selected: ${widget.mensa}',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
       ),
-      body: Center(
-       child:
-        
-        ListView.builder(
+      body: Column(
+        children: [
+          SizedBox(height: 13,),
+          Text('Chose a box for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
+          SizedBox(height: 7,),
+          Expanded(
+            child:
+            ListView.builder(
           
           itemCount: box_list.length,
           // itemBuilder: (context, index) => box_list[index],
@@ -58,6 +62,7 @@ class _BoxPageState extends State<BoxPage> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 10,),
                 Container( //Aggiunto container per abbellire i pacchi
                   width: MediaQuery.sizeOf(context).width - 50,
                   decoration: BoxDecoration(
@@ -71,18 +76,19 @@ class _BoxPageState extends State<BoxPage> {
 
                       SizedBox(height: 10),
                     ],
-                  ),
+              ),
                 ),
-                SizedBox(height: 10)
+               //SizedBox(height: 60)
               ],
-            );
+        );
           
           },
           ),
         
         ),
       
-    );
+    ],
+      ));
   }
 
   void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
