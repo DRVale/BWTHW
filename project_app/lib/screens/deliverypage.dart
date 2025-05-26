@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/utils/impact.dart';
+import 'package:project_app/providers/dataprovider.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class DeliveryPage extends StatefulWidget {
 
@@ -18,22 +22,44 @@ class DeliveryPage extends StatefulWidget {
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
+  Stopwatch _stopwatch = Stopwatch();
+  String _elapsedTime = "00:00:00";
+
   Timer? _timer;
   int _seconds = 0;
+  String? startDate;
+  
 
   @override
   void initState() {
     super.initState();
-    _startTimer(); // Parte appena si entra nella pagina
+    //_startTimer();
+    _startStopwatch();
   }
 
-  void _startTimer() {
+  void _startStopwatch() {
+    _stopwatch.start();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        _seconds++;
+        _elapsedTime = '0${_stopwatch.elapsed.toString().substring(0, 7)}';
       });
     });
+
+    DateTime start_date = DateTime.now().subtract(Duration(days: 1));
+    //startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+    startDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(start_date);
   }
+
+  // void _startTimer() {
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       _seconds++;
+  //     });
+  //   });
+  //   DateTime start_date = DateTime.now().subtract(Duration(days: 1));
+  //   //startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+  //   startDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(start_date);
+  // }
 
   void stop() {
     _timer?.cancel();
@@ -45,6 +71,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
     super.dispose();
   }
 
+  // DateTime _timeAcquisition(){
+  //   //Prendo momento di inizio 
+  //   DateTime startDate = DateTime.now().subtract(Duration(days: 1));
+  //   startDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$startDate');
+  //   //String start_Date = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
+  //   return startDate;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +87,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Tempo trascorso: $_seconds s", style: TextStyle(fontSize: 24)),
+            Text("Tempo trascorso: $_elapsedTime", style: TextStyle(fontSize: 24)),
             SizedBox(height: 20),
             Text('Indirizzo di consegna: '),
             SizedBox(height: 20),
@@ -66,39 +100,53 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 // int sumOfDistances = getTotalDistance(listOfDistances);
 
                 final sp = await SharedPreferences.getInstance();
-                String deliveryMethod = sp.getString('deliveryMethod')!; 
+                String deliveryMethod = sp.getString('deliveryMethod')!;
 
-                int sumOfDistances = 15000;
-                double avgSpeed = 14;
+                DateTime endTime = DateTime.now().subtract(Duration(days: 1));
+                String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                double xp = getXP(deliveryMethod, sumOfDistances, avgSpeed);
-                double totalXP = sp.getDouble('XP')!;
+                //Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(startDate!, endDate);
+                Provider.of<DataProvider>(context, listen: false).fetchDistanceData(startDate!, endDate);
 
-                totalXP = totalXP + xp;
-                sp.setDouble('XP', totalXP); 
+                List<Distance> distance = Provider.of<DataProvider>(context, listen: false).distances;
+                Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, distance, 15);
+                
+                
 
+                // int sumOfDistances = 15000;
+                // double avgSpeed = 14;
+                
+                
+                //double xp = Provider.of<DataProvider>(context, listen: false).getXP(deliveryMethod,distance,speed);
+                //getXP(deliveryMethod, sumOfDistances, avgSpeed);
+                // double totalXP = sp.getDouble('XP')!;
+
+                // totalXP = totalXP + xp;
+                // sp.setDouble('XP', totalXP); 
+                
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
+                    return Consumer<DataProvider>(builder: (context, data, child) {
+                        return AlertDialog(
                       // scrollable: true,
-                      title: Text("Recap"),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("You obtained $xp XP"),
-                          Text("$sumOfDistances distance "),
-                          Text("$avgSpeed average speed"),
-
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () =>_toHomePage(),
-                          child: Text("Confirm"),
-                        ),
-                      ],
-                    );
+                          title: Text("Recap"),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("You obtained ${data.xp} XP"),
+                              Text("Total covered distance: ${data.getTotalDistance(data.distances)}"),
+                              //Text("$avgSpeed average speed"),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>_toHomePage(),
+                              child: Text("Confirm"),
+                            ),
+                          ],
+                        );
+                    });
                   },
                 );
               },

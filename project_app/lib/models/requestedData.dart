@@ -9,7 +9,7 @@ class Distance{
 
   //Costruttore che elabora il Json della risposta, per l'output
   Distance.fromJson(String date, Map<String, dynamic> json) :
-    time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
+    time = DateFormat('yyyy-MM-dd hh:mm:ss').parse('$date ${json["time"]}'),
     value = int.parse(json["value"]);
   
   @override
@@ -17,6 +17,45 @@ class Distance{
     return 'Distance(time: $time, value: $value)';
   } //toString
 
+}
+
+class Exercise{
+  final DateTime time;
+  final double averageHeartRate;
+  final double distance;
+  final double speed;
+
+  Exercise({required this.time,required this.averageHeartRate,required this.distance, required this.speed});
+
+  Exercise.fromJson(String date, Map<String, dynamic> json) :
+    time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
+    averageHeartRate = double.parse(json["averageHeartRate"]),
+    distance = double.parse(json["distance"]),
+    speed = double.parse(json["speed"]);
+
+  @override
+  String toString() {
+    return 'Distance(time: $time, value: $averageHeartRate, value: $distance, value: $speed)';
+  } //toString
+
+}
+
+class HeartRate{
+  final DateTime time;
+  final int value;
+  final int confidence;
+
+  HeartRate({required this.time, required this.value, required this.confidence});
+
+  HeartRate.fromJson(String date, Map<String, dynamic> json) :
+    time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
+    value = int.parse(json["value"]),
+    confidence = int.parse(json["confidence"]);
+  
+  @override
+  String toString() {
+    return 'HeartRate(time: $time, value: $value)';
+  } //toString
 }
 
 
