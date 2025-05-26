@@ -41,17 +41,22 @@ class _BoxState extends State<Box> {
   Widget build(BuildContext context) {
 
     //final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
-
+  
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
+
           children: [
+
             ListTile(
-              leading: SizedBox(width: 50),
-              title: Center(child: Text(widget.address + ' - ' + widget.packageType)),
+              leading: Icon(Icons.fmd_good_outlined,color: Colors.green,), 
+              title: Center(
+                child:
+                Text(widget.address + ' - ' + widget.packageType,style: TextStyle(fontSize: 14, color: Colors.black54) ,),
+                ),
               trailing: IconButton(
-                icon: Icon(isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right),
+                icon: Icon(isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right, color: Colors.green,),
                 onPressed: () {
                   setState(() {
                     isExpanded = !isExpanded;
@@ -66,7 +71,7 @@ class _BoxState extends State<Box> {
             ),
             if(isExpanded)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding:  EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,6 +101,7 @@ class _BoxState extends State<Box> {
                           child: DeliveryMethod(
                             isSelected: isBikeSelected, 
                             iconType: Icons.pedal_bike, 
+                             
                             method: 'Bike'
                           ),
                         ),
@@ -170,14 +176,13 @@ class _BoxState extends State<Box> {
                       },
                       child: Text('Conferma'),
                       style: ElevatedButton.styleFrom(
-                        // textStyle: TextStyle(
-                        //   color: Colors.green
-                        // ),
+                        textStyle: TextStyle(color: Colors.green),
+                        backgroundColor:  Color.fromARGB(255, 107, 165, 109),
+                        foregroundColor:  Colors.black54,
                         // backgroundColor: Color.fromARGB(10, 0, 255, 0),
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.green
+                        
 
-                      )
+                      ),
                     ),
                   ],
                 ),
