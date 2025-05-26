@@ -43,9 +43,10 @@ class _BoxState extends State<Box> {
     //final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
   
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
+
 
           children: [
 
@@ -117,7 +118,7 @@ class _BoxState extends State<Box> {
                           }),
                           child: DeliveryMethod(
                             isSelected: isFootSelected, 
-                            iconType: Icons.man, 
+                            iconType: Icons.directions_walk, 
                             method: 'On Foot'
                           ),
                         ),
