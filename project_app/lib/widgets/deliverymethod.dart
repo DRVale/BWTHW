@@ -17,12 +17,12 @@ class DeliveryMethod extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      width: 100,
+      width: 80,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: isSelected? Color.fromARGB(10, 0, 255, 0) : Colors.white,
         border: Border.all(
-          color: isSelected? Colors.green : Colors.black
+          color: isSelected? Colors.green : Colors.black54
         ),
         boxShadow: [ if(isSelected) 
           BoxShadow(
@@ -39,12 +39,12 @@ class DeliveryMethod extends StatelessWidget {
         children: [
           Icon(
             iconType,
-            color: isSelected? Colors.green : Colors.black,
+            color: isSelected? Colors.green : Colors.black54,
           ),
           Text(
             method,
             style: TextStyle(
-              color: isSelected? Colors.green : Colors.black
+              color: isSelected? Colors.green : Colors.black54
             ),
           ),
         ],

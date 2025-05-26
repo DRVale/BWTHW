@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
+import 'package:project_app/screens/editprofilepage.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -23,51 +25,47 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
       _currentName = sp.getString('username') ?? '';
-      _controller.text = _currentName;
     });
   }
 
-  Future<void> _saveUsername() async {
-    if (_controller.text.trim().isNotEmpty) {
-      SharedPreferences sp = await SharedPreferences.getInstance();
-      await sp.setString('username', _controller.text.trim());
-      Navigator.pop(context, true); 
+    Future<void> _goToEditProfile() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditProfilePage()),
+    );
+    if (result == true) {
+      _loadCurrentName();
+      Navigator.pop(context, true); // notifica alla home che qualcosa è cambiato
     }
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(title: const Text('Change name',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
+      appBar: AppBar(title:  Text('Profile',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text('Insert your new name:',style: TextStyle(color: Colors.black54),),
-            const SizedBox(height: 10),
-            TextField(
-              cursorColor: Colors.black,
+             //Text('Current name: $_currentName' ,style: TextStyle(color: Colors.black54),),
+             SizedBox(height: 10),
+              TextField(
+              readOnly: true,
+              enabled: false,
               controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Nuovo nome',
-                labelStyle: TextStyle(color: Colors.green),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green)
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green)
-                )
-              )
-            ),
+              decoration:  InputDecoration(
+                labelText: _currentName,
+                labelStyle: TextStyle(color: Colors.black54),
+            ),),
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 107, 165, 109),
                   foregroundColor: Colors.black54,),
-              onPressed: _saveUsername,
-              child: const Text('Salva'),
+              onPressed: _goToEditProfile,
+              child: const Text('Edit'),
             ),
           ],
         ),

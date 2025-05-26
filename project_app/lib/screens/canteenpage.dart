@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/boxpage.dart';
 
 class CanteenPage extends StatelessWidget {
-  const CanteenPage({super.key});
+   CanteenPage({super.key});
+
+  List<Canteen> canteen_list = [
+    Canteen(canteenAndress: 'Via Roma 6', canteenName: 'Piovegio'),
+    Canteen(canteenAndress: 'Via Gradenigo', canteenName: 'Murialdo'),
+    Canteen(canteenAndress: 'Via Ugo Bassi', canteenName: 'Pio X'),
+    Canteen(canteenAndress: 'Piazza Garibaldi', canteenName: 'Belzoni'),
+  ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold( 
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
@@ -18,7 +26,32 @@ class CanteenPage extends StatelessWidget {
           Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
           SizedBox(height: 40,),
           Expanded(
-            child:
+            child: 
+              ListView.builder( 
+                itemCount: canteen_list.length,
+                itemBuilder: (context, index){
+                  final canteen = canteen_list[index];  //indice della lista
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      ListTile(
+                        leading: const Icon(Icons.add_home, color: Colors.green, size: 20),
+                        title: Text('Canteen: ${canteen.canteenName}',
+                            style: const TextStyle(color: Colors.black54)),
+                        subtitle: Text('Address: ${canteen.canteenAndress}',
+                            style: const TextStyle(fontSize: 9)),
+                        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.green),
+                        onTap: () => _toBoxPage(context, mensa: canteen.canteenName),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  );
+                },
+              ),
+            
+            
+            /*
               ListView(
                 children: [
                   ListTile(
@@ -81,6 +114,8 @@ class CanteenPage extends StatelessWidget {
                 ]
               )
           ),
+          */
+      )
       ],
         
       )
@@ -90,13 +125,12 @@ class CanteenPage extends StatelessWidget {
   void _toBoxPage(BuildContext context, {required String mensa}){
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxPage(mensa: mensa)));
   }
-
 }
 
 class Canteen{
-  //final String addess;
-
-
+  final String canteenName;
+  final String canteenAndress;
+  const Canteen({required this.canteenName,required this.canteenAndress,});
 }
 
 
