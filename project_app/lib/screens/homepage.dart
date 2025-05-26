@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/widgets/custombottomappbar.dart';
 import 'package:project_app/screens/profilepage.dart';
 import 'package:project_app/screens/aboutuspage.dart';
+import 'package:project_app/widgets/progressbar.dart';
 
 
 // PROVA PER PROVIDER
@@ -28,6 +29,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _username = '';
   Color  _headerColor = getRandomColor();
+
+  final List<Checkpoint> checkpoints = [
+  Checkpoint(xpRequired: 100, icon: Icons.star, label: 'Bronze Badge'),
+  Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: 'Silver Badge'),
+  Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: 'Gold Badge'),
+ ];
 
   @override
   void initState() {
@@ -114,6 +121,27 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text('Obtain distance data')
             ),
+
+            Consumer<DataProvider>(builder: (context, data, child) {
+
+
+
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("XP Progress", style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 50),
+                      XPProgressBar(
+                        currentXP: 0,
+                        maxXP: 500,
+                        checkpoints: checkpoints,
+                      ),
+                    ],
+                  ),
+                );
+            })
           ],
         ),
       ),
