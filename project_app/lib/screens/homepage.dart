@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                       Text("XP Progress", style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(height: 50),
                       XPProgressBar(
-                        currentXP: 0,
+                        currentXP: data.xp*100,
                         maxXP: 500,
                         checkpoints: checkpoints,
                       ),

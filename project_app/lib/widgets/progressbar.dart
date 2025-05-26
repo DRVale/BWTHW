@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class XPProgressBar extends StatelessWidget {
-  final int currentXP;
+  final double currentXP;
   final int maxXP;
   final List<Checkpoint> checkpoints;
 

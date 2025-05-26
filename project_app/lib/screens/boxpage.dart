@@ -83,12 +83,9 @@ class _BoxPageState extends State<BoxPage> {
         );
           
           },
-          ),
-        
-        ),
-      
-    ],
-      ));
+        ),  
+      )
+    ]));
   }
 
   void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
