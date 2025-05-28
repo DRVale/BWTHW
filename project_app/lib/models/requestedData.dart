@@ -62,21 +62,26 @@ class Exercise{
   "time": "09:42:18"
   */
   final DateTime time;
-  final double averageHeartRate;
-  final double distance;
-  final double speed;
+  final double averageHeartRate; // vedere se è double
+  // final int distance;
+  // final double speed;
 
-  Exercise({required this.time,required this.averageHeartRate,required this.distance, required this.speed});
+  Exercise({
+    required this.time,
+    required this.averageHeartRate,
+    // required this.distance, 
+    // required this.speed
+  });
 
   Exercise.fromJson(String date, Map<String, dynamic> json) :
     time = DateFormat('yyyy-MM-dd HH:mm:ss').parse('$date ${json["time"]}'),
-    averageHeartRate = double.parse(json["averageHeartRate"]),
-    distance = double.parse(json["distance"]),
-    speed = double.parse(json["speed"]);
+    averageHeartRate = json["averageHeartRate"];
+    // distance = json["distance"],
+    // speed = double.parse(json["speed"]);
 
   @override
   String toString() {
-    return 'Distance(time: $time, value: $averageHeartRate, value: $distance, value: $speed)';
+    return 'Distance(time: $time, value: $averageHeartRate)';
   } //toString
 
 }

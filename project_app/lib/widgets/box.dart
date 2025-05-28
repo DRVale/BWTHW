@@ -1,21 +1,22 @@
 //import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:project_app/widgets/expandablelisttile.dart';
 import 'package:project_app/widgets/deliverymethod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'package:project_app/screens/boxpage.dart';
 import 'package:project_app/screens/deliverypage.dart';
+import 'package:project_app/providers/dataprovider.dart';
+
 
 class Box extends StatefulWidget {
 
   final String address;
   final String packageType;
+  final String mensa;
 
   const Box({
     super.key,
     required this.address,
     required this.packageType,
+    required this.mensa,
     bool? isSelected,
   });
 
@@ -44,18 +45,14 @@ class _BoxState extends State<Box> {
   
     return Column(
        mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+       children: [
         Column(
-
-
           children: [
-
             ListTile(
-              leading: Icon(Icons.fmd_good_outlined,color: Colors.green,), 
+              leading: Icon(Icons.fmd_good_outlined, color: Colors.green,), 
               title: Center(
-                child:
-                Text(widget.address + ' - ' + widget.packageType,style: TextStyle(fontSize: 14, color: Colors.black54) ,),
-                ),
+                child: Text(widget.address + ' - ' + widget.packageType,style: TextStyle(fontSize: 14, color: Colors.black54) ,),
+              ),
               trailing: IconButton(
                 icon: Icon(isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right, color: Colors.green,),
                 onPressed: () {
@@ -88,6 +85,8 @@ class _BoxState extends State<Box> {
 
                             if(isBikeSelected) selectedMethod = 'Bici';
                             if(!isBikeSelected) selectedMethod = '';
+
+                            Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                     
                             // if (isBikeSelected) {
                             //   deliveryMethodNotifier.updateMethod('Bici');
@@ -115,6 +114,7 @@ class _BoxState extends State<Box> {
                             if(isFootSelected) selectedMethod = 'Camminata';
                             if(!isFootSelected) selectedMethod = '';
 
+                            Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                           }),
                           child: DeliveryMethod(
                             isSelected: isFootSelected, 
@@ -130,20 +130,25 @@ class _BoxState extends State<Box> {
 
                             if(isRunningSelected) selectedMethod = 'Corsa';
                             if(!isRunningSelected) selectedMethod = '';
+
+                            Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                           }),
                           child: DeliveryMethod(
                             isSelected: isRunningSelected, 
                             iconType: Icons.run_circle_outlined, 
                             method: 'Running'
                           ),
-                        )
+                        ),
+
+                        
                       ]
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 10), 
+
                     ElevatedButton(
-                      onPressed: () async {
-                        final sp = await SharedPreferences.getInstance();
-                        sp.setString('deliveryMethod', selectedMethod); 
+                      onPressed: (){
+
+                        String selectedMethod = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
 
                         if(selectedMethod == 'Bici' || selectedMethod == 'Camminata' || selectedMethod == 'Corsa'){
                           showDialog(
@@ -155,7 +160,7 @@ class _BoxState extends State<Box> {
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('${widget.address} - ${widget.packageType}'),
+                                    Text('${widget.address} - ${widget.packageType} - canteen: ${widget.mensa}'),
                                     Text(selectedMethod),
                                   ],
                                 ),
@@ -181,10 +186,10 @@ class _BoxState extends State<Box> {
                         backgroundColor:  Color.fromARGB(255, 107, 165, 109),
                         foregroundColor:  Colors.black54,
                         // backgroundColor: Color.fromARGB(10, 0, 255, 0),
-                        
-
                       ),
                     ),
+                    
+                    SizedBox(height: 10),                    
                   ],
                 ),
               ),

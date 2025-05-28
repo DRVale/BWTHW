@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/widgets/box.dart';
-import 'package:project_app/widgets/deliverymethod.dart';
-import 'package:project_app/screens/deliverypage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
+
 
 
 class BoxPage extends StatefulWidget {
@@ -21,25 +18,22 @@ class BoxPage extends StatefulWidget {
 
 class _BoxPageState extends State<BoxPage> {
 
+  bool isExpanded = false;
+
   bool isBikeSelected = false;
   bool isFootSelected = false;
   bool isRunningSelected = false;
-  List<Box> box_list = [
-    Box(address: 'Via Roma 6', packageType: 'Small'),
-    Box(address: 'Via Gradenigo', packageType: 'Large'),
-    Box(address: 'Via Ugo Bassi', packageType: 'Huge'),
-    Box(address: 'Piazza Garibaldi', packageType: 'Medium'),
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
 
-    // List<Box> box_list = [
-    //   Box(address: '1', packageType: ''),
-    //   Box(address: '2', packageType: ''),
-    //   Box(address: '3', packageType: ''),
-    //   Box(address: '4', packageType: ''),
-    // ];
+    List<Box> boxList = [
+    Box(address: 'Via Roma 6', packageType: 'Small', mensa: widget.mensa),
+    Box(address: 'Via Gradenigo', packageType: 'Large', mensa: widget.mensa),
+    Box(address: 'Via Ugo Bassi', packageType: 'Huge', mensa: widget.mensa),
+    Box(address: 'Piazza Garibaldi', packageType: 'Medium', mensa: widget.mensa),
+  ];
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
@@ -55,52 +49,37 @@ class _BoxPageState extends State<BoxPage> {
           Expanded(
             child:
             ListView.builder(
-          
-          itemCount: box_list.length,
-          // itemBuilder: (context, index) => box_list[index],
-          itemBuilder: (context, index){
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 10,),
-                Container( //Aggiunto container per abbellire i pacchi
-                  width: MediaQuery.sizeOf(context).width - 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black54),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      box_list[index],
+              itemCount: boxList.length,
+              itemBuilder: (context, index){
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10,),
+                    Container( //Aggiunto container per abbellire i pacchi
+                      width: MediaQuery.sizeOf(context).width - 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                      ),
+                      
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          boxList[index],                          
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                    //SizedBox(height: 60)
+                  ],
+                );
 
-                      SizedBox(height: 10),
-                    ],
-              ),
-                ),
-               //SizedBox(height: 60)
-              ],
-        );
-          
-          },
-        ),  
+              },
+            ),  
+          )
+        ]
       )
-    ]));
-  }
-
-  void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
-  }
-}
-
-class XP_notifier extends ChangeNotifier{
-  double ?xp;
-
-  double? get totalxp => xp;
-
-  void updateXP(double newXP){
-    xp = newXP;
-    notifyListeners();
+    );
   }
 }
 

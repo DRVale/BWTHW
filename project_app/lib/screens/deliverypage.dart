@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/homepage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project_app/utils/impact.dart';
 import 'package:project_app/providers/dataprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +23,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
   String _elapsedTime = "00:00:00";
 
   Timer? _timer;
-  int _seconds = 0;
   String? startDate;
   
 
@@ -95,34 +91,33 @@ class _DeliveryPageState extends State<DeliveryPage> {
               onPressed: () async {
                 stop();
 
-                //await???????
-                // Future<List<Distance>?> listOfDistances = requestDate();
-                // int sumOfDistances = getTotalDistance(listOfDistances);
+                // First of all, DELETE ALL DATA IN THE PROVIDER (non si sa mai cosa ci sia dentro)
+                // ESEMPIO: se facciamo due consegne in una volta, gli xp vanno a puttane (non so perché)
 
-                final sp = await SharedPreferences.getInstance();
-                String deliveryMethod = sp.getString('deliveryMethod')!;
+                Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+                // Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+                // Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+
 
                 DateTime endTime = DateTime.now().subtract(Duration(days: 1));
                 String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
+                // CHIAMATE RIMPIAZZATE CON LA NUOVA FUNZIONE delivery()
                 //Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(startDate!, endDate);
-                Provider.of<DataProvider>(context, listen: false).fetchDistanceData(startDate!, endDate);
+                // Provider.of<DataProvider>(context, listen: false).fetchDistanceData(startDate!, endDate);
 
-                List<Distance> distance = Provider.of<DataProvider>(context, listen: false).distances;
-                Provider.of<DataProvider>(context, listen: false).updateXP(deliveryMethod, distance, 15);
-                
-                
+                // Provider.of<DataProvider>(context, listen: false).updateXP();
 
-                // int sumOfDistances = 15000;
-                // double avgSpeed = 14;
-                
-                
-                //double xp = Provider.of<DataProvider>(context, listen: false).getXP(deliveryMethod,distance,speed);
-                //getXP(deliveryMethod, sumOfDistances, avgSpeed);
-                // double totalXP = sp.getDouble('XP')!;
 
-                // totalXP = totalXP + xp;
-                // sp.setDouble('XP', totalXP); 
+                Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+
+                print('sumOfDistances: ${Provider.of<DataProvider>(context, listen: false).sumOfDistances}');
+                print('time: ${Provider.of<DataProvider>(context, listen: false).time}');
+                print('xpIncrement: ${Provider.of<DataProvider>(context, listen: false).xpIncrement}');
+
+                // Qua ritorna null non so perché
+                print('XP: ${Provider.of<DataProvider>(context, listen: false).xp}');
+
                 
                 showDialog(
                   context: context,
@@ -134,8 +129,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("You obtained ${data.xp} XP"),
-                              Text("Total covered distance: ${data.sumOfDistances}"),
+                              Text("You obtained ${data.xpIncrement} XP"),
+                              Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h"),
                               //Text("$avgSpeed average speed"),
                             ],
                           ),
@@ -157,23 +152,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
       ),
     );
   }
-
-  
-
-  // Future<int> _getFileLength(Future<List<Distance>> result) async {
-  //   return await result.then((value) {
-  //    return value.length;
-  //  });
-  // }
-
-
-  // int getTotalDistance(Future<List<Distance>?> result){
-  //   int sum = 0;
-  //   for(int i = 0; i < _getFileLength(); i++){
-  //     sum = sum + result[i].value;
-  //   }
-  //   return sum;
-  // }
 
   void _toHomePage(){
     // VEDERE STACK DEGLI SCREEN

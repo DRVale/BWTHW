@@ -13,27 +13,39 @@ class Splash extends StatelessWidget {
     //Future.delayed(const Duration(seconds: 15), () => _checkLogin(context));
     Future.delayed(const Duration(seconds: 1), () => _checkLogin(context));
     return Scaffold(
-       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-        body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/PastOn.gif', scale: 1.5, ),
-                SizedBox(height: 2,),
-                Text('PastOn',style: TextStyle(color: Colors.green,fontSize: 50,fontWeight:FontWeight.bold, fontFamily: 'Roboto' ),),
-                SizedBox(height: 20,),
-                Text('Loading...', style: TextStyle(color: Colors.green,fontSize: 11, )  )
-                
-              ]
-            ) 
+      backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/PastOn.gif', scale: 1.5, ),
+            SizedBox(height: 2,),
+            Text(
+              'PastOn',
+              style: TextStyle(
+                color: Colors.green,
+                fontSize: 50,
+                fontWeight:FontWeight.bold, 
+                fontFamily: 'Roboto' 
+              ),
+            ),
+            SizedBox(height: 20,),
+            Text(
+              'Loading...', 
+              style: TextStyle(
+                color: Colors.green,
+                fontSize: 11, 
+              )
             )
-            );
+          ]
+        ) 
+      )
+    );
   }
 
   // Method for navigation SplashPage -> ExposurePage
   void _toHomePage(BuildContext context)  {
-    
-     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
   }
 
   // Method for navigation SplashPage -> LoginPage
@@ -48,7 +60,7 @@ class Splash extends StatelessWidget {
     if (result == 200) {
       _toHomePage(context);
     } else {
-      _toLoginPage(context);
+    _toLoginPage(context);
     }
   } //_checkLogin
 

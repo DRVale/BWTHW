@@ -5,12 +5,50 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataProvider extends ChangeNotifier{
 
+  String deliveryMethod = '';
+
   List<Distance> distances = [];
   int sumOfDistances = 0;
   List<Distance> distancesDay = [];
-  double xp = 0;
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
+
+  double ?xp;
+  int xpIncrement = 0;
+
+  // FORSE NON NECESSARIO
+  int time = 0; // [s]
+  double avgSpeed = 0;
+
+  void delivery(String time1, String? time2) async {
+    if(time2 != null) setTime(time1, time2);
+    fetchDistanceData(time1, time2);
+    fetchHeartRateData(time1, time2);
+    fetchDistanceData(time1, time2);
+
+    updateXP();
+  }
+
+  void setTime(String time1, String time2){
+
+    // Transform Strings into DateTimes
+    DateTime startTime = DateTime.tryParse(time1)!;
+    DateTime endTime = DateTime.tryParse(time2)!;
+
+    // Compute the difference between dates
+    Duration difference = endTime.difference(startTime);
+
+    // Save time as the difference in seconds
+    time = difference.inSeconds;
+  }
+
+  void setDeliveryMethod(String newDeliveryMethod){
+    deliveryMethod = newDeliveryMethod;
+  }
+  String getDeliveryMethod(){
+    return deliveryMethod;
+  }
+
 
   // Get Distance Data in a day range
   void fetchDistanceDataRange(String startTime, String endTime) async {
@@ -131,31 +169,39 @@ class DataProvider extends ChangeNotifier{
         // This condition checks if the times in the data are between the time range we are interested in
         if(time2 != null && currentDateTime.compareTo(DateTime.parse(time1)) > 0 && currentDateTime.compareTo(DateTime.parse(time2)) < 0){
           exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['averageHeartRate']));
-          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
-          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
+          // exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
+          // exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
         }
 
         if(time2 == null){
           exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['averageHeartRate']));
-          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
-          exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
+          // exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['distance']));
+          // exercisedata.add(Exercise.fromJson(data['data']['date'], data['data']['data'][i]['speed']));
         }
       }
       notifyListeners();
     }
   }
 
+  void getAvgSpeed(){
+    avgSpeed = sumOfDistances/time * (3600/100000); // [km/h]
+  }
 
-  void updateXP(String deliveryMethod, List<Distance> distance, double speed) async {
+  Future<void> updateXP() async {
 
+    // Initialize variables for XP calculation
     double scoreCamminata = 0;
     double scoreCorsa = 0;
     double scoreBici = 0;
     double distanceWeight = 0;
     double speedWeight = 0;
 
-    getSumOfDistances();
+    getAvgSpeed();
 
+    // Clear the xpIncrement from previous deliveries
+    xpIncrement = 0;
+
+    getSumOfDistances();
 
     // Consider different ranges for "Corsa", "Camminata", "Bici"
     if(deliveryMethod == 'Camminata'){
@@ -163,53 +209,54 @@ class DataProvider extends ChangeNotifier{
       if(sumOfDistances > 1500 && sumOfDistances < 3000) distanceWeight = 0.66;
       if(sumOfDistances > 3000) distanceWeight = 1;
 
-      if(speed < 1.5) speedWeight = 0.33;
-      if(speed > 1.5 && speed < 3) speedWeight = 0.66;
-      if(speed > 3) speedWeight = 1;
+      if(avgSpeed < 1.5) speedWeight = 0.33;
+      if(avgSpeed > 1.5 && avgSpeed < 3) speedWeight = 0.66;
+      if(avgSpeed > 3) speedWeight = 1;
 
       scoreCamminata = distanceWeight * speedWeight;
     }
 
     if(deliveryMethod == 'Corsa'){
-      if(sumOfDistances < 2000) distanceWeight = 0.33;
-      if(sumOfDistances > 2000 && sumOfDistances < 5000) distanceWeight = 0.66;
+      if(sumOfDistances < 2000) distanceWeight = 1/3;
+      if(sumOfDistances > 2000 && sumOfDistances < 5000) distanceWeight = 2/3;
       if(sumOfDistances > 5000) distanceWeight = 1;
 
       // Convert speed into min/km
-      speed = 60 / speed;
+      double avgSpeed_minperkm = 60 / avgSpeed;
 
-      if(speed > 8) speedWeight = 0.33;
-      if(speed > 5 && speed < 8) speedWeight = 0.66;
-      if(speed < 5) speedWeight = 1;
+      if(avgSpeed_minperkm > 8) speedWeight = 1/3;
+      if(avgSpeed_minperkm > 5 && avgSpeed_minperkm < 8) speedWeight = 2/3;
+      if(avgSpeed_minperkm < 5) speedWeight = 1;
 
       scoreCorsa = distanceWeight * speedWeight;
     }
 
     if(deliveryMethod == 'Bici'){
-      if(sumOfDistances < 3000) distanceWeight = 0.33;
-      if(sumOfDistances > 3000 && sumOfDistances < 6000) distanceWeight = 0.66;
+      if(sumOfDistances < 3000) distanceWeight = 1/3;
+      if(sumOfDistances > 3000 && sumOfDistances < 6000) distanceWeight = 2/3;
       if(sumOfDistances > 6000) distanceWeight = 1;
 
-      if(speed < 10) speedWeight = 0.33;
-      if(speed > 10 && speed < 16) speedWeight = 0.66;
-      if(speed > 16) speedWeight = 1;
+      if(avgSpeed < 10) speedWeight = 0.33;
+      if(avgSpeed > 10 && avgSpeed < 16) speedWeight = 0.66;
+      if(avgSpeed > 16) speedWeight = 1;
 
       scoreBici = distanceWeight * speedWeight;
     }
 
+    // Get the old XP value
     SharedPreferences sp = await SharedPreferences.getInstance();
+    xp = sp.getDouble('XP')!;
 
-    double oldXP = 0;
-
-    if(sp.getDouble('XP') != null) {
-      oldXP = sp.getDouble('XP')!;
-    } else {
-      sp.setDouble('XP', oldXP);
-    }
+    // Calculate the XP gained during the delivery and update the new XP value
     
-    xp = scoreCamminata + scoreCorsa * 1.5 + scoreBici + oldXP;
+    xpIncrement = ((scoreCamminata + scoreCorsa * 1.5 + scoreBici) * 100).round();
+
+    xp = xpIncrement + xp!;
+    
+    // Store the value in the SP
+    sp.setDouble('XP', xp!);
+
     notifyListeners();
-    
   }
 
 }

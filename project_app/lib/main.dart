@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/splash.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'package:project_app/screens/boxpage.dart';
 import 'package:project_app/providers/dataprovider.dart';
 
 

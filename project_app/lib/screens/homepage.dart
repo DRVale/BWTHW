@@ -1,7 +1,6 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/loginPage.dart';
 import 'package:project_app/screens/graphpage.dart';
 import 'package:project_app/screens/historypage.dart';
@@ -30,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   String _username = '';
   Color  _headerColor = getRandomColor();
 
+  double xp = 0;
+
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.star, label: 'Bronze Badge'),
   Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: 'Silver Badge'),
@@ -37,26 +38,37 @@ class _HomePageState extends State<HomePage> {
  ];
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     _loadUsername();
-
+    _loadXP();
     // Prendere valore progress bar 
   }
 
   Future<void> _loadUsername() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      _username = prefs.getString('username') ?? 'User';
+      _username = sp.getString('username') ?? 'User';
     });
   }
 
-  void _toLoginPage(BuildContext context) async {
+  Future<void> _loadXP() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+
+      // If XP is null (it was never initialized in the SP) we set it to zero and save it in the SP
+      xp = sp.getDouble('XP') ?? 0;
+      sp.setDouble('XP', xp);
+    });
+  }
+
+  Future<void> _toLoginPage(BuildContext context) async {
     final logoutReset = await SharedPreferences.getInstance();
     await logoutReset.remove('username');
     await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
+    await logoutReset.remove('XP');
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -114,7 +126,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            
+          
             ElevatedButton(
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
@@ -123,24 +135,24 @@ class _HomePageState extends State<HomePage> {
             ),
 
             Consumer<DataProvider>(builder: (context, data, child) {
-
-
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("XP Progress", style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(height: 50),
-                      XPProgressBar(
-                        currentXP: data.xp*100,
-                        maxXP: 500,
-                        checkpoints: checkpoints,
-                      ),
-                    ],
-                  ),
-                );
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "XP Progress: ${data.xp ?? xp}", 
+                      style: TextStyle(fontWeight: FontWeight.bold)
+                    ),
+                    SizedBox(height: 50),
+                    XPProgressBar(
+                      currentXP: data.xp ?? xp,
+                      maxXP: 500,
+                      checkpoints: checkpoints,
+                    ),
+                  ],
+                ),
+              );
             })
           ],
         ),
@@ -204,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                 'Logout',
                 style: TextStyle(color: Colors.black54, ),
               ),
-              onTap: () => _toLoginPage(context),
+              onTap: () async => await _toLoginPage(context),
             ),
             
             

@@ -153,7 +153,7 @@ Future<int> loggingIn(String username, String password) async {
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug
-    print('Calling: $url');
+    //print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
 
@@ -163,7 +163,6 @@ Future<int> loggingIn(String username, String password) async {
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
-    print(response.statusCode);
 
     // Return the response body
     return result;
@@ -186,11 +185,9 @@ Future<int> loggingIn(String username, String password) async {
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug
-    print('Calling: $url');
+    // print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
-
-    print('Exercise data response code: ${response.statusCode}');
 
     var result = null;
 
@@ -222,11 +219,9 @@ Future<int> loggingIn(String username, String password) async {
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     // For debug
-    print('Calling: $url');
+    // print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
-
-    print('Heart Rate data response code: ${response.statusCode}');
 
     var result = null;
 

@@ -15,10 +15,10 @@ class HeartRateDataPlot extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
-      title: ChartTitle(text: 'Yesterday Distance'),
+      title: ChartTitle(text: 'Heart Rate Data'),
       primaryXAxis: const DateTimeAxis(majorGridLines: MajorGridLines(width: 0)),
       primaryYAxis: const NumericAxis(
-          labelFormat: '{value} meters',
+          labelFormat: '{value} bpm',
           axisLine: AxisLine(width: 0),
           majorTickLines: MajorTickLines(color: Colors.transparent)),
       series: _getHRDataSeries(),
