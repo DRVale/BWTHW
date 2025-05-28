@@ -22,9 +22,9 @@ class CanteenPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 16,),
+          SizedBox(height: 13,),
           Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
-          SizedBox(height: 40,),
+          SizedBox(height: 7,),
           Expanded(
             child: 
               ListView.builder( 
@@ -34,8 +34,12 @@ class CanteenPage extends StatelessWidget {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
+                      SizedBox(height: 10,),
                       ListTile(
+                      shape:  RoundedRectangleBorder( side: const 
+                      BorderSide(color: Colors.black54, width: 1.0), 
+                      borderRadius: BorderRadius.circular(20),  // bordi arrotondati opzionali
+                      ),
                         leading: const Icon(Icons.add_home, color: Colors.green, size: 20),
                         title: Text('Canteen: ${canteen.canteenName}',
                             style: const TextStyle(color: Colors.black54)),
@@ -44,7 +48,7 @@ class CanteenPage extends StatelessWidget {
                         trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.green),
                         onTap: () => _toBoxPage(context, mensa: canteen.canteenName),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                     ],
                   );
                 },

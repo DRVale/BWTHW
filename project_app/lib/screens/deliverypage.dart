@@ -19,6 +19,7 @@ class DeliveryPage extends StatefulWidget {
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
+
   Stopwatch _stopwatch = Stopwatch();
   String _elapsedTime = "00:00:00";
 
@@ -78,7 +79,11 @@ class _DeliveryPageState extends State<DeliveryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Consegna")),
+     backgroundColor:   const Color.fromARGB(255, 250, 250, 238),
+      appBar: AppBar(
+         backgroundColor:   const Color.fromARGB(255, 250, 250, 238),
+        title: Text("Consegna")),
+     
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -155,19 +155,55 @@ class _BoxState extends State<Box> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                 scrollable: true,
-                                title: Center(child: Text("Recap")),
+                                title: Center(child: 
+                                Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('${widget.address} - ${widget.packageType} - canteen: ${widget.mensa}'),
-                                    Text(selectedMethod),
+                                    Text('You have selected: ',style: TextStyle(color: Colors.black54),),
+                                    SizedBox(height: 10,),
+                                    Row(mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.add_home_outlined, size: 17,color: Colors.black54,),
+                                        SizedBox(width: 3,),
+                                        Text('Canteen: ',style: TextStyle(color: Colors.black54),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 13,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.fmd_good_outlined,size: 17,color: Colors.black54,),
+                                        SizedBox(width: 3,),
+                                        Text('Address: ${widget.address} ',style: TextStyle(color: Colors.black54),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 13,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.fastfood_outlined,size: 17,color: Colors.black54,),
+                                        SizedBox(width: 3,),
+                                        Text('Type: ${widget.packageType} - canteen: ${widget.mensa} ',style: TextStyle(color: Colors.black54),)
+                                      ],
+                                    ),
+                                    SizedBox(height: 13,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.delivery_dining_outlined,size: 17,color: Colors.black54,),
+                                        SizedBox(width: 3,),
+                                        Text('Modality: ${selectedMethod} ',style: TextStyle(color: Colors.black54),)
+                                      ],
+                                    ),
                                   ],
                                 ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => _toDeliveryPage(context, address: widget.address, packageType: widget.packageType),
-                                    child: Text("Confirm"),
+                                    child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
                                   ),
                                 ],
                               );
