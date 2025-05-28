@@ -168,7 +168,7 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.add_home_outlined, size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Canteen: ',style: TextStyle(color: Colors.black54),)
+                                        Text('Canteen: ${widget.mensa}',style: TextStyle(color: Colors.black54),)
                                       ],
                                     ),
                                     SizedBox(height: 13,),
@@ -186,7 +186,7 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.fastfood_outlined,size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Type: ${widget.packageType} - canteen: ${widget.mensa} ',style: TextStyle(color: Colors.black54),)
+                                        Text('Type: ${widget.packageType}',style: TextStyle(color: Colors.black54),)
                                       ],
                                     ),
                                     SizedBox(height: 13,),
