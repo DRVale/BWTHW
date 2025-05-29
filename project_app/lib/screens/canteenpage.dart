@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/boxpage.dart';
 
 class CanteenPage extends StatelessWidget {
-   CanteenPage({super.key});
+  CanteenPage({super.key});
 
-  List<Canteen> canteen_list = [
-    Canteen(canteenAndress: 'Via Roma 6', canteenName: 'Piovegio'),
+  final List<Canteen> canteen_list = [
+    Canteen(canteenAndress: 'Via Roma 6', canteenName: 'Piovego'),
     Canteen(canteenAndress: 'Via Gradenigo', canteenName: 'Murialdo'),
     Canteen(canteenAndress: 'Via Ugo Bassi', canteenName: 'Pio X'),
     Canteen(canteenAndress: 'Piazza Garibaldi', canteenName: 'Belzoni'),

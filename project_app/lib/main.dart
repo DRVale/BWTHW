@@ -7,8 +7,17 @@ import 'package:project_app/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:project_app/providers/dataprovider.dart';
 
+// For DB
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    // demoProjectId: "demo-project-id",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

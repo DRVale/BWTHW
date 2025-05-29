@@ -90,7 +90,21 @@ class _DeliveryPageState extends State<DeliveryPage> {
           children: [
             Text("Tempo trascorso: $_elapsedTime", style: TextStyle(fontSize: 24)),
             SizedBox(height: 20),
-            Text('Indirizzo di consegna: '),
+
+            Container(
+              height: 300,
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 0.5,
+                )
+              ),
+              child: Image.asset('dei_maps.jpg', scale: 1.5, ), // Togliere anche da pubspec se non mettiamo gli screen
+            ),
+
+            SizedBox(height: 20),
+            Text('Indirizzo di consegna: ${widget.address}'),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
