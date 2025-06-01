@@ -54,21 +54,31 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadXP() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() async{
 
+    double? storedXP = sp.getDouble('XP');
+    double finalXP = storedXP ?? 0;
+
+    await sp.setDouble('XP', finalXP);
+
+    setState(() {
       // If XP is null (it was never initialized in the SP) we set it to zero and save it in the SP
-      xp = sp.getDouble('XP') ?? 0;
-      await sp.setDouble('XP', xp);
+      xp = finalXP;
+      //sp.setDouble('XP', xp);
     });
+
   }
 
   Future<void> _toLoginPage(BuildContext context) async {
     final logoutReset = await SharedPreferences.getInstance();
-    await logoutReset.remove('username');
+
+    // Ho tolto i remove di Username e XP: rimane salvato il tuo nome alrimenti torna USER,
+    // poi rimangono XP altrimenti la barra si azzera quando fai login appena dopo una nuova consegna. 
+
+    //await logoutReset.remove('username');
     await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
-    await logoutReset.remove('XP');
+    //await logoutReset.remove('XP');
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -139,11 +149,12 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: [ 
                     Text(
-                      "XP Progress: ${data.xp ?? xp}", 
-                      style: TextStyle(fontWeight: FontWeight.bold)
+                        "XP Progress: ${data.xp ?? xp}", 
+                        style: TextStyle(fontWeight: FontWeight.bold)
                     ),
+                    
                     SizedBox(height: 50),
                     XPProgressBar(
                       currentXP: data.xp ?? xp,

@@ -18,43 +18,76 @@ class XPProgressBar extends StatelessWidget {
       builder: (context, constraints) {
         final progress = currentXP / maxXP;
         final barWidth = constraints.maxWidth;
+        double progressWidth = barWidth * progress.clamp(0.0, 1.0);
 
-        return Stack(
-          children: [
-            // Background bar
-            Container(
-              height: 20,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            // Progress fill
-            Container(
-              height: 20,
-              width: barWidth * progress.clamp(0.0, 1.0),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            // Checkpoint icons
-            ...checkpoints.map((cp) {
-              final left = (cp.xpRequired / maxXP) * barWidth;
-              final isReached = currentXP >= cp.xpRequired;
+        return SizedBox(
+          height: 100,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
 
-              return Positioned(
-                left: left - 12, // center icon
-                top: -25,
-                child: Column(
-                  children: [
-                    Icon(cp.icon, size: 24, color: isReached ? Colors.amber : Colors.grey),
-                    Text(cp.label, style: TextStyle(fontSize: 10)),
-                  ],
+              // Checkpoint icons
+              ...checkpoints.map((cp) {
+                final left = ((cp.xpRequired -50)/ maxXP) * barWidth - 10;
+                final isReached = currentXP >= cp.xpRequired;
+          
+                return Positioned(
+                  left: left, // center icon
+                  top: 0,
+                  child: Column(
+                    children: [
+                      Icon(cp.icon, size: 24, color: isReached ? Colors.amber : Colors.grey),
+                      Text(cp.label, style: TextStyle(fontSize: 10)),
+                    ],
+                  ),
+                );
+              }).toList(),
+
+              // Background bar
+              Positioned(
+                top: 40,
+                child: Container(
+                  height: 20,
+                  width: barWidth,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 231, 231, 231),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-              );
-            }).toList(),
-          ],
+              ),
+
+              // Progress fill
+              Positioned(
+                top: 40,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 20,
+                    width: progressWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Colors.yellow,
+                          Colors.orange,
+                          Colors.red
+                          ],
+                      ),
+                    ),
+                    
+                )),
+              ),
+
+              if (progressWidth > 30) // evita che si tagli o sovrapponga a sinistra
+                Positioned(
+                  left: progressWidth - 12, // centro l’icona in punta
+                  top: 35, // leggermente sopra la barra
+                  child: const Icon(Icons.rocket_launch, size: 24, color: Color.fromARGB(255, 0, 0, 0)),
+                ),
+            ],
+          ),
         );
       },
     );
