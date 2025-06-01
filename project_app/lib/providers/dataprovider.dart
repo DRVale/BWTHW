@@ -24,7 +24,7 @@ class DataProvider extends ChangeNotifier{
     if(time2 != null) setTime(time1, time2);
     fetchDistanceData(time1, time2);
     fetchHeartRateData(time1, time2);
-    fetchDistanceData(time1, time2);
+    fetchDistanceData(time1, time2); //doppia chiamata?
 
     updateXP();
   }
@@ -45,6 +45,7 @@ class DataProvider extends ChangeNotifier{
   void setDeliveryMethod(String newDeliveryMethod){
     deliveryMethod = newDeliveryMethod;
   }
+
   String getDeliveryMethod(){
     return deliveryMethod;
   }
@@ -115,6 +116,7 @@ class DataProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
+
   void getSumOfDistances(){
     if(sumOfDistances == 0){
       for(var i = 0; i < distances.length; i++){
@@ -251,9 +253,9 @@ class DataProvider extends ChangeNotifier{
     
     xpIncrement = ((scoreCamminata + scoreCorsa * 1.5 + scoreBici) * 100).round();
 
-    // if(xp != 0){
-    //   xp = xpIncrement + xp!;
-    // }
+    //if(xp != 0){
+    xp = xpIncrement + xp!;
+    //}
     
     // Store the value in the SP
     sp.setDouble('XP', xp!);
