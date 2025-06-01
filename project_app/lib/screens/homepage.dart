@@ -29,13 +29,13 @@ class _HomePageState extends State<HomePage> {
   String _username = '';
   Color  _headerColor = getRandomColor();
 
+  //Inizializzazione lista progress bar 
   double xp = 0;
-
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.star, label: 'Bronze Badge'),
   Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: 'Silver Badge'),
   Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: 'Gold Badge'),
- ];
+  ];
 
   @override
   void initState(){
@@ -54,11 +54,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadXP() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
+    setState(() async{
 
       // If XP is null (it was never initialized in the SP) we set it to zero and save it in the SP
       xp = sp.getDouble('XP') ?? 0;
-      sp.setDouble('XP', xp);
+      await sp.setDouble('XP', xp);
     });
   }
 

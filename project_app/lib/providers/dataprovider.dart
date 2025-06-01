@@ -251,7 +251,9 @@ class DataProvider extends ChangeNotifier{
     
     xpIncrement = ((scoreCamminata + scoreCorsa * 1.5 + scoreBici) * 100).round();
 
-    xp = xpIncrement + xp!;
+    // if(xp != 0){
+    //   xp = xpIncrement + xp!;
+    // }
     
     // Store the value in the SP
     sp.setDouble('XP', xp!);
