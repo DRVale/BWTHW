@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   //Inizializzazione lista progress bar 
   double xp = 0;
   final List<Checkpoint> checkpoints = [
-  Checkpoint(xpRequired: 100, icon: Icons.star, label: 'Bronze Badge'),
-  Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: 'Silver Badge'),
-  Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: 'Gold Badge'),
+  Checkpoint(xpRequired: 100, icon: Icons.star, label: '100 XP'),
+  Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: '250 XP'),
+  Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: '500 XP'),
   ];
 
   @override
@@ -150,11 +150,6 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ 
-                    Text(
-                        "XP Progress: ${data.xp ?? xp}", 
-                        style: TextStyle(fontWeight: FontWeight.bold)
-                    ),
-                    
                     SizedBox(height: 50),
                     XPProgressBar(
                       currentXP: data.xp ?? xp,
