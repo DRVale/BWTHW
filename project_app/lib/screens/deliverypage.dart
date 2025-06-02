@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/providers/dataprovider.dart';
@@ -22,17 +23,30 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
   Stopwatch _stopwatch = Stopwatch();
   String _elapsedTime = "00:00:00";
-
   Timer? _timer;
   String? startDate;
-  
+  String _backgroundImage = 'assets/dei_maps.jpg';
 
   @override
   void initState() {
     super.initState();
     //_startTimer();
     _startStopwatch();
+    _updateBackground(widget.address);
   }
+   void _updateBackground(String address){
+    setState(() {
+      if (address =='Via Orto Botanico 11 35123 Padova'){
+        _backgroundImage = 'assets/dei_maps.jpg';
+    } else if(address =='Via Tiziano Minio, 15 - 35134 Padova' ){
+        _backgroundImage = '';
+        }else if(address == 'Via S.massimo, 49, 35129 Padova' ){
+        _backgroundImage = '';
+        }else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' ){
+        _backgroundImage = '';
+        }
+    });
+   }
 
   void _startStopwatch() {
     _stopwatch.start();
@@ -77,104 +91,108 @@ class _DeliveryPageState extends State<DeliveryPage> {
   // }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-     backgroundColor:   const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(
-         backgroundColor:   const Color.fromARGB(255, 250, 250, 238),
-        title: Text("Consegna")),
-     
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Tempo trascorso: $_elapsedTime", style: TextStyle(fontSize: 24)),
-            SizedBox(height: 20),
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Stack(
+      children: [
+        // Immagine di sfondo che riempie TUTTO
+        Positioned.fill(
+          child: Image.asset(
+            _backgroundImage,
+            fit: BoxFit.cover,
+          ),
+        ),
 
-            Container(
-              height: 300,
-              width: 300,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 0.5,
-                )
-              ),
-              child: Image.asset('dei_maps.jpg', scale: 1.5, ), // Togliere anche da pubspec se non mettiamo gli screen
-            ),
+        // Contenuto sovrapposto
+        Positioned.fill(
+          child: SafeArea(
+            child: Column(
+              children: [
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.fastfood_outlined, color: Colors.black54),
+                      SizedBox(width: 5),
+                      Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54)),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          
+                          color: Colors.white.withOpacity(0.8),
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                              Icon(Icons.fastfood_outlined, color: Colors.black54),
+                              SizedBox(width: 5),
+                              Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54))
+                            ]),
+                            Text('Go to: ${widget.address}', style: TextStyle(fontSize: 17)),
+                              const SizedBox(height: 20),
+                              Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 24)),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  stop();
 
-            SizedBox(height: 20),
-            Text('Indirizzo di consegna: ${widget.address}'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                stop();
+                                  Provider.of<DataProvider>(context, listen: false).clearDistanceData();
 
-                // First of all, DELETE ALL DATA IN THE PROVIDER (non si sa mai cosa ci sia dentro)
-                // ESEMPIO: se facciamo due consegne in una volta, gli xp vanno a puttane (non so perché)
+                                  DateTime endTime = DateTime.now().subtract(Duration(days: 1));
+                                  String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                Provider.of<DataProvider>(context, listen: false).clearDistanceData();
-                // Provider.of<DataProvider>(context, listen: false).clearDistanceData();
-                // Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+                                  Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
 
-
-                DateTime endTime = DateTime.now().subtract(Duration(days: 1));
-                String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
-
-                // CHIAMATE RIMPIAZZATE CON LA NUOVA FUNZIONE delivery()
-                //Provider.of<DataProvider>(context, listen: false).fetchHeartRateData(startDate!, endDate);
-                // Provider.of<DataProvider>(context, listen: false).fetchDistanceData(startDate!, endDate);
-
-                // Provider.of<DataProvider>(context, listen: false).updateXP();
-
-
-                Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
-
-                print('sumOfDistances: ${Provider.of<DataProvider>(context, listen: false).sumOfDistances}');
-                print('time: ${Provider.of<DataProvider>(context, listen: false).time}');
-                print('xpIncrement: ${Provider.of<DataProvider>(context, listen: false).xpIncrement}');
-
-                // Qua ritorna null non so perché
-                print('XP: ${Provider.of<DataProvider>(context, listen: false).xp}');
-
-                
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Consumer<DataProvider>(builder: (context, data, child) {
-                        return AlertDialog(
-                      // scrollable: true,
-                          title: Text("Recap"),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("You obtained ${data.xpIncrement} XP"),
-                              Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h"),
-                              //Text("$avgSpeed average speed"),
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Consumer<DataProvider>(
+                                        builder: (context, data, child) {
+                                          return AlertDialog(
+                                            title: Text("Recap"),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text("You obtained ${data.xpIncrement} XP"),
+                                                Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h"),
+                                              ],
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => HomePage(),
+                                                child: Text("Confirm"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Text("Ferma Timer"),
+                              ),
                             ],
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>_toHomePage(),
-                              child: Text("Confirm"),
-                            ),
-                          ],
-                        );
-                    });
-                  },
-                );
-              },
-              child: Text("Ferma Timer"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
-
-  void _toHomePage(){
-    // VEDERE STACK DEGLI SCREEN
-    // Navigator.pop(context);
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
-  }
+      ],
+    ),
+  );
+}
 }
