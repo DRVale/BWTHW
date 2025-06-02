@@ -29,10 +29,10 @@ class _BoxPageState extends State<BoxPage> {
   Widget build(BuildContext context) {
 
     List<Box> boxList = [
-    Box(address: 'Via Orto Botanico 11 35123 Padova', packageType: 'Small', mensa: widget.mensa),
+    Box(address: 'Via Orto Botanico, 11 - 35123 Padova', packageType: 'Small', mensa: widget.mensa),
     Box(address: 'Via Tiziano Minio, 15 - 35134 Padova', packageType: 'Large', mensa: widget.mensa),
-    Box(address: 'Via S.massimo, 49, 35129 Padova', packageType: 'Huge', mensa: widget.mensa),
-    Box(address: 'Via Giovanni Boccaccio, 96, 35128 Padova', packageType: 'Medium', mensa: widget.mensa),
+    Box(address: 'Via S.massimo, 49 - 35129 Padova', packageType: 'Huge', mensa: widget.mensa),
+    Box(address: 'Via Giovanni Boccaccio, 96 - 35128 Padova', packageType: 'Medium', mensa: widget.mensa),
   ];
 
     return Scaffold(
