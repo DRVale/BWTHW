@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/providers/dataprovider.dart';
@@ -111,37 +111,34 @@ Widget build(BuildContext context) {
                 AppBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.fastfood_outlined, color: Colors.black54),
-                      SizedBox(width: 5),
-                      Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54)),
-                    ],
+                  
                   ),
-                ),
+                
                 Expanded(
                   child: SingleChildScrollView(
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
-                          
-                          color: Colors.white.withOpacity(0.8),
+                          color: const Color.fromARGB(255, 250, 250, 238).withOpacity(0.6),
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                              Icon(Icons.fastfood_outlined, color: Colors.black54),
+                              Icon(Icons.fastfood_outlined, color: Colors.black54, size:  20, ),
                               SizedBox(width: 5),
-                              Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54))
+                              Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20),)
                             ]),
-                            Text('Go to: ${widget.address}', style: TextStyle(fontSize: 17)),
+                            SizedBox(height: 20,),
+                            Text('Go to: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
                               const SizedBox(height: 20),
-                              Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 24)),
+                              Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
                               const SizedBox(height: 20),
                               ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromARGB(255, 107, 165, 109),
+                                foregroundColor: Colors.black54,),
                                 onPressed: () async {
                                   stop();
 
@@ -158,12 +155,15 @@ Widget build(BuildContext context) {
                                       return Consumer<DataProvider>(
                                         builder: (context, data, child) {
                                           return AlertDialog(
-                                            title: Text("Recap"),
+                                            backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+                                            scrollable: true,
+                                            title: Center(child: 
+                                            Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
                                             content: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Text("You obtained ${data.xpIncrement} XP"),
-                                                Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h"),
+                                                Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
+                                                Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                               ],
                                             ),
                                             actions: [
