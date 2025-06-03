@@ -28,10 +28,6 @@ class _BoxPageState extends State<BoxPage> {
   @override
   Widget build(BuildContext context) {
 
-    // Cambiare il tipo di pacchi in base alla mensa 
-
-    // Togliere il pacco dalla lista dopo la consegna
-
     List<Box> boxList = [
     Box(address: 'Via Orto Botanico, 11 - 35123 Padova', packageType: 'Small', mensa: widget.mensa),
     Box(address: 'Via Tiziano Minio, 15 - 35134 Padova', packageType: 'Large', mensa: widget.mensa),
