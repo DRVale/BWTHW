@@ -27,11 +27,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  int bodyIndex = 0;
+
   String _username = '';
+  TextEditingController userController = TextEditingController();
+
   Color  _headerColor = getRandomColor();
+  
+  bool firstLaunch = true;
 
   //Inizializzazione lista progress bar 
   double xp = 0;
+
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.star, label: '100 XP'),
   Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: '250 XP'),
@@ -49,9 +57,89 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loadUsername();
     _loadXP();
+    _checkFirstLauch();
     _loadDeliveries();
     // Prendere valore progress bar 
   }
+
+  Future<void> _checkFirstLauch() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      sp.getBool('FirstLauch') == null? firstLaunch = true : firstLaunch = false;
+      // If the value in the SP is not null, then an access was made. 
+      // If it is null, then it is the first launch of the app => set firstLaunch to true
+    });
+    sp.setBool('FirstLauch', false);
+
+    //if(firstLaunch) _toGraphPage(context);
+    if(firstLaunch){
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            // scrollable: true,
+            title: Text(
+              "Welcome to our App!",
+              style: TextStyle(
+                color: Colors.green
+              ),
+            ),
+            content: Text('Is this the first time using PastOn? Tell us your name'),
+            actions: [
+              TextField(
+                cursorColor: Colors.black,
+                textAlign: TextAlign.center,
+                controller: userController,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Colors.black),
+                  hintText: 'Enter your username!',
+                  //hintStyle: TextStyle(color: Colors.green),
+                  //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                )
+              ),
+              TextButton(
+                onPressed: () async {
+                  setState(() {
+                    _username = userController.text;
+                  });
+
+                  SharedPreferences sp = await SharedPreferences.getInstance();
+                  sp.setString('username', _username);
+
+                  Navigator.pop(context); // Return to HomePage
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.green
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => _toAboutUsPage(context),
+                child: Text(
+                  "See who we are",
+                  style: TextStyle(
+                    color: Colors.green
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
 
   Future<void> _loadUsername() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -86,7 +174,9 @@ class _HomePageState extends State<HomePage> {
     await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
-    //await logoutReset.remove('XP');
+    await logoutReset.remove('XP');
+    await logoutReset.remove('FirstLaunch');
+    // Vedere se togliere anche firstLaunch
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -130,6 +220,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 250, 250, 238),
@@ -152,7 +243,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      body: Center(
+      body: bodyIndex == 0 ? 
+      
+      Center(
         child: 
         SingleChildScrollView(
           child: Padding(
@@ -173,6 +266,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [ 
+                        Text(data.distances.length == 0 ? '' : '${data.sumOfDistances}'),
                         SizedBox(height: 50),
                         XPProgressBar(
                           currentXP: 300, //data.xp ?? xp,
@@ -211,15 +305,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-      ),
+      )
+      :
+      Container(color: Colors.amber),    
+
 
       // body: Consumer<XP_notifier>
       
       // BNB and FAB
       bottomNavigationBar: CustomBottomAppBar(
-             toPage1: () => _toGraphPage(context),
-             toPage2: () => _toHistoryPage(context),
-           ),
+        tabnames: ['HOME', 'HISTORY'],
+        currentIndex: bodyIndex,
+        callback: (idx) => setState(() {
+          bodyIndex = idx;
+        }),
+      ),
 
       floatingActionButton: Container(
         height: 100,
@@ -273,6 +373,17 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () async => await _toLoginPage(context),
             ),
+
+            ListTile(
+              trailing: Icon(Icons.settings, color: Colors.red, ),
+              title: Text(
+                'Da togliere (serve per provare)',
+                style: TextStyle(color: Colors.red, ),
+              ),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage())),
+            ),
+
+            
             
             
           ],
