@@ -52,10 +52,10 @@ class XPProgressBar extends StatelessWidget {
           Transform.rotate(
             angle: angle - pi / 2,
             child: Transform.translate(
-              offset: const Offset(0, -50),
+              offset: const Offset(0, -55),
               child: Container(
                 width: 4,
-                height: 60,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(2),
