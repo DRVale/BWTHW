@@ -11,7 +11,7 @@ import 'package:project_app/widgets/custombottomappbar.dart';
 import 'package:project_app/screens/profilepage.dart';
 import 'package:project_app/screens/aboutuspage.dart';
 import 'package:project_app/widgets/progressbar.dart';
-import 'package:project_app/widgets/deliverymethod.dart';
+import 'package:project_app/widgets/deliveryStorage&Counting.dart';
 
 
 // PROVA PER PROVIDER
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   //Inizializzazione counter consegne; utilizzo una mappa dove memorizzo metodo-count
   int total = 0;
   Map<String, int> methodCounts = {};
-  final methods = ['bici', 'corsa', 'camminata'];
+  final methods = ['Bici', 'Corsa', 'Camminata'];
 
 
   @override
@@ -152,63 +152,36 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      body: Center(
-        child: 
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column( 
-              children: [
-              
-                // ElevatedButton(
-                //   onPressed: (){
-                //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
-                //   },
-                //   child: Text('Obtain distance data')
-                // ),
-            
-                Consumer<DataProvider>(builder: (context, data, child) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [ 
-                        SizedBox(height: 50),
-                        XPProgressBar(
-                          currentXP: 300, //data.xp ?? xp,
-                          maxXP: 500,
-                          checkpoints: checkpoints,
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-            
-                //Inserimento Counter delle corse: 
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.red, // Colore del bordo
-                      width: 2,           // Spessore del bordo
-                    )
-                  ),
-                  height: 130,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('📦 Consegne totali: $total',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  
-                      const SizedBox(height: 8),
-                      ...methodCounts.entries.map((entry) => Text(
-                            '${entry.key}: ${entry.value}',
-                            style: const TextStyle(fontSize: 16),
-                          )),
-                    ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column( 
+            children: [
+              Container(
+                child: Text('Your Progress',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 )
-              ],
-            ),
+              ),
+              Consumer<DataProvider>(builder: (context, data, child) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [ 
+                    
+                    XPProgressBar(
+                      currentXP: 300, //data.xp ?? xp,
+                      maxXP: 500,
+                      checkpoints: checkpoints,
+                    ),
+                  ],
+                );
+              }),
+              SizedBox(height: 10),
+              //Inserimento Counter delle corse: 
+              Center(child: DeliveryCounterPanel(total: total, perMethod: methodCounts))
+            ],
           ),
         ),
       ),
