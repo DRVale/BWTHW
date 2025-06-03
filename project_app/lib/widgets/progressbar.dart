@@ -21,7 +21,7 @@ class XPProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final progress = currentXP / maxXP;
     final angle = pi * progress.clamp(0.0, 1.0);
-
+    
     return Container(
       decoration: BoxDecoration(
         border: Border.all(

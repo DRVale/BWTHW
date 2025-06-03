@@ -36,6 +36,7 @@ dependencies:
   jwt_decoder: 
   intl: 
   syncfusion_flutter_charts:
+  cloud_firestore:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
