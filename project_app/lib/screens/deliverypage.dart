@@ -5,6 +5,7 @@ import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/providers/dataprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:project_app/widgets/deliverymethod.dart';
 
 class DeliveryPage extends StatefulWidget {
 
@@ -148,6 +149,11 @@ Widget build(BuildContext context) {
                                   String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
                                   Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+
+                                  // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
+                                  String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
+                                  await DeliveryStorage().recordDelivery(method);
+
 
                                   showDialog(
                                     context: context,
