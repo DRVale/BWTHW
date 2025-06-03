@@ -18,19 +18,19 @@ class Firebase {
   static final db = FirebaseFirestore.instance;
 
   final deliveries = db.collection("deliveries");
-  final delivery1 = <String, dynamic>{
-    "start": ,
-    "end": ,
-    "distances": ,
-    "heartRate": ,
-  };
+  // final delivery1 = <String, dynamic>{
+  //   "start": ,
+  //   "end": ,
+  //   "distances": ,
+  //   "heartRate": ,
+  // };
 
-  final data = {
-    "start": ,
-    "end": ,
-    "distances": ,
-    "heartRate": ,
-  }
+  // final data = {
+  //   "start": ,
+  //   "end": ,
+  //   "distances": ,
+  //   "heartRate": ,
+  // }
 
   Future<dynamic> addDeliveryDB(var data) async {
     db.collection("deliveries").add(data);
@@ -39,7 +39,7 @@ class Firebase {
   
   static Future<dynamic> getDistanceDB(String start, String end) async{
     final distanceDB = await FirebaseFirestore.instance.collection('distance').get();
-    db.collection("deliveries").add(data1);
+    // db.collection("deliveries").add(data1);
     return distanceDB;
   }
   

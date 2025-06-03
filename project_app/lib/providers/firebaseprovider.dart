@@ -7,7 +7,7 @@ class FirebaseProvider extends ChangeNotifier{
   List<Distance> distancesDB = [];
 
   void getDistanceDB(String start, String end) async {
-    await FirebaseFirestore.instance.collection('distance').get()
+    // await FirebaseFirestore.instance.collection('distance').get()
   }
 
   Future<void> addDistance(List<Distance> distances) async {

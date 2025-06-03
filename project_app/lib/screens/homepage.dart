@@ -36,12 +36,9 @@ class _HomePageState extends State<HomePage> {
 
   //Inizializzazione lista progress bar 
   double xp = 0;
-<<<<<<< Updated upstream
-=======
 
   bool firstLaunch = true;
 
->>>>>>> Stashed changes
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.star, label: '100 XP'),
   Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: '250 XP'),
@@ -153,13 +150,9 @@ class _HomePageState extends State<HomePage> {
     await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
-<<<<<<< Updated upstream
-    //await logoutReset.remove('XP');
-=======
     await logoutReset.remove('XP');
     await logoutReset.remove('FirstLaunch');
     // Vedere se togliere anche firstLaunch
->>>>>>> Stashed changes
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
