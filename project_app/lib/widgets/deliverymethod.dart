@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeliveryMethod extends StatelessWidget {
 
@@ -52,5 +53,42 @@ class DeliveryMethod extends StatelessWidget {
     );
   }
 }
+
+// DELIVERY STORAGE: per memorizzare nelle SP il numero di consegne effettuate e mostrarle nella HP
+ 
+class DeliveryStorage {
+  static const String totalKey = 'total_deliveries';
+  static const String methodPrefix = 'delivery_';
+  
+
+  Future<void> recordDelivery(String method) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Totale
+    final total = prefs.getInt(totalKey) ?? 0;
+    await prefs.setInt(totalKey, total + 1);
+
+    // Specifico per metodo
+    final methodKey = '$methodPrefix$method';
+    final count = prefs.getInt(methodKey) ?? 0;
+    await prefs.setInt(methodKey, count + 1);
+  }
+
+  Future<int> getTotalDeliveries() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(totalKey) ?? 0;
+  }
+
+  Future<Map<String, int>> getMethodCounts(List<String> methods) async {
+    final prefs = await SharedPreferences.getInstance();
+    final map = <String, int>{};
+    for (final method in methods) {
+      final methodKey = '$methodPrefix$method';
+      map[method] = prefs.getInt(methodKey) ?? 0;
+    }
+    return map;
+  }
+}
+
 
 
