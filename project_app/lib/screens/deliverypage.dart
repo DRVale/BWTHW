@@ -168,7 +168,7 @@ Widget build(BuildContext context) {
                                             ),
                                             actions: [
                                               TextButton(
-                                                onPressed: () => HomePage(),
+                                                onPressed: () => _toHomePage(context),
                                                 child: Text("Confirm"),
                                               ),
                                             ],
@@ -196,3 +196,7 @@ Widget build(BuildContext context) {
   );
 }
 }
+
+void _toHomePage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+  }
