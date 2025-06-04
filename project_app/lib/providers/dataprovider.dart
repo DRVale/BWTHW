@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_app/utils/impact.dart';
 import 'package:project_app/models/requesteddata.dart';
@@ -20,11 +21,12 @@ class DataProvider extends ChangeNotifier{
   int time = 0; // [s]
   double avgSpeed = 0;
 
-  void delivery(String time1, String? time2) async {
+  Future<void> delivery(String time1, String? time2) async {
     if(time2 != null) setTime(time1, time2);
-    fetchDistanceData(time1, time2);
-    fetchHeartRateData(time1, time2);
-    fetchDistanceData(time1, time2); //doppia chiamata?
+    await fetchDistanceData(time1, time2);
+    await fetchHeartRateData(time1, time2);
+    // calculateSumOfDistances();
+    // fetchDistanceData(time1, time2); //doppia chiamata?
 
     updateXP();
   }
@@ -90,7 +92,7 @@ class DataProvider extends ChangeNotifier{
   }
 
   // Get Distance Data of a whole day
-  void fetchDistanceData(String time1, String? time2) async {
+  Future<void> fetchDistanceData(String time1, String? time2) async {
 
     String day = time1;
 
@@ -117,15 +119,16 @@ class DataProvider extends ChangeNotifier{
     }
   }
 
-  void getSumOfDistances(){
+  void calculateSumOfDistances(){
     if(sumOfDistances == 0){
       for(var i = 0; i < distances.length; i++){
         sumOfDistances = sumOfDistances + distances[i].value;
       }
+      sumOfDistances = (sumOfDistances / 100).round();
     }
   }
 
-  void fetchHeartRateData(String time1, String? time2) async {
+  Future<void> fetchHeartRateData(String time1, String? time2) async {
 
     String day = time1;
     if(time1.length > 10) day = time1.substring(0, 10);
@@ -186,7 +189,7 @@ class DataProvider extends ChangeNotifier{
   }
 
   void getAvgSpeed(){
-    avgSpeed = sumOfDistances/time * (3600/100000); // [km/h]
+    avgSpeed = sumOfDistances/time * (3600/1000); // [km/h]
   }
 
   Future<void> updateXP() async {
@@ -198,12 +201,11 @@ class DataProvider extends ChangeNotifier{
     double distanceWeight = 0;
     double speedWeight = 0;
 
-    getAvgSpeed();
-
     // Clear the xpIncrement from previous deliveries
     xpIncrement = 0;
 
-    getSumOfDistances();
+    calculateSumOfDistances();
+    getAvgSpeed();
 
     // Consider different ranges for "Corsa", "Camminata", "Bici"
     if(deliveryMethod == 'Camminata'){
