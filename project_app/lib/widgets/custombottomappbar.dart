@@ -4,6 +4,8 @@ class CustomBottomAppBar extends StatelessWidget {
 
   // final VoidCallback toPage1;
   // final VoidCallback toPage2;
+  // final VoidCallback toPage1;
+  // final VoidCallback toPage2;
 
   // list of elements to show
   final List<String> tabnames;
@@ -14,7 +16,6 @@ class CustomBottomAppBar extends StatelessWidget {
 
   // SE VOGLIAMO RIUTILIZZARE LA CustomNavigationBar, allora tocca mettere in input anche le icone e i nomi
   // final Widget icon1;
-  // final Widget icon2;
 
   const CustomBottomAppBar({
     super.key, 
@@ -85,9 +86,18 @@ class CustomBottomAppBar extends StatelessWidget {
 
 
 
-
+            /*
             // [
             // Left side of the bar
+            Expanded(child:
+              InkWell(
+              onTap: toPage1,
+              child: Align(
+                alignment: Alignment(-0.5, 0),
+                child: Icon(Icons.auto_graph,color: Colors.black54 ,size: 30,)
+                ),
+              ),
+            ),
             // Expanded(
             //   child: InkWell(
             //     onTap: toPage1,
@@ -107,9 +117,20 @@ class CustomBottomAppBar extends StatelessWidget {
             //   ),
             // ),
 
+            // Space between the buttons
+            //SizedBox(width: 150),
             // // Space between the buttons
             // //SizedBox(width: 150),
         
+            // Right side of the bar
+            Expanded(child: 
+              InkWell(
+              onTap: toPage2,
+              child: Center(child: Icon(Icons.history,color: Colors.black54 ,size: 30,)),
+              ),
+            ),
+          ],
+          */
             // // Right side of the bar
             // Expanded(
             //   child: InkWell(

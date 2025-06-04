@@ -11,6 +11,7 @@ import 'package:project_app/widgets/custombottomappbar.dart';
 import 'package:project_app/screens/profilepage.dart';
 import 'package:project_app/screens/aboutuspage.dart';
 import 'package:project_app/widgets/progressbar.dart';
+import 'package:project_app/widgets/deliverymethod.dart';
 
 
 // PROVA PER PROVIDER
@@ -28,16 +29,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int bodyIndex = 0;
-  
+
   String _username = '';
   TextEditingController userController = TextEditingController();
 
   Color  _headerColor = getRandomColor();
+  
+  bool firstLaunch = true;
 
   //Inizializzazione lista progress bar 
   double xp = 0;
-
-  bool firstLaunch = true;
 
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.star, label: '100 XP'),
@@ -45,20 +46,20 @@ class _HomePageState extends State<HomePage> {
   Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: '500 XP'),
   ];
 
+  //Inizializzazione counter consegne; utilizzo una mappa dove memorizzo metodo-count
+  int total = 0;
+  Map<String, int> methodCounts = {};
+  final methods = ['bici', 'corsa', 'camminata'];
+
+
   @override
   void initState(){
     super.initState();
-    _checkFirstLauch();
     _loadUsername();
     _loadXP();
+    _checkFirstLauch();
+    _loadDeliveries();
     // Prendere valore progress bar 
-  }
-
-  Future<void> _loadUsername() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
-      _username = sp.getString('username') ?? 'User';
-    });
   }
 
   Future<void> _checkFirstLauch() async {
@@ -77,7 +78,12 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return AlertDialog(
             // scrollable: true,
-            title: Text("Welcome to our App!"),
+            title: Text(
+              "Welcome to our App!",
+              style: TextStyle(
+                color: Colors.green
+              ),
+            ),
             content: Text('Is this the first time using PastOn? Tell us your name'),
             actions: [
               TextField(
@@ -93,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     //borderSide: BorderSide(color: Colors.green,width: 2.0),
                   ),
                   labelText: 'Username',
-                  //labelStyle: TextStyle(color: Colors.green),
+                  labelStyle: TextStyle(color: Colors.black),
                   hintText: 'Enter your username!',
                   //hintStyle: TextStyle(color: Colors.green),
                   //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
@@ -111,17 +117,35 @@ class _HomePageState extends State<HomePage> {
 
                   Navigator.pop(context); // Return to HomePage
                 },
-                child: Text("OK"),
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: Colors.green
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () => _toAboutUsPage(context),
-                child: Text("See who we are"),
+                child: Text(
+                  "See who we are",
+                  style: TextStyle(
+                    color: Colors.green
+                  ),
+                ),
               ),
             ],
           );
         },
       );
     }
+  }
+
+
+  Future<void> _loadUsername() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      _username = sp.getString('username') ?? 'User';
+    });
   }
 
   Future<void> _loadXP() async {
@@ -182,6 +206,17 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUsPage()));
   }
 
+  // Metodo per gestire, con le SP, il count delle consegne. Esiste una classe apposita, in deliverymethod
+  Future<void> _loadDeliveries() async {
+    final service = DeliveryStorage();
+    final totalCount = await service.getTotalDeliveries();
+    final methodMap = await service.getMethodCounts(methods);
+    setState(() {
+      total = totalCount;
+      methodCounts = methodMap;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,65 +243,83 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-
-      body: bodyIndex == 0 ?      
+      body: bodyIndex == 0 ? 
+      
       Center(
-        child: Column(
-          children: [
-
-            // Check if it is the first launch of the app
-            // If it is, tutorial and about us 
-
-            // Check if username is in shared preferences
-            // If not, go to profile page and set the name
-
-          
-            ElevatedButton(
-              onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
-              },
-              child: Text('Obtain distance data')
-            ),
-
-            Consumer<DataProvider>(builder: (context, data, child) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [ 
-                    SizedBox(height: 50),
-                    XPProgressBar(
-                      currentXP: data.xp ?? xp,
-                      maxXP: 500,
-                      checkpoints: checkpoints,
+        child: 
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column( 
+              children: [
+              
+                // ElevatedButton(
+                //   onPressed: (){
+                //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage()));
+                //   },
+                //   child: Text('Obtain distance data')
+                // ),
+            
+                Consumer<DataProvider>(builder: (context, data, child) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [ 
+                        Text(data.distances.length == 0 ? '' : '${data.sumOfDistances}'),
+                        SizedBox(height: 50),
+                        XPProgressBar(
+                          currentXP: 300, //data.xp ?? xp,
+                          maxXP: 500,
+                          checkpoints: checkpoints,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            }),
-          ],
+                  );
+                }),
+            
+                //Inserimento Counter delle corse: 
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red, // Colore del bordo
+                      width: 2,           // Spessore del bordo
+                    )
+                  ),
+                  height: 130,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('📦 Consegne totali: $total',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  
+                      const SizedBox(height: 8),
+                      ...methodCounts.entries.map((entry) => Text(
+                            '${entry.key}: ${entry.value}',
+                            style: const TextStyle(fontSize: 16),
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       )
-      : // Depends on the index
-      Container(color: Colors.amber),      
+      :
+      Container(color: Colors.amber),    
 
 
       // body: Consumer<XP_notifier>
       
       // BNB and FAB
-      bottomNavigationBar: 
-      // CustomBottomAppBar(
-      //        toPage1: () => _toGraphPage(context),
-      //        toPage2: () => _toHistoryPage(context),
-      //      ),
-
-      CustomBottomAppBar(
+      bottomNavigationBar: CustomBottomAppBar(
         tabnames: ['HOME', 'HISTORY'],
         currentIndex: bodyIndex,
         callback: (idx) => setState(() {
           bodyIndex = idx;
         }),
-      ), 
+      ),
 
       floatingActionButton: Container(
         height: 100,
@@ -320,6 +373,17 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () async => await _toLoginPage(context),
             ),
+
+            ListTile(
+              trailing: Icon(Icons.settings, color: Colors.red, ),
+              title: Text(
+                'Da togliere (serve per provare)',
+                style: TextStyle(color: Colors.red, ),
+              ),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage())),
+            ),
+
+            
             
             
           ],

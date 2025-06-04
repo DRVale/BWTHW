@@ -202,7 +202,10 @@ class _BoxState extends State<Box> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => _toDeliveryPage(context, address: widget.address, packageType: widget.packageType),
+                                    onPressed: ()async{
+                                      _toDeliveryPage(context, address: widget.address, packageType: widget.packageType);
+                                      
+                                    },
                                     child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
                                   ),
                                 ],
