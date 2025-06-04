@@ -59,24 +59,25 @@ class OptionsPage extends StatelessWidget {
               //   }//else
               // }),
               ElevatedButton(
-                onPressed: (){
+                onPressed: () async {
         
                   String startTime = '2023-05-13 00:00:00';
-                  String endTime = '2023-05-13 23:59:59';
+                  String endTime = '2023-05-13 00:20:00';
         
-                  // Provider.of<DataProvider>(context, listen: false).delivery(startTime, endTime);
-                  // Firebase fire = new Firebase();
+                  await Provider.of<DataProvider>(context, listen: false).delivery(startTime, endTime);
+                  
 
-                  final db = FirebaseFirestore.instance;
+                  final distances = Provider.of<DataProvider>(context, listen: false).distances;
+                  final heartRate = Provider.of<DataProvider>(context, listen: false).heartRate;
 
-                  final delivery_prova = {
-                    "start": "2023-05-13 00:00:00",
-                    "end": "2023-05-13 23:59:59",
-                    "distances": [1, 2, 3, 4, 5, 6, 7],
-                    "heartRate": [10, 20, 30, 40, 50, 60, 70],
-                  };
+                  final fire = new Firebase();
+                  await fire.addDeliveryDB(startTime, endTime, distances, heartRate);
+                  
+                  // addDeliveryDB(startTime, endTime, distances, heartRate);
 
-                  db.collection("deliveries").add(delivery_prova);
+                  //db.collection("deliveries").add(data);
+
+                  print('Aggiunto elemento al database');
                     
                 },
                 

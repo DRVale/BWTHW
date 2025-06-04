@@ -6,18 +6,22 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:io';
 import 'dart:convert';
 
+
+import 'package:intl/intl.dart';
+
+
 // Models
 import 'package:project_app/models/requesteddata.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-
 // Firebase class
 class Firebase {
 
+  List<Delivery> deliveries = [];
+
   static final db = FirebaseFirestore.instance;
 
-  final deliveries = db.collection("deliveries");
   // final delivery1 = <String, dynamic>{
   //   "start": ,
   //   "end": ,
@@ -35,16 +39,38 @@ class Firebase {
     "heartRate": [10, 20, 30, 40, 50, 60, 70],
   };
 
-  Future<dynamic> addDeliveryDB(String startDate, String endDate, List<dynamic> distances, List <dynamic> heartRate) async {
+  Future<dynamic> addDeliveryDB(String startDate, String endDate, List<Distance> distances, List <HeartRate> heartRate) async {
+
+    List<int> distancesValue = [];
+    List<String> distancesTime = [];
+
+    List<int> heartRateValue = [];
+    List<String> heartRateTime = [];
+
+    for(var i = 0; i < distances.length; i++){
+      distancesValue.add(distances[i].value);
+      distancesTime.add(DateFormat("yyyy-MM-dd hh:mm:ss").format(distances[i].time));
+    }
+
+    for(var i = 0; i < heartRate.length; i++){
+      heartRateValue.add(heartRate[i].value);
+      heartRateTime.add(DateFormat("yyyy-MM-dd hh:mm:ss").format(heartRate[i].time));
+    }
 
     final data = {
       "start": startDate,
       "end": endDate,
-      "distances": distances,
-      "heartRate": heartRate
+      "distances": {
+        "time": distancesTime,
+        "value": distancesValue
+      },
+      "heartRate": {
+        "time": heartRateTime,
+        "value": heartRateValue
+      }
     };
     
-    db.collection("deliveries").add(data);
+    await db.collection("deliveries").add(data);
   }
   
   
@@ -54,4 +80,30 @@ class Firebase {
     return distanceDB;
   }
   
+}
+
+
+class Delivery{
+  final String start;
+  final String end;
+  final List<Distance> distances;
+  final List<HeartRate> heartRate;
+  // final int confidence;
+
+  Delivery({
+    required this.start, 
+    required this.end,
+    required this.distances,
+    required this.heartRate
+  });
+
+  // HeartRate.fromJson(String date, Map<String, dynamic> json) :
+  //   time = DateFormat('yyyy-MM-dd hh:mm:ss').parse('$date ${json["time"]}'),
+  //   value = json["value"];
+    // confidence = int.parse(json["confidence"]);
+    
+  @override
+  String toString() {
+    return '';
+  } //toString
 }
