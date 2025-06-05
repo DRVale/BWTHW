@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
     await logoutReset.remove('refresh');
     //await logoutReset.remove('XP');
     await logoutReset.remove('FirstLaunch');
-    // Vedere se togliere anche firstLaunch
+    // Vedere se togliere anche firstLaunch (Per me si può rimuovere - Lorenz)
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -264,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                   children: [ 
                     
                     XPProgressBar(
-                      currentXP: 300, //data.xp ?? xp,
+                      currentXP: data.xp ?? xp,
                       maxXP: 500,
                       checkpoints: checkpoints,
                     ),
