@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
     await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
-    await logoutReset.remove('XP');
+    //await logoutReset.remove('XP');
     await logoutReset.remove('FirstLaunch');
     // Vedere se togliere anche firstLaunch
 
@@ -190,13 +190,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _toGraphPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GraphPage()));
-  }
+  //NON USATE
+  // void _toGraphPage(BuildContext context) {
+  //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => GraphPage()));
+  // }
 
-  void _toHistoryPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryPage()));
-  }
+  // void _toHistoryPage(BuildContext context) {
+  //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryPage()));
+  // }
 
   void _toCanteenPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CanteenPage()));
@@ -269,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                         Text(data.distances.length == 0 ? '' : '${data.sumOfDistances}'),
                         SizedBox(height: 50),
                         XPProgressBar(
-                          currentXP: 300, //data.xp ?? xp,
+                          currentXP: data.xp ?? xp,
                           maxXP: 500,
                           checkpoints: checkpoints,
                         ),
