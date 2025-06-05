@@ -50,6 +50,10 @@ Per i grafici, usare il package syncfusion_flutter_charts
 
 In impact, creare una classe per ogni tipo di dato che vogliamo mettere.
 
+
+
+AGGIUNGERE ALTRI UTENTI PER DARE UN SENSO AL DATABASE
+
 _______________________________________________________________________________________________________________________________________________________________________
 
 MetodoDelivery: Bici,

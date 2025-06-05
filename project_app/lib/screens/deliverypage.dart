@@ -12,10 +12,8 @@ class DeliveryPage extends StatefulWidget {
   final String address;
   final String packageType;
 
-
   const DeliveryPage({super.key, required this.address, required this.packageType});
 
-  
   @override
   _DeliveryPageState createState() => _DeliveryPageState();
 }
@@ -143,12 +141,16 @@ Widget build(BuildContext context) {
                                 onPressed: () async {
                                   stop();
 
-                                  Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+                                  // Va fatto per tutti i dati
+                                  //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
 
                                   DateTime endTime = DateTime.now().subtract(Duration(days: 1));
                                   String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                                  Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+                                  // String startDate_prova = "2023-05-13 00:00:00";
+                                  // String endDate_prova = "2023-05-13 23:59:59";
+
+                                  await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
 
                                   // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
                                   String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
@@ -160,6 +162,8 @@ Widget build(BuildContext context) {
                                     builder: (context) {
                                       return Consumer<DataProvider>(
                                         builder: (context, data, child) {
+                                          var current_distance = data.distances;
+                                          var current_sumOfDistances = data.sumOfDistances;
                                           return AlertDialog(
                                             backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                             scrollable: true,
@@ -169,7 +173,9 @@ Widget build(BuildContext context) {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
-                                                Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
+                                                Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                               ],
                                             ),
                                             actions: [
