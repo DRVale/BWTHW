@@ -5,9 +5,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:io';
 import 'dart:convert';
 
-// Models
-import 'package:project_app/models/requesteddata.dart';
-
 // IMPACT CLASS
 class Impact {
   static const baseURL = 'https://impact.dei.unipd.it/bwthw/';

@@ -157,23 +157,17 @@ Widget build(BuildContext context) {
                                   DateTime endTime = DateTime.now().subtract(Duration(days: 1));
                                   String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                                  // String startDate_prova = "2023-05-13 00:00:00";
-                                  // String endDate_prova = "2023-05-13 23:59:59";
-
                                   await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
 
                                   // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
                                   String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
                                   await DeliveryStorage().recordDelivery(method);
 
-
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return Consumer<DataProvider>(
                                         builder: (context, data, child) {
-                                          var current_distance = data.distances;
-                                          var current_sumOfDistances = data.sumOfDistances;
                                           return AlertDialog(
                                             backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                             scrollable: true,
