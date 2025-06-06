@@ -1,5 +1,6 @@
 // External packages
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -119,8 +120,28 @@ class FirebaseDB extends ChangeNotifier{
   }
 
   Future<QuerySnapshot> fetchBoxes(String canteen) async {
-    final res = await db.collection('boxes').where("canteen", isEqualTo: canteen).get();
+    final res = await db.collection("boxes").where("canteen", isEqualTo: canteen).get();
     return res;
+  }
+
+  Future<void> removeBox(String canteen, String address, String packageType) {
+  WriteBatch batch = FirebaseFirestore.instance.batch(); // Better for multiple write operations as a single batch that can contain any combination of set, update, or delete operations
+
+  return db.collection("boxes")
+    .where("canteen", isEqualTo: canteen) // Define which box we want to delete
+    .where("address", isEqualTo: address)
+    .where("packageType", isEqualTo: packageType)
+    .limit(1) // Since we only want to delete 1 box
+    .get()    // Get the reference to the box
+    .then((querySnapshot) {
+
+      querySnapshot.docs.forEach((document){
+        batch.delete(document.reference);
+        print('Box $canteen, $address, $packageType removed');
+      });
+
+      return batch.commit();
+    });
   }
 
 

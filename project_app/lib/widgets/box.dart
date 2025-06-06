@@ -202,7 +202,7 @@ class _BoxState extends State<Box> {
                                 actions: [
                                   TextButton(
                                     onPressed: () async {
-                                      _toDeliveryPage(context, address: widget.address, packageType: widget.packageType);
+                                      _toDeliveryPage(context, canteen: widget.canteen, address: widget.address, packageType: widget.packageType);
                                       Provider.of<DataProvider>(context, listen: false).setCanteen(widget.canteen);
                                       Provider.of<DataProvider>(context, listen: false).setAddress(widget.address);
                                       Provider.of<DataProvider>(context, listen: false).setPackageType(widget.packageType);
@@ -240,8 +240,8 @@ class _BoxState extends State<Box> {
     );
   }  
 
-  void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
+  void _toDeliveryPage(BuildContext context, {required String canteen, required String address, required String packageType}){
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(canteen: canteen, address: address, packageType: packageType)));
   }
 
   

@@ -10,10 +10,16 @@ import 'package:project_app/utils/firebase.dart';
 
 class DeliveryPage extends StatefulWidget {
 
+  final String canteen;
   final String address;
   final String packageType;
 
-  const DeliveryPage({super.key, required this.address, required this.packageType});
+  const DeliveryPage({
+    super.key, 
+    required this.canteen,
+    required this.address, 
+    required this.packageType
+  });
 
   @override
   _DeliveryPageState createState() => _DeliveryPageState();
@@ -141,6 +147,9 @@ Widget build(BuildContext context) {
                                 foregroundColor: Colors.black54,),
                                 onPressed: () async {
                                   stop();
+
+                                  // DELETE BOX
+                                  await Provider.of<FirebaseDB>(context, listen: false).removeBox(widget.canteen, widget.address, widget.packageType);
 
                                   // Va fatto per tutti i dati
                                   //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
