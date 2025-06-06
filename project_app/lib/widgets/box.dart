@@ -5,18 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:project_app/screens/deliverypage.dart';
 import 'package:project_app/providers/dataprovider.dart';
 
-
 class Box extends StatefulWidget {
 
   final String address;
   final String packageType;
-  final String mensa;
+  final String canteen;
 
   const Box({
     super.key,
     required this.address,
     required this.packageType,
-    required this.mensa,
+    required this.canteen,
     bool? isSelected,
   });
 
@@ -168,7 +167,7 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.add_home_outlined, size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Canteen: ${widget.mensa}',style: TextStyle(color: Colors.black54),)
+                                        Text('Canteen: ${widget.canteen}',style: TextStyle(color: Colors.black54),)
                                       ],
                                     ),
                                     SizedBox(height: 13,),
@@ -202,9 +201,12 @@ class _BoxState extends State<Box> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: ()async{
+                                    onPressed: () async {
                                       _toDeliveryPage(context, address: widget.address, packageType: widget.packageType);
-                                      
+                                      Provider.of<DataProvider>(context, listen: false).setCanteen(widget.canteen);
+                                      Provider.of<DataProvider>(context, listen: false).setAddress(widget.address);
+                                      Provider.of<DataProvider>(context, listen: false).setPackageType(widget.packageType);
+                                      Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                                     },
                                     child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
                                   ),

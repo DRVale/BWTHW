@@ -6,6 +6,7 @@ import 'package:project_app/providers/dataprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:project_app/widgets/deliverymethod.dart';
+import 'package:project_app/utils/firebase.dart';
 
 class DeliveryPage extends StatefulWidget {
 

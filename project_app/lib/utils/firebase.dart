@@ -1,45 +1,29 @@
-// External packages 
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'dart:io';
-import 'dart:convert';
-
-
+// External packages
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Models
 import 'package:project_app/models/requesteddata.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 // Firebase class
-class Firebase {
+class FirebaseDB extends ChangeNotifier{
 
   List<Delivery> deliveries = [];
 
   static final db = FirebaseFirestore.instance;
 
-  // final delivery1 = <String, dynamic>{
-  //   "start": ,
-  //   "end": ,
-  //   "distances": ,
-  //   "heartRate": ,
-  // };
-
-  String startDate_prova = "2023-05-13 00:00:00";
-  String endDate_prova = "2023-05-13 23:59:59";
-
-  final delivery_prova = {
-    "start": "2023-05-13 00:00:00",
-    "end": "2023-05-13 23:59:59",
-    "distances": [1, 2, 3, 4, 5, 6, 7],
-    "heartRate": [10, 20, 30, 40, 50, 60, 70],
-  };
-
-  Future<dynamic> addDeliveryDB(String startDate, String endDate, List<Distance> distances, List <HeartRate> heartRate) async {
+  Future<dynamic> addDeliveryDB(
+    String canteen,
+    String address,
+    String packageType,
+    String deliveryMethod,
+    String startDate, 
+    String endDate, 
+    List<Distance> distances, 
+    List <HeartRate> heartRate
+  ) async {
 
     List<int> distancesValue = [];
     List<String> distancesTime = [];
@@ -58,6 +42,10 @@ class Firebase {
     }
 
     final data = {
+      "canteen": canteen,
+      "address": address,
+      "packageType": packageType,
+      "deliveryMethod": deliveryMethod,
       "start": startDate,
       "end": endDate,
       "distances": {
@@ -72,38 +60,107 @@ class Firebase {
     
     await db.collection("deliveries").add(data);
   }
-  
-  
-  static Future<dynamic> getDistanceDB(String start, String end) async{
-    final distanceDB = await FirebaseFirestore.instance.collection('distance').get();
-    // db.collection("deliveries").add(data1);
-    return distanceDB;
+
+
+  Future<void> fetchDeliveriesDB() async {
+
+    final queryResult = await db.collection('deliveries').get();
+
+    for (var doc in queryResult.docs) {
+
+      final data = doc.data(); // Extract data from each document in the result of the query
+
+      // Extract start and end times
+      final canteen = data["canteen"];
+      final address = data["address"];
+      final packageType = data["packageType"];
+      final deliveryMethod = data["deliveryMethod"];
+      final start = data["start"];
+      final end = data["end"];
+
+      // Inizialize data lists
+      List<Distance> distances = [];
+      List<HeartRate> heartRate = [];
+
+      // Store the Distance and HeartRate elements inside their lists
+      for(var i = 0; i < data["distances"]["time"].length; i++){ // Loop across all elements of distances contained in the document
+        distances.add(  // Add the single Distance element (time and value) in the distances list
+          Distance(
+            time: DateTime.parse(data["distances"]["time"][i]), 
+            value: data["distances"]["value"][i]
+          )
+        );
+      }
+
+      for(var i = 0; i < data["heartRate"]["time"].length; i++){ // Loop across all elements of distances contained in the document
+        heartRate.add( // Add the single HeartRate element (time and value) in the distances list
+          HeartRate(
+            time: DateTime.parse(data["heartRate"]["time"][i]), 
+            value: data["heartRate"]["value"][i]
+          )
+        );
+      }
+
+      // Add the resulting Delivery to the list of deliveries 
+      deliveries.add(
+        Delivery(
+          canteen: canteen,
+          address: address,
+          packageType: packageType,
+          deliveryMethod: deliveryMethod,
+          start: start, 
+          end: end, 
+          distances: distances,
+          heartRate: heartRate
+        )
+      );
+    }
+    notifyListeners();
   }
-  
+
+  Future<QuerySnapshot> fetchBoxes(String canteen) async {
+    final res = await db.collection('boxes').where("canteen", isEqualTo: canteen).get();
+    return res;
+  }
+
+
+  // Just to add boxes to the database
+  Future<dynamic> addBox(String canteen, String address, String packageType) async {
+    final data = {
+      "canteen": canteen,
+      "address": address,
+      "packageType": packageType,
+    };
+    
+    await db.collection("boxes").add(data);
+  }
 }
 
 
-class Delivery{
+class Delivery{ // Move it into models folder
+
+  final String canteen;
+  final String address;
+  final String packageType;
+  final String deliveryMethod;
   final String start;
   final String end;
   final List<Distance> distances;
   final List<HeartRate> heartRate;
-  // final int confidence;
 
   Delivery({
+    required this.canteen,
+    required this.address,
+    required this.packageType,
+    required this.deliveryMethod,
     required this.start, 
     required this.end,
     required this.distances,
     required this.heartRate
   });
-
-  // HeartRate.fromJson(String date, Map<String, dynamic> json) :
-  //   time = DateFormat('yyyy-MM-dd hh:mm:ss').parse('$date ${json["time"]}'),
-  //   value = json["value"];
-    // confidence = int.parse(json["confidence"]);
     
   @override
   String toString() {
-    return '';
+    return 'Delivery started at $start and ended at $end. First values of HR and Distance: ${heartRate[0].value}, ${distances[0].value}';
   } //toString
 }

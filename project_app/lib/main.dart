@@ -6,6 +6,7 @@ import 'package:project_app/screens/splash.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:project_app/providers/dataprovider.dart';
+import 'package:project_app/utils/firebase.dart';
 
 // For DB
 import 'package:firebase_core/firebase_core.dart';
@@ -26,12 +27,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DataProvider(),
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DataProvider>(create: (context) => DataProvider()),
+        ChangeNotifierProvider<FirebaseDB>(create: (context) => FirebaseDB()),
+      ],
       child: MaterialApp(
         home: Splash(),
       ),
     );
+
+
+
+    // return ChangeNotifierProvider(
+    //   create: (context) => DataProvider(),
+    //   child: 
+    // );
     
     // return MaterialApp(
 

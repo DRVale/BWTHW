@@ -60,18 +60,31 @@ class OptionsPage extends StatelessWidget {
               // }),
               ElevatedButton(
                 onPressed: () async {
+
+                  String canteen = 'Piovego';
+
+                  String address1 = 'Via Orto Botanico, 11 - 35123 Padova';
+                  String address2 = 'Via Tiziano Minio, 15 - 35134 Padova';
+                  String address3 = 'Via S.massimo, 49 - 35129 Padova';
+                  String address4 = 'Via Giovanni Boccaccio, 96 - 35128 Padova';
+                  
+                  String packageType = 'Small';
+                  String deliveryMethod = 'Bici';
         
                   String startTime = '2023-05-13 00:00:00';
                   String endTime = '2023-05-13 00:20:00';
         
                   await Provider.of<DataProvider>(context, listen: false).delivery(startTime, endTime);
-                  
+
 
                   final distances = Provider.of<DataProvider>(context, listen: false).distances;
                   final heartRate = Provider.of<DataProvider>(context, listen: false).heartRate;
 
-                  final fire = new Firebase();
-                  await fire.addDeliveryDB(startTime, endTime, distances, heartRate);
+                  // Per aggiungere le box
+                  // addLotsOfBoxes(context);
+
+                  // final fire = new FirebaseDB();
+                  // await fire.addDeliveryDB(canteen, address, packageType, deliveryMethod, startTime, endTime, distances, heartRate);
                   
                   // addDeliveryDB(startTime, endTime, distances, heartRate);
 
@@ -104,5 +117,37 @@ class OptionsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  void addLotsOfBoxes(BuildContext context){
+    String address1 = 'Via Orto Botanico, 11 - 35123 Padova';
+    String address2 = 'Via Tiziano Minio, 15 - 35134 Padova';
+    String address3 = 'Via S.massimo, 49 - 35129 Padova';
+    String address4 = 'Via Giovanni Boccaccio, 96 - 35128 Padova';
+
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address1, 'Small');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Murialdo', address1, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Pio X', address1, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address1, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Belzoni', address1, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address1, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Murialdo', address1, 'Small');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address2, 'Small');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Belzoni', address2, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address2, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Belzoni', address2, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Pio X', address2, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address3, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Murialdo', address3, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Pio X', address3, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address3, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Belzoni', address3, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address4, 'Large');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Belzoni', address4, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Murialdo', address4, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address4, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Pio X', address4, 'Medium');
+    Provider.of<FirebaseDB>(context, listen: false).addBox('Piovego', address4, 'Small');
   }
 }

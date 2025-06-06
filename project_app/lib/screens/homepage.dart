@@ -15,17 +15,9 @@ import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:project_app/utils/firebase.dart';
 
 
-
-
 // PROVA PER PROVIDER
 import 'package:provider/provider.dart';
 import 'package:project_app/providers/dataprovider.dart';
-
-
-// PROVA PER FIREBASE
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_app/models/requesteddata.dart';
-import 'package:intl/intl.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -200,14 +192,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _toGraphPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GraphPage()));
-  }
-
-  void _toHistoryPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HistoryPage()));
-  }
-
   void _toCanteenPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CanteenPage()));
   }
@@ -320,18 +304,46 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Consumer<FirebaseDB>(
+              builder: (context, data, child) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: data.deliveries.length,
+                  itemBuilder: (context, index){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 10,),
+                        Container( //Aggiunto container per abbellire i pacchi
+                          width: MediaQuery.sizeOf(context).width - 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black54),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                          ),
+                          
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('${data.deliveries[index].address}, ${data.deliveries[index].packageType}, ${data.deliveries[index].start}'),                          
+                              SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                        //SizedBox(height: 60)
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            
             ElevatedButton(
               onPressed: () async {
 
-                fetchDeliveries();
-                
+                await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
 
-                final startTime = '2023-05-13 00:00:00';
-                final endTime = '2023-05-13 00:10:00';
-
-                // final fire = new Firebase();
-                //final data = await Firebase.getDistanceDB(startTime, endTime);
-
+                print(Provider.of<FirebaseDB>(context, listen: false).deliveries[0].toString());
               }, 
               child: Text('Get data from firebase'),
             )
@@ -431,69 +443,4 @@ Color getRandomColor(){
   random.nextInt(256),
   );
   
-}
-
-
-Future<void> fetchDeliveries() async {
-  final db = FirebaseFirestore.instance;
-
-  try {
-    final querySnapshot = await db.collection('deliveries').get();
-
-    for (var doc in querySnapshot.docs) {
-      final data = doc.data();
-
-      final start = data["start"];
-      final end = data["end"];
-      // final distances = data["distances"];
-      // final heartRate = data["heartRate"];
-
-      List<Distance> distances = [];
-      List<HeartRate> heartRate = [];
-
-      for(var i = 0; i < data["distances"]["time"].length; i++){
-        distances.add(
-          Distance(
-            time: DateTime.parse(data["distances"]["time"][i]), 
-            value: data["distances"]["value"][i]
-          )
-        );
-      }
-
-      for(var i = 0; i < data["heartRate"]["time"].length; i++){
-        heartRate.add(
-          HeartRate(
-            time: DateTime.parse(data["heartRate"]["time"][i]), 
-            value: data["heartRate"]["value"][i]
-          )
-        );
-      }
-
-      final fire = new Firebase();
-
-      fire.deliveries.add(
-        Delivery(
-          start: start, 
-          end: end, 
-          distances: distances, //distances, 
-          heartRate: heartRate //heartRate
-        )
-      );
-
-      final prova = fire.deliveries;
-
-      print('debug');
-
-      // data[""];
-
-      // print('Start: ${data['start']}');
-      // print('End: ${data['end']}');
-      // print('Distances: ${data['distances']}');
-      // print('Heart Rate: ${data['heartRate']}');
-    }
-  } catch (e) {
-    print('Error fetching data: $e');
-  }
-
-  print('Fatto');
 }

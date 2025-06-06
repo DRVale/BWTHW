@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_app/utils/impact.dart';
 import 'package:project_app/models/requesteddata.dart';
@@ -6,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DataProvider extends ChangeNotifier{
 
+  String canteen = '';
+  String address = '';
+  String packageType = '';
   String deliveryMethod = '';
 
   List<Distance> distances = [];
@@ -44,10 +46,36 @@ class DataProvider extends ChangeNotifier{
     time = difference.inSeconds;
   }
 
+  // GETTERS AND SETTERS
+
+  // canteen
+  void setCanteen(String newCanteen){
+    canteen = newCanteen;
+  }
+  String getCanteen(){
+    return canteen;
+  }
+
+  // address
+  void setAddress(String newAddress){
+    address = newAddress;
+  }
+  String getAddress(){
+    return address;
+  }
+
+  // packageType
+  void setPackageType(String newPackageType){
+    packageType = newPackageType;
+  }
+  String getPackageType(){
+    return packageType;
+  }
+
+  // deliveryMethod
   void setDeliveryMethod(String newDeliveryMethod){
     deliveryMethod = newDeliveryMethod;
   }
-
   String getDeliveryMethod(){
     return deliveryMethod;
   }
