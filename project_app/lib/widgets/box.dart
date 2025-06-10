@@ -83,7 +83,7 @@ class _BoxState extends State<Box> {
                             isFootSelected = false;
                             isRunningSelected = false;
 
-                            if(isBikeSelected) selectedMethod = 'Bici';
+                            if(isBikeSelected) selectedMethod = 'Bike';
                             if(!isBikeSelected) selectedMethod = '';
 
                             Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
@@ -111,7 +111,7 @@ class _BoxState extends State<Box> {
                             isFootSelected = !isFootSelected;
                             isRunningSelected = false;
 
-                            if(isFootSelected) selectedMethod = 'Camminata';
+                            if(isFootSelected) selectedMethod = 'On Foot';
                             if(!isFootSelected) selectedMethod = '';
 
                             Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
@@ -128,7 +128,7 @@ class _BoxState extends State<Box> {
                             isFootSelected = false;
                             isRunningSelected = !isRunningSelected;
 
-                            if(isRunningSelected) selectedMethod = 'Corsa';
+                            if(isRunningSelected) selectedMethod = 'Running';
                             if(!isRunningSelected) selectedMethod = '';
 
                             Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
@@ -150,7 +150,7 @@ class _BoxState extends State<Box> {
 
                         String selectedMethod = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
 
-                        if(selectedMethod == 'Bici' || selectedMethod == 'Camminata' || selectedMethod == 'Corsa'){
+                        if(selectedMethod == 'Bike' || selectedMethod == 'On Foot' || selectedMethod == 'Running'){
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -162,13 +162,21 @@ class _BoxState extends State<Box> {
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    SizedBox(height: 3,),
                                     Text('You have selected: ',style: TextStyle(color: Colors.black54),),
-                                    SizedBox(height: 10,),
+                                    SizedBox(height: 15,),
                                     Row(mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.add_home_outlined, size: 17,color: Colors.black54,),
+                                        Icon(Icons.add_home_outlined, size: 17,color: Colors.black54, ),
                                         SizedBox(width: 3,),
-                                        Text('Canteen: ${widget.mensa}',style: TextStyle(color: Colors.black54),)
+                                        Text('Canteen:  ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '${widget.mensa}', style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        )
                                       ],
                                     ),
                                     SizedBox(height: 13,),
@@ -177,7 +185,14 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.fmd_good_outlined,size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Address: ${widget.address} ',style: TextStyle(color: Colors.black54),)
+                                        Text('Address:  ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                         Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '${widget.address}', style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        )
                                       ],
                                     ),
                                     SizedBox(height: 13,),
@@ -186,7 +201,14 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.fastfood_outlined,size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Type: ${widget.packageType}',style: TextStyle(color: Colors.black54),)
+                                        Text('Type: ',style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '${widget.packageType}', style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        )
                                       ],
                                     ),
                                     SizedBox(height: 13,),
@@ -195,7 +217,14 @@ class _BoxState extends State<Box> {
                                       children: [
                                         Icon(Icons.delivery_dining_outlined,size: 17,color: Colors.black54,),
                                         SizedBox(width: 3,),
-                                        Text('Modality: ${selectedMethod} ',style: TextStyle(color: Colors.black54),)
+                                        Text('Modality:  ',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '${selectedMethod}', style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        )
                                       ],
                                     ),
                                   ],
