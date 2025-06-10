@@ -24,7 +24,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
   String _elapsedTime = "00:00:00";
   Timer? _timer;
   String? startDate;
-  String _backgroundImage = 'assets/dei_maps.jpg';
+  String _backgroundImage = 'assets/via_ortoBotanico.png';
 
   @override
   void initState() {
@@ -35,8 +35,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
   }
    void _updateBackground(String address){
     setState(() {
-      if (address =='Via Orto Botanico 11 35123 Padova'){
-        _backgroundImage = 'assets/dei_maps.jpg';
+      if (address =='Via Orto Botanico, 11 - 35123 Padova'){
+        _backgroundImage = 'assets/via_ortoBotanico.png';
     } else if(address =='Via Tiziano Minio, 15 - 35134 Padova' ){
         _backgroundImage = '';
         }else if(address == 'Via S.massimo, 49, 35129 Padova' ){
