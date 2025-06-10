@@ -69,7 +69,7 @@ flutter:
   assets:
      - assets/PastOn.gif
      - assets/logo_nome.png
-     - assets/dei_maps.jpg
+     - assets/via_ortoBotanico.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
