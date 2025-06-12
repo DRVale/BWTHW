@@ -149,7 +149,7 @@ Widget build(BuildContext context) {
                                   stop();
 
                                   // DELETE BOX
-                                  await Provider.of<FirebaseDB>(context, listen: false).removeBox(widget.canteen, widget.address, widget.packageType);
+                                  // await Provider.of<FirebaseDB>(context, listen: false).removeBox(widget.canteen, widget.address, widget.packageType);
 
                                   // Va fatto per tutti i dati
                                   //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
