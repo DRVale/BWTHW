@@ -11,8 +11,9 @@ class DeliveryPage extends StatefulWidget {
 
   final String address;
   final String packageType;
+  final String mensa;
 
-  const DeliveryPage({super.key, required this.address, required this.packageType});
+  const DeliveryPage({super.key, required this.address, required this.packageType, required this.mensa});
 
   @override
   _DeliveryPageState createState() => _DeliveryPageState();
@@ -24,7 +25,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
   String _elapsedTime = "00:00:00";
   Timer? _timer;
   String? startDate;
-  String _backgroundImage = 'assets/via_ortoBotanico.png';
+  String _backgroundImage = 'assets/Piovego-OrtoBontanico.png';
 
   @override
   void initState() {
@@ -35,14 +36,52 @@ class _DeliveryPageState extends State<DeliveryPage> {
   }
    void _updateBackground(String address){
     setState(() {
-      if (address =='Via Orto Botanico, 11 - 35123 Padova'){
-        _backgroundImage = 'assets/via_ortoBotanico.png';
-    } else if(address =='Via Tiziano Minio, 15 - 35134 Padova' ){
-        _backgroundImage = '';
-        }else if(address == 'Via S.massimo, 49, 35129 Padova' ){
-        _backgroundImage = '';
-        }else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' ){
-        _backgroundImage = '';
+      if (address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Piovego'){
+        _backgroundImage = 'assets/Piovego-OrtoBontanico.png';
+    } else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Murialdo' ){
+        _backgroundImage = 'assets/Murialdo-OrtoBotanico.png';
+        }
+        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Pio X' ){
+        _backgroundImage = 'assets/Pio-ortobotonico.png';
+        }
+        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Belzoni' ){
+        _backgroundImage = 'assets/Belzoni-ortobotanico.png';
+        }
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Piovego' ){
+        _backgroundImage = 'assets/piovego-TizianoMinio.png';
+        }
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Murialdo' ){
+        _backgroundImage = 'assets/Murialdo-Tiziano.png';
+        }
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Pio X' ){
+        _backgroundImage = 'assets/Pio-Tiziano.png';
+        }
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Belzoni' ){
+        _backgroundImage = 'assets/Belzoni-tiziano.png';
+        }
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Piovego' ){
+        _backgroundImage = 'assets/Piovego-SanMassimo.png';
+        }
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Murialdo' ){
+        _backgroundImage = 'assets/Murialdo-SanMassimo.png';
+        }
+         else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Pio X' ){
+        _backgroundImage = 'assets/Pio-SanMassimo.png';
+        }
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Belzoni' ){
+        _backgroundImage = 'assets/Belzoni-Massimo.png';
+        }
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Piovego' ){
+        _backgroundImage = 'assets/Piovego-Boccaccio.png';
+        }
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Murialdo' ){
+        _backgroundImage = 'assets/Murialdo-Boccaccio.png';
+        }
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Pio X' ){
+        _backgroundImage = 'assets/Pio-Boccaccio.png';
+        }
+         else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Belzoni' ){
+        _backgroundImage = 'assets/Belzoni-Boccaccio.png';
         }
     });
    }
