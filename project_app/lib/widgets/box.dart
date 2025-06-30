@@ -232,7 +232,7 @@ class _BoxState extends State<Box> {
                                 actions: [
                                   TextButton(
                                     onPressed: ()async{
-                                      _toDeliveryPage(context, address: widget.address, packageType: widget.packageType);
+                                      _toDeliveryPage(context, address: widget.address, packageType: widget.packageType, mensa: widget.mensa);
                                       
                                     },
                                     child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
@@ -267,8 +267,8 @@ class _BoxState extends State<Box> {
     );
   }  
 
-  void _toDeliveryPage(BuildContext context, {required String address, required String packageType}){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType,)));
+  void _toDeliveryPage(BuildContext context, {required String address, required String packageType, required String mensa}){
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType, mensa: mensa)));
   }
 
   
