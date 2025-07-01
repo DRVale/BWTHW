@@ -12,19 +12,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _birthdateController = TextEditingController();
   String _currentName = '';
+  String _currentSurname = '';
+  String _currentBirthDate = '';
 
   @override
   void initState() {
     super.initState();
-    _loadCurrentName();
+    _loadProfileData();
   }
 
-  Future<void> _loadCurrentName() async {
+  Future<void> _loadProfileData() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
       _currentName = sp.getString('username') ?? '';
+      _currentSurname = sp.getString('surname') ?? '';
+      _currentBirthDate = sp.getString('birthdate') ?? '';
     });
   }
 
@@ -34,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
       MaterialPageRoute(builder: (context) => EditProfilePage()),
     );
     if (result == true) {
-      _loadCurrentName();
+      _loadProfileData();
       Navigator.pop(context, true); // notifica alla home che qualcosa è cambiato
     }
     }
@@ -43,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),
-      appBar: AppBar(title:  Text('Profile',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
+      appBar: AppBar(title:  Text('My profile',style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
       backgroundColor:  const Color.fromARGB(255, 250, 250, 238),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -54,10 +60,31 @@ class _ProfilePageState extends State<ProfilePage> {
               TextField(
               readOnly: true,
               enabled: false,
-              controller: _controller,
+              controller: _nameController,
               decoration:  InputDecoration(
                 labelText: _currentName,
                 labelStyle: TextStyle(color: Colors.black54),
+                prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
+            ),),
+            SizedBox(height: 10),
+              TextField(
+              readOnly: true,
+              enabled: false,
+              controller: _surnameController,
+              decoration:  InputDecoration(
+                labelText: _currentSurname,
+                labelStyle: TextStyle(color: Colors.black54),
+                prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
+            ),),
+            SizedBox(height: 10),
+              TextField(
+              readOnly: true,
+              enabled: false,
+              controller: _birthdateController,
+              decoration:  InputDecoration(
+                labelText: _currentBirthDate,
+                labelStyle: TextStyle(color: Colors.black54),
+                prefixIcon: Icon(Icons.date_range,color: Colors.green,size: 17,),
             ),),
             SizedBox(height: 20),
             ElevatedButton(
