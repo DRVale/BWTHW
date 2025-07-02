@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_app/utils/impact.dart';
 import 'package:project_app/models/requesteddata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math' as math;
 
 class DataProvider extends ChangeNotifier{
 
@@ -14,6 +15,7 @@ class DataProvider extends ChangeNotifier{
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
 
+  double ?HR_exe;
   double ?xp;
   int xpIncrement = 0;
 
@@ -263,6 +265,55 @@ class DataProvider extends ChangeNotifier{
     sp.setDouble('XP', xp!);
 
     notifyListeners();
+  }
+
+  // Metodo per calcolo TRIMP per definire XP 
+  // Servono HR_exe, HR_max, HR_rest
+  // HR_rest deve essere calcolato come media di un intervallo a riposo
+  // Ipotesi: chiediamo al paziente di caricare un valore medio. 
+  // 
+  Future<void> updateXP2() async {
+
+    //calcolo HR_exe medio
+    double HR_sum = 0;
+    for (var i = 0; i < heartRate.length; i++) {
+    HR_sum += heartRate[i].value; // Somma cumulativa
+    }
+    double HRex = HR_sum / heartRate.length; // Calcola la media
+
+    // HR riposo
+    int HRr = 70;
+
+    // HR massimo stimato serve richiesta età da salvare nelle sharedPreferences 
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    //int ?age = sp.getInt('Age');
+    int age = 22;
+    int HRmax = 220 - age;
+
+    // Tempo d'esercizio = time
+
+    // calcolo TRIMP e TRIMP normalizzato 
+    double TRIMP = time * ((HRex-HRr)/(HRmax-HRr))*0.64*math.exp(1.92*((HRex-HRr)/(HRmax-HRr)));
+    double TRIMP_N = TRIMP/time;
+
+    xp = sp.getDouble('XP')!;
+
+    if(TRIMP_N < 1){
+      xpIncrement = 15;
+    }
+    else if(TRIMP_N > 1 && TRIMP_N < 2){
+      xpIncrement = 30;
+    }
+    else if(TRIMP_N > 2){
+      xpIncrement = 45;
+    }
+
+    xp = xpIncrement + xp!;
+    // Store the value in the SP
+    sp.setDouble('XP', xp!);
+
+    notifyListeners();
+
   }
 
 }
