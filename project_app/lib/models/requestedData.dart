@@ -109,4 +109,34 @@ class HeartRate{
 }
 
 
+class Trimp{
+  final DateTime time;
+  final double value;
+
+  Trimp({
+    required this.time, 
+    required this.value,
+  });
+    
+  @override
+  String toString() {
+    return 'TRIMP(time: $time, value: $value)';
+  } //toString
+}
+
+class RestingHR{
+  final DateTime time;
+  final double value;
+
+  RestingHR({
+    required this.time, 
+    required this.value,
+  });
+    
+  @override
+  String toString() {
+    return 'Resting HR(time: $time, value: $value)';
+  } //toString
+}
+
 

@@ -1,6 +1,7 @@
 // External packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Models
@@ -11,6 +12,54 @@ import 'package:project_app/models/requesteddata.dart';
 class FirebaseDB extends ChangeNotifier{
 
   List<Delivery> deliveries = [];
+  List<Trimp> trimp_per_min = [];
+
+  void getTrimpPerMin(Delivery delivery){
+    DateTime startTime = delivery.heartRate[0].time;
+    DateTime endTime = delivery.heartRate[delivery.heartRate.length-1].time;
+
+    DateTime currentTime = startTime;
+
+    // var user;
+    var age = 35;
+
+    while(endTime.difference(currentTime) >= Duration.zero){
+
+      double trimp = 0;  // trimp temporary variable to store the total trimp in a minute
+      int counter = 0; // counter to check how many times I sum a trimp in a minute
+
+      // Loop across all HR values
+      for(var i = 0; i < delivery.heartRate.length; i++){
+
+        // Check if the current index of the time is in the considered minute
+        if(delivery.heartRate[i].time.difference(currentTime) > Duration.zero  && delivery.heartRate[i].time.difference(currentTime.add(Duration(minutes: 1))) < Duration.zero){
+
+          // Calculate the trimp and update the counter
+          // trimp = T * (HRex - HRrest) / (HRmax - HRrest) * 0.64 * exp(1.92 * (HRex - HRrest) / (HRmax - HRrest))
+          // where 𝑇: duration of the workout (min) 
+          // 𝐻𝑅𝑒𝑥: average heart rate during the workout (bpm) 
+          // 𝐻𝑅𝑚𝑎𝑥: maximal heart rate (bpm) - estimated as (220 – age)
+          // 𝐻𝑅𝑟𝑒𝑠𝑡: resting heart rate (bpm)
+          trimp = trimp + (delivery.heartRate[i].value - delivery.restingHR.value)/(220 - age - delivery.restingHR.value) * 0.64 * exp(1.92 * (delivery.heartRate[i].value - delivery.restingHR.value) / (220 - age - delivery.restingHR.value));
+          // trimp = trimp + delivery.heartRate[i].value;
+          counter = counter + 1;
+        }
+      }
+
+      // Calculate the average trimp
+      double trimpAvg = trimp / counter;
+
+      // Add the value to the Trimp list
+      trimp_per_min.add(Trimp(time: currentTime, value: trimpAvg));
+
+      // Update the current minute for the next loop iteration
+      currentTime = currentTime.add(Duration(minutes: 1));
+    }
+    // 1) Get the total minutes of the delivery
+    // 2) loop across the minutes
+    // 3) for each minute, calculate the trimp, sum it and divide by the number of measures in the time span
+    // 4) add the value (time + value) to the trimp_per_min list
+  }
 
   static final db = FirebaseFirestore.instance;
 
@@ -21,6 +70,7 @@ class FirebaseDB extends ChangeNotifier{
     String deliveryMethod,
     String startDate, 
     String endDate, 
+    RestingHR restingHR,
     List<Distance> distances, 
     List <HeartRate> heartRate
   ) async {
@@ -48,6 +98,7 @@ class FirebaseDB extends ChangeNotifier{
       "deliveryMethod": deliveryMethod,
       "start": startDate,
       "end": endDate,
+      "restingHR": restingHR.value,
       "distances": {
         "time": distancesTime,
         "value": distancesValue
@@ -77,6 +128,7 @@ class FirebaseDB extends ChangeNotifier{
       final deliveryMethod = data["deliveryMethod"];
       final start = data["start"];
       final end = data["end"];
+      final restingHR = RestingHR(time: DateTime.parse(data["start"]) , value: data["restingHR"]);
 
       // Inizialize data lists
       List<Distance> distances = [];
@@ -111,7 +163,8 @@ class FirebaseDB extends ChangeNotifier{
           start: start, 
           end: end, 
           distances: distances,
-          heartRate: heartRate
+          heartRate: heartRate,
+          restingHR: restingHR
         )
       );
     }
@@ -167,6 +220,7 @@ class Delivery{ // Move it into models folder
   final String end;
   final List<Distance> distances;
   final List<HeartRate> heartRate;
+  final RestingHR restingHR;
 
   Delivery({
     required this.canteen,
@@ -176,7 +230,8 @@ class Delivery{ // Move it into models folder
     required this.start, 
     required this.end,
     required this.distances,
-    required this.heartRate
+    required this.heartRate,
+    required this.restingHR
   });
     
   @override

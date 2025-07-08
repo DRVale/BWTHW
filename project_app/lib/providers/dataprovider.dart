@@ -15,6 +15,9 @@ class DataProvider extends ChangeNotifier{
   List<Distance> distancesDay = [];
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
+  RestingHR ?restingHR;
+
+  List<Trimp> trimp_per_min = [];
 
   double ?xp;
   int xpIncrement = 0;
@@ -27,6 +30,7 @@ class DataProvider extends ChangeNotifier{
     if(time2 != null) setTime(time1, time2);
     await fetchDistanceData(time1, time2);
     await fetchHeartRateData(time1, time2);
+    await fetchRestingHRData(time1);
     // calculateSumOfDistances();
     // fetchDistanceData(time1, time2); //doppia chiamata?
 
@@ -78,6 +82,18 @@ class DataProvider extends ChangeNotifier{
   }
   String getDeliveryMethod(){
     return deliveryMethod;
+  }
+
+  Future<void> fetchRestingHRData(String day) async {
+    if(day.length > 10) day = day.substring(0, 10);
+    final data = await Impact.fetchRestingHRData(day);
+
+    if(data != null){
+      DateTime time = DateTime.parse('${data['data']['date']} ${data['data']['data']['time']}');
+      double value = data['data']['data']['value'];
+      restingHR = RestingHR(time: time, value: value);
+    }
+    notifyListeners();
   }
 
 

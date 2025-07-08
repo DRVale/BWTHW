@@ -13,6 +13,7 @@ import 'package:project_app/screens/aboutuspage.dart';
 import 'package:project_app/widgets/progressbar.dart';
 import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:project_app/utils/firebase.dart';
+import 'package:project_app/widgets/line_plot.dart';
 
 
 // PROVA PER PROVIDER
@@ -31,6 +32,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int bodyIndex = 0;
+
+  Delivery? selectedDelivery;
+  // Delivery selectedDelivery = list_of_deliveries[0];  IN FUTURO SARA' COSI'
 
   String _username = '';
   TextEditingController userController = TextEditingController();
@@ -74,7 +78,7 @@ class _HomePageState extends State<HomePage> {
     sp.setBool('FirstLauch', false);
 
     //if(firstLaunch) _toGraphPage(context);
-    if(firstLaunch){
+    if(firstLaunch ==  false){
       showDialog(
         context: context,
         builder: (context) {
@@ -139,6 +143,30 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+
+
+      // ==============================================================================
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            // scrollable: true,
+            // title: Text(
+            //   "Welcome to our App!",
+            //   style: TextStyle(
+            //     color: Colors.green
+            //   ),
+            // ),
+            content: Container(
+              child: AboutUsPage().build(context),
+              width: 1000,
+            ),
+            
+          );
+        },
+      );
+      // ==============================================================================
+
     }
   }
 
@@ -302,38 +330,76 @@ class _HomePageState extends State<HomePage> {
       :
       Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+
+            Text('Select a delivery'),
+
             Consumer<FirebaseDB>(
+
+              // AGGIUNGERE GRAFICI/DATI RELATIVI ALLA SINGOLA CONSEGNA
+
               builder: (context, data, child) {
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: data.deliveries.length,
-                  itemBuilder: (context, index){
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 10,),
-                        Container( //Aggiunto container per abbellire i pacchi
-                          width: MediaQuery.sizeOf(context).width - 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black54),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                          ),
-                          
-                          child: Column(
+
+                int selected_delivery_idx = 0;
+
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: data.deliveries.length,
+                        itemBuilder: (context, index){
+                          return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('${data.deliveries[index].address}, ${data.deliveries[index].packageType}, ${data.deliveries[index].start}'),                          
-                              SizedBox(height: 10),
+                              InkWell(
+                                child: Container( //Aggiunto container per abbellire i pacchi
+                                  width: MediaQuery.sizeOf(context).width - 50,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black54),
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                                  ),
+                                  child: Text('${data.deliveries[index].address}, ${data.deliveries[index].packageType}, ${data.deliveries[index].start}'),                          
+                                ),
+                                onTap: () async {
+                                  // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
+                                  selected_delivery_idx = index;
+                                  print(data.deliveries[selected_delivery_idx].start);
+
+                                  // CAMBIARE QUA, però in linea di massima funziona.
+
+                                  selectedDelivery = data.deliveries[index];
+                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                                  await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+                                  // Now make the firebase query to get the data of a specific delivery
+                    
+                    
+                                  // Select the appropriate delivery or specific delivery data
+                                },
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              //SizedBox(height: 60)
                             ],
-                          ),
-                        ),
-                        //SizedBox(height: 60)
-                      ],
-                    );
-                  },
+                          );
+                        },
+                      ),
+                    ),
+
+                    data.deliveries.length == 0? 
+                    Text('data is null')
+                    :
+                    Container(
+                      // color: Colors.amber,
+                      height: 250,
+                      child: TrimpDataPlot(trimpData: data.trimp_per_min),
+                    )
+                  ],
                 );
               },
             ),

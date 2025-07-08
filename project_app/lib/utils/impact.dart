@@ -23,9 +23,9 @@ class Impact {
   // URL richiesta dati
   // DISTANCE
   static const distanceURL = 'data/v1/distance/patients/';
-
-
+  
   // HEART RATE
+  static const restingHR_URL = 'data/v1/resting_heart_rate/patients/';
   static const heartrateURL = 'data/v1/heart_rate/patients/'; 
   
 
@@ -151,6 +151,35 @@ Future<int> loggingIn(String username, String password) async {
 
     // For debug
     //print('Calling: $url');
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+
+    // Return the response body
+    return result;
+  }
+
+  static Future<dynamic> fetchRestingHRData(String day) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.restingHR_URL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
 
     final response = await http.get(Uri.parse(url), headers: headers);
 

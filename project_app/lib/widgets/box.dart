@@ -241,6 +241,9 @@ class _BoxState extends State<Box> {
   }  
 
   void _toDeliveryPage(BuildContext context, {required String canteen, required String address, required String packageType}){
+    Navigator.of(context).pop();  // Remove BoxPage from stack
+    Navigator.of(context).pop();  // Remove CanteenPage from stack
+    Navigator.of(context).pop();  // Remove HomePage from stack
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(canteen: canteen, address: address, packageType: packageType)));
   }
 

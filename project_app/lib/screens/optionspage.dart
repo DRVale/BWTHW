@@ -29,8 +29,7 @@ class OptionsPage extends StatelessWidget {
               Consumer<DataProvider>(builder: (context, data, child) {
                 if (data.distances.length == 0) {
                   return Text('Nothing to display, press the button to fetch the data');
-                }//if
-                else {
+                } else {
                   // return DistanceDataPlot(distanceData: data.distancesDay);
                   var distance_debug = data.distances;
                   var exercise_debug = data.exercisedata;
@@ -72,7 +71,7 @@ class OptionsPage extends StatelessWidget {
                   String deliveryMethod = 'Bici';
         
                   String startTime = '2023-05-13 00:00:00';
-                  String endTime = '2023-05-13 00:20:00';
+                  String endTime = '2023-05-13 23:20:00';
         
                   await Provider.of<DataProvider>(context, listen: false).delivery(startTime, endTime);
 

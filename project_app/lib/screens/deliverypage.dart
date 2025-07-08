@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/providers/dataprovider.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,8 @@ class DeliveryPage extends StatefulWidget {
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
+
+  bool isTextVisible = true;
 
   Stopwatch _stopwatch = Stopwatch();
   String _elapsedTime = "00:00:00";
@@ -125,78 +128,121 @@ Widget build(BuildContext context) {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          color: const Color.fromARGB(255, 250, 250, 238).withOpacity(0.6),
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        child: Visibility(
+                          visible: isTextVisible,
+                          child: Container(
+                            color: const Color.fromARGB(255, 250, 250, 238),
+                            // padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 5
+                            ),
+                            child: Column(
                               children: [
-                              Icon(Icons.fastfood_outlined, color: Colors.black54, size:  20, ),
-                              SizedBox(width: 5),
-                              Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20),)
-                            ]),
-                            SizedBox(height: 20,),
-                            Text('Go to: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 20),
-                              Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                                foregroundColor: Colors.black54,),
-                                onPressed: () async {
-                                  stop();
-
-                                  // DELETE BOX
-                                  // await Provider.of<FirebaseDB>(context, listen: false).removeBox(widget.canteen, widget.address, widget.packageType);
-
-                                  // Va fatto per tutti i dati
-                                  //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
-
-                                  DateTime endTime = DateTime.now().subtract(Duration(days: 1));
-                                  String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
-
-                                  await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
-
-                                  // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
-                                  String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
-                                  await DeliveryStorage().recordDelivery(method);
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Consumer<DataProvider>(
-                                        builder: (context, data, child) {
-                                          return AlertDialog(
-                                            backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-                                            scrollable: true,
-                                            title: Center(child: 
-                                            Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
-                                                // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
-                                                Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
-                                                Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
-                                              ],
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => _toHomePage(context),
-                                                child: Text("Confirm"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.minimize,
+                                      color: Colors.black,
+                                    ),
+                                    tooltip: 'Minimize',
+                                    onPressed: () {
+                                      setState(() {
+                                        isTextVisible = false; // Hide the container with the text
+                                      });
                                     },
-                                  );
-                                },
-                                child: Text("Ferma Timer"),
-                              ),
-                            ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  Icon(Icons.fastfood_outlined, color: Colors.black54, size:  20, ),
+                                  SizedBox(width: 5),
+                                  Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20),)
+                                ]),
+                                SizedBox(height: 20,),
+                                Text('Go to: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 20),
+                                Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 20),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 107, 165, 109),
+                                  foregroundColor: Colors.black54,),
+                                  onPressed: () async {
+                                    stop();
+                          
+                                    // DELETE BOX
+                                    // await Provider.of<FirebaseDB>(context, listen: false).removeBox(widget.canteen, widget.address, widget.packageType);
+                          
+                                    // Va fatto per tutti i dati
+                                    //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
+                          
+                                    DateTime endTime = DateTime.now().subtract(Duration(days: 1));
+                                    String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
+                          
+                                    // String startDate_prova = '2023-05-13 10:00:00';
+                                    // String endDate_prova = '2023-05-13 10:30:00';
+                          
+                                    // CORSA
+                                    String startDate_prova = '2023-05-28 11:45:00';
+                                    String endDate_prova = '2023-05-28 12:15:00';
+                          
+                          
+                                    // await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+                                    await Provider.of<DataProvider>(context, listen: false).delivery(startDate_prova, endDate_prova);
+                                    
+                                    String deliveryMethod = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
+                                    
+                                    RestingHR deliveryRestingHR = Provider.of<DataProvider>(context, listen: false).restingHR!;
+                                    List<Distance> deliveryDistances = Provider.of<DataProvider>(context, listen: false).distances;
+                                    List<HeartRate> deliveryHeartRate = Provider.of<DataProvider>(context, listen: false).heartRate;
+                          
+                                    await Provider.of<FirebaseDB>(context, listen: false).addDeliveryDB(widget.canteen, widget.address, widget.packageType, deliveryMethod, startDate_prova, endDate_prova, deliveryRestingHR, deliveryDistances, deliveryHeartRate);
+                          
+                                    // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
+                                    // String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
+                                    await DeliveryStorage().recordDelivery(deliveryMethod);
+                          
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Consumer<DataProvider>(
+                                          builder: (context, data, child) {
+                                            return AlertDialog(
+                                              backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+                                              scrollable: true,
+                                              title: Center(child: 
+                                              Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
+                                                  // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                  Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
+                                                  Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                ],
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => _toHomePage(context),
+                                                  child: Text("Confirm"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text("Ferma Timer"),
+                                ),
+                                SizedBox(
+                                  height: 11,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -209,10 +255,27 @@ Widget build(BuildContext context) {
         ),
       ],
     ),
+    floatingActionButton: Visibility(
+      visible: !isTextVisible,
+      child: Stack(
+        children: [
+          IconButton(
+            onPressed: (){
+              setState(() {
+                isTextVisible = !isTextVisible;
+              });
+            },
+            icon: Icon(Icons.timer)
+          ),
+          Text(_elapsedTime)
+        ],
+      ),
+    ),
   );
 }
 }
 
 void _toHomePage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-  }
+  Navigator.of(context).pop();  // Remove the alertDialog from stack
+  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+}
