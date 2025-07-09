@@ -113,7 +113,7 @@ class AboutUsPage extends StatelessWidget {
                 children: [
                   TextSpan(text: 'But that’s not all: ',style: TextStyle(fontSize: 12, color: Colors.black54)),
                   TextSpan(text: 'each delivery is good for you too!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54)),
-                  TextSpan(text: ' By moving and staying active, the more deliveries you make, the more rewards you unlock. ',style: TextStyle(fontSize: 12, color: Colors.black54)),
+                  TextSpan(text: ' By moving and staying active, the more deliveries you make, ',style: TextStyle(fontSize: 12, color: Colors.black54)),
                   TextSpan(text: 'the more rewards you unlock.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54)),
                   TextSpan(text: ' Every day brings new surprises and prizes based on your commitment and consistency.',style: TextStyle(fontSize: 12, color: Colors.black54)),
                   ]

@@ -5,18 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:project_app/screens/deliverypage.dart';
 import 'package:project_app/providers/dataprovider.dart';
 
-
 class Box extends StatefulWidget {
 
   final String address;
   final String packageType;
-  final String mensa;
+  final String canteen;
 
   const Box({
     super.key,
     required this.address,
     required this.packageType,
-    required this.mensa,
+    required this.canteen,
     bool? isSelected,
   });
 
@@ -231,9 +230,12 @@ class _BoxState extends State<Box> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: ()async{
-                                      _toDeliveryPage(context, address: widget.address, packageType: widget.packageType, mensa: widget.mensa);
-                                      
+                                    onPressed: () async {
+                                      _toDeliveryPage(context, canteen: widget.canteen, address: widget.address, packageType: widget.packageType);
+                                      Provider.of<DataProvider>(context, listen: false).setCanteen(widget.canteen);
+                                      Provider.of<DataProvider>(context, listen: false).setAddress(widget.address);
+                                      Provider.of<DataProvider>(context, listen: false).setPackageType(widget.packageType);
+                                      Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                                     },
                                     child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
                                   ),
@@ -267,8 +269,11 @@ class _BoxState extends State<Box> {
     );
   }  
 
-  void _toDeliveryPage(BuildContext context, {required String address, required String packageType, required String mensa}){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(address: address,packageType: packageType, mensa: mensa)));
+  void _toDeliveryPage(BuildContext context, {required String canteen, required String address, required String packageType}){
+    Navigator.of(context).pop();  // Remove BoxPage from stack
+    Navigator.of(context).pop();  // Remove CanteenPage from stack
+    Navigator.of(context).pop();  // Remove HomePage from stack
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => DeliveryPage(canteen: canteen, address: address, packageType: packageType)));
   }
 
   

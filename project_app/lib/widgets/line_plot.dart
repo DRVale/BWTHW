@@ -74,3 +74,41 @@ class DistanceDataPlot extends StatelessWidget {
   }//_getDistanceDataSeries
 
 }//DistanceDataPlot
+
+
+
+
+class TrimpDataPlot extends StatelessWidget {
+  ///Creates default line series chart
+  TrimpDataPlot({Key? key, required this.trimpData}) : super(key: key);
+
+  final List<Trimp> trimpData;
+
+  @override
+  Widget build(BuildContext context) {
+    return SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      title: ChartTitle(text: 'Activity TRIMP'),
+      primaryXAxis: const DateTimeAxis(majorGridLines: MajorGridLines(width: 0)),
+      primaryYAxis: const NumericAxis(
+          labelFormat: '{value} [unità di misura]',
+          axisLine: AxisLine(width: 0),
+          majorTickLines: MajorTickLines(color: Colors.transparent)),
+      series: _getTrimpDataSeries(),
+      tooltipBehavior: TooltipBehavior(enable: true),
+    );
+  }
+
+  /// The method returns line series to chart.
+  List<LineSeries<Trimp, DateTime>> _getTrimpDataSeries() {
+    return <LineSeries<Trimp, DateTime>>[
+      LineSeries<Trimp, DateTime>(
+          dataSource: trimpData,
+          xValueMapper: (data, _) => data.time,
+          yValueMapper: (data, _) => data.value,
+          name: 'TRIMP',
+          markerSettings: const MarkerSettings(isVisible: true))
+    ];
+  } //_getTrimpDataSeries
+
+} //TrimpDataPlot

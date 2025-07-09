@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/screens/loginpage.dart';
 import 'package:project_app/utils/impact.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Splash extends StatelessWidget {
