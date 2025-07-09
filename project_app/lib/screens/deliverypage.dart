@@ -211,16 +211,37 @@ Widget build(BuildContext context) {
                                             content: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
+                                                Text("You obtained: ", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "${data.xpIncrement} XP", style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        ),
                                                 // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
-                                                Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
-                                                Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                Text("Total covered distance: ", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "${data.sumOfDistances}", style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        ),
+                                                Text("Speed: ", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54,) ),
+                                            ]
+                                          )
+                                        ),
                                               ],
                                             ),
                                             actions: [
                                               TextButton(
                                                 onPressed: () => _toHomePage(context),
-                                                child: Text("Confirm"),
+                                                child: Text("Confirm", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
                                               ),
                                             ],
                                           );

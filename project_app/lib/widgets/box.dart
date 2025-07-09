@@ -51,7 +51,7 @@ class _BoxState extends State<Box> {
             ListTile(
               leading: Icon(Icons.fmd_good_outlined, color: Colors.green,), 
               title: Center(
-                child: Text(widget.address + ' - ' + widget.packageType,style: TextStyle(fontSize: 14, color: Colors.black54) ,),
+                child: Text(widget.address + ' - ' + widget.packageType,style: TextStyle(fontSize: 16, color: Colors.black54) ,),
               ),
               trailing: IconButton(
                 icon: Icon(isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right, color: Colors.green,),

@@ -68,17 +68,18 @@ class _HomePageState extends State<HomePage> {
   Future<void> _checkFirstLauch() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      sp.getBool('FirstLauch') == null? firstLaunch = true : firstLaunch = false;
+      sp.getBool('FirstLauch') == null? firstLaunch = true : firstLaunch = true;
       // If the value in the SP is not null, then an access was made. 
       // If it is null, then it is the first launch of the app => set firstLaunch to true
     });
-    sp.setBool('FirstLauch', false); 
+    sp.setBool('FirstLauch', true); 
 
   
     //if(firstLaunch) _toGraphPage(context);
     if(firstLaunch){
 
       showDialog(
+       
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -211,9 +212,11 @@ class _HomePageState extends State<HomePage> {
       );
 
       showDialog(
+        
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 250, 250, 238),
             content: Container(
               child: AboutUsPage().build(context),
               width: 1000,
