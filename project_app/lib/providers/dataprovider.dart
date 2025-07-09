@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_app/models/requestedData.dart';
 import 'package:project_app/utils/impact.dart';
-import 'package:project_app/models/requesteddata.dart';
+//import 'package:project_app/models/requesteddata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
@@ -14,8 +15,12 @@ class DataProvider extends ChangeNotifier{
   List<Distance> distancesDay = [];
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
+  RestingHR ?restingHR;
 
-  double ?HR_exe;
+  // variables for TRIMP 
+  double ?HRr;
+  double HRexe = 0;
+  
   double ?xp;
   int xpIncrement = 0;
 
@@ -23,14 +28,24 @@ class DataProvider extends ChangeNotifier{
   int time = 0; // [s]
   double avgSpeed = 0;
 
+  // Variabile Personal Information
+  DateTime ?birthdate;
+  String ?first_birthdate;
+  String ?surname;
+  String ?name;
+
   Future<void> delivery(String time1, String? time2) async {
+    // Devo azzerare la distance list e la heartRate List ogni volta che c'è una nuva consegna 
     if(time2 != null) setTime(time1, time2);
+    //clearDistanceData();
+    //clearHeartRateData();
     await fetchDistanceData(time1, time2);
     await fetchHeartRateData(time1, time2);
+    await fetchRestingHRData(time1);
     // calculateSumOfDistances();
     // fetchDistanceData(time1, time2); //doppia chiamata?
-
-    updateXP();
+    
+    updateXPtrimp();
   }
 
   void setTime(String time1, String time2){
@@ -132,6 +147,7 @@ class DataProvider extends ChangeNotifier{
 
   Future<void> fetchHeartRateData(String time1, String? time2) async {
 
+    clearHeartRateData();
     String day = time1;
     if(time1.length > 10) day = time1.substring(0, 10);
 
@@ -154,10 +170,27 @@ class DataProvider extends ChangeNotifier{
     }
   }
 
+  Future<void> fetchRestingHRData(String day) async {
+      if(day.length > 10) day = day.substring(0, 10);
+      final data = await Impact.fetchRestingHRData(day);
+
+      if(data != null){
+        DateTime time = DateTime.parse('${data['data']['date']} ${data['data']['data']['time']}');
+        double value = data['data']['data']['value'];
+        restingHR = RestingHR(time: time, value: value);
+      }
+      notifyListeners();
+  }
 
   // Delete Distance data
   void clearDistanceData(){
     distances.clear();
+    notifyListeners();
+  }
+
+  // Delete HR data
+  void clearHeartRateData(){
+    heartRate.clear;
     notifyListeners();
   }
 
@@ -267,36 +300,55 @@ class DataProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  // Future<void> HRrest() async {
+  //   double HRr_sum = 0;
+  //   for (var i = 0; i < heartRate.length; i++) {
+  //     HRr_sum += heartRate[i].value; // Somma cumulata
+  //   }
+  //   HRr = (HRr_sum / heartRate.length); 
+  //   notifyListeners();
+  // }
+
   // Metodo per calcolo TRIMP per definire XP 
   // Servono HR_exe, HR_max, HR_rest
   // HR_rest deve essere calcolato come media di un intervallo a riposo
   // Ipotesi: chiediamo al paziente di caricare un valore medio. 
   // 
-  Future<void> updateXP2() async {
-
-    //calcolo HR_exe medio
+  Future<void> updateXPtrimp() async {
+    
+    //HR ESERCIZIO
     double HR_sum = 0;
     for (var i = 0; i < heartRate.length; i++) {
     HR_sum += heartRate[i].value; // Somma cumulativa
     }
-    double HRex = HR_sum / heartRate.length; // Calcola la media
+    HRexe = HR_sum / heartRate.length; // Calcola la media
 
-    // HR riposo
-    int HRr = 70;
+    // HR RESTING:
+    if (restingHR != null) {
+      HRr = restingHR!.value;
+    } else {
+      HRr = 70; // fallback default
+}
 
-    // HR massimo stimato serve richiesta età da salvare nelle sharedPreferences 
+
+    // HR MAX stimato serve richiesta età da salvare nelle sharedPreferences 
+    // Inserire nel peak_date il calcolo age. 
     SharedPreferences sp = await SharedPreferences.getInstance();
-    //int ?age = sp.getInt('Age');
-    int age = 22;
-    int HRmax = 220 - age;
+    // double ?age;
+    // age = sp.getDouble('age')!;
+    double HRmax = 220 - 24;
 
+  
     // Tempo d'esercizio = time
+    if (time == 0) {
+      time = 1800; // esempio: fallback 30 minuti (1800 sec)
+    }
 
     // calcolo TRIMP e TRIMP normalizzato 
-    double TRIMP = time * ((HRex-HRr)/(HRmax-HRr))*0.64*math.exp(1.92*((HRex-HRr)/(HRmax-HRr)));
+    double TRIMP = time * ((HRexe - HRr!)/(HRmax-HRr!))*0.64*math.exp(1.92*((HRexe - HRr!)/(HRmax-HRr!)));
     double TRIMP_N = TRIMP/time;
 
-    xp = sp.getDouble('XP')!;
+    xp = sp.getDouble('XP') ?? 0;
 
     if(TRIMP_N < 1){
       xpIncrement = 15;
@@ -309,11 +361,62 @@ class DataProvider extends ChangeNotifier{
     }
 
     xp = xpIncrement + xp!;
+    
     // Store the value in the SP
     sp.setDouble('XP', xp!);
 
+    // Quando calcolo un nuovo xpIncrement poi azzero la distanza percorsa 
+    
     notifyListeners();
 
   }
 
+  Future<void> pickDate(BuildContext context) async{
+    DateTime? date = await showDatePicker(context: context, firstDate: DateTime(1900), lastDate: DateTime.now(), initialDate: DateTime(2000),
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          primaryColor: Colors.green,
+          colorScheme: ColorScheme.light(
+            primary: Colors.green,
+            onPrimary: Colors.white,
+            surface: Color.fromARGB(255, 250, 250, 238),
+            onSurface: Colors.black54,
+          ),
+          dialogBackgroundColor: Color.fromARGB(255, 250, 250, 238),
+        ),
+        child: child!
+      );
+    }
+  );
+
+  birthdate = date;
+
+  if (date != null) {
+      first_birthdate = "${date.day}/${date.month}/${date.year}";
+    }
+
+  //birthdate2 = date.toString();
+  notifyListeners();
+  }
+
+  Future<void> setSurname(BuildContext context, String surnameInput) async{
+    final sp = await SharedPreferences.getInstance();
+    surname = surnameInput; 
+    surname ??= sp.getString('surname') ?? 'Unknown';  //se surname è null vado a prenderlo dalle SP 
+    notifyListeners();
+  }
+
+  Future<void> setName(BuildContext context, String nameInput) async{
+    final sp = await SharedPreferences.getInstance();
+    name = nameInput; 
+    name ??= sp.getString('username') ?? 'Unknown';  //se username è null vado a prenderlo dalle SP
+    notifyListeners();
+  }
+
+  Future<void> setBirthdate(BuildContext context) async{
+    //birthdate = dateInput; //formato Datetime
+    //first_birthdate = birthdate.toString(); //converto per visualizzare formato stringa 
+    notifyListeners();
+  }
 }

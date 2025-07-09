@@ -2,8 +2,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/loginPage.dart';
-import 'package:project_app/screens/graphpage.dart';
-import 'package:project_app/screens/historypage.dart';
 import 'package:project_app/screens/canteenpage.dart';
 import 'package:project_app/screens/optionspage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,13 +29,16 @@ class _HomePageState extends State<HomePage> {
   int bodyIndex = 0;
 
   String _username = '';
+  String surname = '';
   TextEditingController userController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController birthdateController = TextEditingController();
 
-  Color  _headerColor = getRandomColor();
+  Color _headerColor = getRandomColor();
   
   bool firstLaunch = true;
 
-  //Inizializzazione lista progress bar 
+  //PROGRESS BAR VARIABLES
   double xp = 0;
 
   final List<Checkpoint> checkpoints = [
@@ -46,7 +47,9 @@ class _HomePageState extends State<HomePage> {
   Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: '500 XP'),
   ];
 
-  //Inizializzazione counter consegne; utilizzo una mappa dove memorizzo metodo-count
+
+  // DELIVERY COUNT 
+  // Utilizzo una mappa dove memorizzo metodo-count
   int total = 0;
   Map<String, int> methodCounts = {};
   final methods = ['Bici', 'Corsa', 'Camminata'];
@@ -69,65 +72,134 @@ class _HomePageState extends State<HomePage> {
       // If the value in the SP is not null, then an access was made. 
       // If it is null, then it is the first launch of the app => set firstLaunch to true
     });
-    sp.setBool('FirstLauch', false);
+    sp.setBool('FirstLauch', false); 
 
+  
     //if(firstLaunch) _toGraphPage(context);
     if(firstLaunch){
+
       showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            // scrollable: true,
-            title: Text(
-              "Welcome to our App!",
-              style: TextStyle(
-                color: Colors.green
+            backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+            title: Center(
+              child: Text(
+                "Welcome to our App!",
+                style: TextStyle(
+                  color: Colors.green
+                ),
               ),
             ),
-            content: Text('Is this the first time using PastOn? Tell us your name'),
+            //content: Center(child: Text('Is this the first time using PastOn? Tell us your personal information')),
             actions: [
+              //SizedBox(height: 10,),
+              Center(child: Text('Is this the first time using PastOn? Tell us your personal information',)),
+              SizedBox(height: 30,),
               TextField(
                 cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 controller: userController,
+                // onTap: ()async{
+                //     await Provider.of<DataProvider>(context, listen: false).setName(context,userController.text);
+                //   },
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(100),
-                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     //borderSide: BorderSide(color: Colors.green,width: 2.0),
                   ),
-                  labelText: 'Username',
-                  labelStyle: TextStyle(color: Colors.black),
-                  hintText: 'Enter your username!',
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.black54),
+                  hintText: 'Enter your name!',
                   //hintStyle: TextStyle(color: Colors.green),
                   //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                 )
               ),
+              SizedBox(height: 10,),
+              TextField(
+                cursorColor: Colors.black,
+                textAlign: TextAlign.center,
+                controller: surnameController,
+                // onTap: ()async{
+                //     await Provider.of<DataProvider>(context, listen: false).setSurname(context,surnameController.text);
+                //   },
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  labelText: 'Surname',
+                  labelStyle: TextStyle(color: Colors.black54),
+                  hintText: 'Enter your surname!',
+                  //hintStyle: TextStyle(color: Colors.green),
+                  //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                )
+              ),
+              SizedBox(
+                height: 10,
+              ),
+
+               Consumer<DataProvider>(builder: (context, data, child) {
+                return
+              TextField(
+                  cursorColor: Colors.black,
+                  textAlign: TextAlign.center,
+                  controller: birthdateController,
+                  //readOnly: true,
+                  onTap: ()async{
+                    await Provider.of<DataProvider>(context, listen: false).pickDate(context);
+                    birthdateController.text = data.first_birthdate!;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'birthdate',//data.first_birthdate ?? birthdateController.text,
+                    hintText: 'Insert your birthdate',
+                    labelStyle: TextStyle(color: Colors.black54),
+                    enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                  ),
+                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                  ),
+              );
+              }),
+
+              SizedBox(height: 10,),
+              
               TextButton(
                 onPressed: () async {
-                  setState(() {
-                    _username = userController.text;
+                  if(userController.text.isNotEmpty && surnameController.text.isNotEmpty && birthdateController.text.isNotEmpty){
+                    String birthdate = birthdateController.text;
+                    SharedPreferences sp = await SharedPreferences.getInstance();
+                    await sp.setString('username', userController.text);
+                    await sp.setString('surname', surnameController.text);
+                    await sp.setString('birthdate', birthdate);
+
+                    setState(() {
+                      _username = userController.text;                      
                   });
 
-                  SharedPreferences sp = await SharedPreferences.getInstance();
-                  sp.setString('username', _username);
-
                   Navigator.pop(context); // Return to HomePage
+
+                  }else{
+                    ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text('All fields must be filled!')));
+                  }
                 },
                 child: Text(
-                  "OK",
-                  style: TextStyle(
-                    color: Colors.green
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => _toAboutUsPage(context),
-                child: Text(
-                  "See who we are",
+                  "Confirm",
                   style: TextStyle(
                     color: Colors.green
                   ),
@@ -137,12 +209,25 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              child: AboutUsPage().build(context),
+              width: 1000,
+            ),
+            
+          );
+        },
+      );
     }
   }
 
-
   Future<void> _loadUsername() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
+
     setState(() {
       _username = sp.getString('username') ?? 'User';
     });
@@ -151,8 +236,9 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadXP() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
 
-    double? storedXP = sp.getDouble('XP');
-    double finalXP = storedXP ?? 0;
+    // double? storedXP = sp.getDouble('XP');
+    // double finalXP = storedXP ?? 0;
+    double finalXP = sp.getDouble('XP') ?? 0;
 
     await sp.setDouble('XP', finalXP);
 
@@ -262,7 +348,6 @@ class _HomePageState extends State<HomePage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ 
-                    
                     XPProgressBar(
                       currentXP: data.xp ?? xp,
                       maxXP: 500,
@@ -298,7 +383,9 @@ class _HomePageState extends State<HomePage> {
         width: 100,
         child: FittedBox(
           child: FloatingActionButton(
-            onPressed: () => _toCanteenPage(context),
+            onPressed: (){
+              _toCanteenPage(context);
+            },
             backgroundColor: Colors.green,
             splashColor: Colors.yellow,
             shape: CircleBorder(),

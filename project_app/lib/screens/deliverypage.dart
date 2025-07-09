@@ -180,16 +180,17 @@ Widget build(BuildContext context) {
                                 onPressed: () async {
                                   stop();
 
-                                  // Va fatto per tutti i dati
+                                  // Aggiunto al metodo delivery cleardistance e clearhearthrate 
                                   //Provider.of<DataProvider>(context, listen: false).clearDistanceData();
 
                                   DateTime endTime = DateTime.now().subtract(Duration(days: 1));
                                   String endDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(endTime);
 
-                                  // String startDate_prova = "2023-05-13 00:00:00";
-                                  // String endDate_prova = "2023-05-13 23:59:59";
+                                  String startDate_prova = "2023-05-13 00:00:00";
+                                  String endDate_prova = "2023-05-13 23:59:00";
 
-                                  await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+                                  //await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
+                                  await Provider.of<DataProvider>(context, listen: false).delivery(startDate_prova, endDate_prova);
 
                                   // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
                                   String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
@@ -199,8 +200,7 @@ Widget build(BuildContext context) {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return Consumer<DataProvider>(
-                                        builder: (context, data, child) {
+                                      return Consumer<DataProvider>(builder: (context, data, child) {
                                           var current_distance = data.distances;
                                           var current_sumOfDistances = data.sumOfDistances;
                                           return AlertDialog(
