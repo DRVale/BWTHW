@@ -172,7 +172,7 @@ class _BoxState extends State<Box> {
                                         Text.rich(
                                           TextSpan(
                                             children: [
-                                              TextSpan(text: '${widget.mensa}', style: TextStyle(color: Colors.black54,) ),
+                                              TextSpan(text: '${widget.canteen}', style: TextStyle(color: Colors.black54,) ),
                                             ]
                                           )
                                         )

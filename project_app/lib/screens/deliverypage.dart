@@ -16,7 +16,6 @@ class DeliveryPage extends StatefulWidget {
   final String canteen;
   final String address;
   final String packageType;
-  final String mensa;
 
   const DeliveryPage({
     super.key, 

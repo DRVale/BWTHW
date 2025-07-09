@@ -212,17 +212,6 @@ class DataProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> fetchRestingHRData(String day) async {
-      if(day.length > 10) day = day.substring(0, 10);
-      final data = await Impact.fetchRestingHRData(day);
-
-      if(data != null){
-        DateTime time = DateTime.parse('${data['data']['date']} ${data['data']['data']['time']}');
-        double value = data['data']['data']['value'];
-        restingHR = RestingHR(time: time, value: value);
-      }
-      notifyListeners();
-  }
 
   // Delete Distance data
   void clearDistanceData(){
