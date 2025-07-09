@@ -48,51 +48,51 @@ class _DeliveryPageState extends State<DeliveryPage> {
   }
    void _updateBackground(String address){
     setState(() {
-      if (address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Piovego'){
+      if (address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Piovego'){
         _backgroundImage = 'assets/Piovego-OrtoBontanico.png';
-    } else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Murialdo' ){
+    } else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Murialdo' ){
         _backgroundImage = 'assets/Murialdo-OrtoBotanico.png';
         }
-        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Pio X' ){
+        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Pio X' ){
         _backgroundImage = 'assets/Pio-ortobotonico.png';
         }
-        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.mensa == 'Belzoni' ){
+        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Belzoni' ){
         _backgroundImage = 'assets/Belzoni-ortobotanico.png';
         }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Piovego' ){
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Piovego' ){
         _backgroundImage = 'assets/piovego-TizianoMinio.png';
         }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Murialdo' ){
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Murialdo' ){
         _backgroundImage = 'assets/Murialdo-Tiziano.png';
         }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Pio X' ){
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Pio X' ){
         _backgroundImage = 'assets/Pio-Tiziano.png';
         }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.mensa == 'Belzoni' ){
+        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Belzoni' ){
         _backgroundImage = 'assets/Belzoni-tiziano.png';
         }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Piovego' ){
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Piovego' ){
         _backgroundImage = 'assets/Piovego-SanMassimo.png';
         }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Murialdo' ){
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Murialdo' ){
         _backgroundImage = 'assets/Murialdo-SanMassimo.png';
         }
-         else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Pio X' ){
+         else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Pio X' ){
         _backgroundImage = 'assets/Pio-SanMassimo.png';
         }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.mensa == 'Belzoni' ){
+        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Belzoni' ){
         _backgroundImage = 'assets/Belzoni-Massimo.png';
         }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Piovego' ){
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Piovego' ){
         _backgroundImage = 'assets/Piovego-Boccaccio.png';
         }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Murialdo' ){
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Murialdo' ){
         _backgroundImage = 'assets/Murialdo-Boccaccio.png';
         }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Pio X' ){
+        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Pio X' ){
         _backgroundImage = 'assets/Pio-Boccaccio.png';
         }
-         else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.mensa == 'Belzoni' ){
+         else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Belzoni' ){
         _backgroundImage = 'assets/Belzoni-Boccaccio.png';
         }
     });
