@@ -257,18 +257,31 @@ Widget build(BuildContext context) {
     ),
     floatingActionButton: Visibility(
       visible: !isTextVisible,
-      child: Stack(
-        children: [
-          IconButton(
-            onPressed: (){
-              setState(() {
-                isTextVisible = !isTextVisible;
-              });
-            },
-            icon: Icon(Icons.timer)
-          ),
-          Text(_elapsedTime)
-        ],
+      child: Container(
+        color: Colors.white,
+        height: 50,
+        width: 75,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 10,
+              right: 17,
+              child: IconButton(
+                onPressed: (){
+                  setState(() {
+                    isTextVisible = !isTextVisible;
+                  });
+                },
+                icon: Icon(Icons.timer)
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 10,
+              child: Text(_elapsedTime)
+            )
+          ],
+        ),
       ),
     ),
   );
