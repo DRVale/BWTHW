@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/boxpage.dart';
+import 'package:project_app/utils/firebase.dart';
+import 'package:provider/provider.dart';
 
 class CanteenPage extends StatelessWidget {
   CanteenPage({super.key});
@@ -10,6 +13,8 @@ class CanteenPage extends StatelessWidget {
     Canteen(canteenAndress: 'Via Antonio Francesco Bonporti, 20', canteenName: 'Pio X'),
     Canteen(canteenAndress: 'Via Gianbattista Belzoni, 146', canteenName: 'Belzoni'),
   ];
+
+  QuerySnapshot ?boxes;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,10 @@ class CanteenPage extends StatelessWidget {
                         subtitle: Text('Address: ${canteen.canteenAndress}',
                             style: const TextStyle(fontSize: 12, color: Colors.black54)),
                         trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.green),
-                        onTap: () => _toBoxPage(context, mensa: canteen.canteenName),
+                        onTap: () async {
+                          await fetchBoxes(context, canteen.canteenName);
+                          _toBoxPage(context, canteen: canteen.canteenName, boxes: boxes!);
+                        },
                       ),
                       const SizedBox(height: 10),
                     ],
@@ -67,7 +75,7 @@ class CanteenPage extends StatelessWidget {
                     trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
                     onTap: (){
                       final String id_mensa = 'Piovego';
-                      _toBoxPage(context,mensa: id_mensa);
+                      _toBoxPage(context,canteen: id_mensa);
                     },
                   ),
                   SizedBox(height: 20,),
@@ -80,7 +88,7 @@ class CanteenPage extends StatelessWidget {
                     trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
                     onTap: (){
                       final String id_mensa = 'Murialdo';
-                      _toBoxPage(context,mensa: id_mensa);
+                      _toBoxPage(context,canteen: id_mensa);
                     },
                   ),
                   SizedBox(height: 20,),
@@ -96,7 +104,7 @@ class CanteenPage extends StatelessWidget {
                     trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
                     onTap: (){
                       final String id_mensa = 'PioX';
-                      _toBoxPage(context,mensa: id_mensa);
+                      _toBoxPage(context,canteen: id_mensa);
                     },
                   ),
                   SizedBox(height: 20,),
@@ -112,7 +120,7 @@ class CanteenPage extends StatelessWidget {
                     trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
                     onTap: (){
                       final String id_mensa = 'Belzoni';
-                      _toBoxPage(context, mensa: id_mensa);
+                      _toBoxPage(context, canteen: id_mensa);
                     },
                   ),
                 ]
@@ -126,8 +134,12 @@ class CanteenPage extends StatelessWidget {
     );
   }
 
-  void _toBoxPage(BuildContext context, {required String mensa}){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxPage(mensa: mensa)));
+  void _toBoxPage(BuildContext context, {required String canteen, required QuerySnapshot boxes}){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => BoxPage(canteen: canteen, boxes: boxes,)));
+  }
+  
+  Future<void> fetchBoxes(BuildContext context, String canteen) async {
+    boxes = await Provider.of<FirebaseDB>(context, listen: false).fetchBoxes(canteen);
   }
 }
 

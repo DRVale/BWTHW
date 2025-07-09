@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_app/models/requestedData.dart';
 import 'package:project_app/utils/impact.dart';
@@ -8,6 +7,9 @@ import 'dart:math' as math;
 
 class DataProvider extends ChangeNotifier{
 
+  String canteen = '';
+  String address = '';
+  String packageType = '';
   String deliveryMethod = '';
 
   List<Distance> distances = [];
@@ -16,6 +18,8 @@ class DataProvider extends ChangeNotifier{
   List<Exercise> exercisedata = [];
   List<HeartRate> heartRate = [];
   RestingHR ?restingHR;
+
+  List<Trimp> trimp_per_min = [];
 
   // variables for TRIMP 
   double ?HRr;
@@ -61,12 +65,50 @@ class DataProvider extends ChangeNotifier{
     time = difference.inSeconds;
   }
 
+  // GETTERS AND SETTERS
+
+  // canteen
+  void setCanteen(String newCanteen){
+    canteen = newCanteen;
+  }
+  String getCanteen(){
+    return canteen;
+  }
+
+  // address
+  void setAddress(String newAddress){
+    address = newAddress;
+  }
+  String getAddress(){
+    return address;
+  }
+
+  // packageType
+  void setPackageType(String newPackageType){
+    packageType = newPackageType;
+  }
+  String getPackageType(){
+    return packageType;
+  }
+
+  // deliveryMethod
   void setDeliveryMethod(String newDeliveryMethod){
     deliveryMethod = newDeliveryMethod;
   }
-
   String getDeliveryMethod(){
     return deliveryMethod;
+  }
+
+  Future<void> fetchRestingHRData(String day) async {
+    if(day.length > 10) day = day.substring(0, 10);
+    final data = await Impact.fetchRestingHRData(day);
+
+    if(data != null){
+      DateTime time = DateTime.parse('${data['data']['date']} ${data['data']['data']['time']}');
+      double value = data['data']['data']['value'];
+      restingHR = RestingHR(time: time, value: value);
+    }
+    notifyListeners();
   }
 
 
@@ -170,17 +212,6 @@ class DataProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> fetchRestingHRData(String day) async {
-      if(day.length > 10) day = day.substring(0, 10);
-      final data = await Impact.fetchRestingHRData(day);
-
-      if(data != null){
-        DateTime time = DateTime.parse('${data['data']['date']} ${data['data']['data']['time']}');
-        double value = data['data']['data']['value'];
-        restingHR = RestingHR(time: time, value: value);
-      }
-      notifyListeners();
-  }
 
   // Delete Distance data
   void clearDistanceData(){

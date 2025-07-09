@@ -5,9 +5,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:io';
 import 'dart:convert';
 
-// Models
-import 'package:project_app/models/requesteddata.dart';
-
 // IMPACT CLASS
 class Impact {
   static const baseURL = 'https://impact.dei.unipd.it/bwthw/';
@@ -26,8 +23,7 @@ class Impact {
   // URL richiesta dati
   // DISTANCE
   static const distanceURL = 'data/v1/distance/patients/';
-
-
+  
   // HEART RATE
   static const heartrateURL = 'data/v1/heart_rate/patients/';
   static const restingHR_URL = 'data/v1/resting_heart_rate/patients/'; 
@@ -169,6 +165,35 @@ class Impact {
     return result;
   }
 
+  static Future<dynamic> fetchRestingHRData(String day) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.restingHR_URL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+
+    // Return the response body
+    return result;
+  }
+
   static Future<dynamic> fetchExerciseData(String day) async{
 
     // Check access 
@@ -235,33 +260,5 @@ class Impact {
     return result;
   }
 
-  static Future<dynamic> fetchRestingHRData(String day) async{
-
-    // Check access 
-    final sp = await SharedPreferences.getInstance();
-    var access = sp.getString('access');
-
-    // If access token is expired, refresh it
-    if(JwtDecoder.isExpired(access!)){
-      await Impact().refreshTokens();
-      access = sp.getString('access');
-    }
-
-    //Create the (representative) request
-    final url = Impact.baseURL + Impact.restingHR_URL + Impact.patientUsername + '/day/$day/';
-    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
-
-    final response = await http.get(Uri.parse(url), headers: headers);
-
-    var result = null;
-
-    // Check response code
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    }
-
-    // Return the response body
-
-    return result;
-  }
+  
 }
