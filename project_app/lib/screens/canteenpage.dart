@@ -8,10 +8,10 @@ class CanteenPage extends StatelessWidget {
   CanteenPage({super.key});
 
   final List<Canteen> canteen_list = [
-    Canteen(canteenAndress: 'Via Roma 6', canteenName: 'Piovego'),
-    Canteen(canteenAndress: 'Via Gradenigo', canteenName: 'Murialdo'),
-    Canteen(canteenAndress: 'Via Ugo Bassi', canteenName: 'Pio X'),
-    Canteen(canteenAndress: 'Piazza Garibaldi', canteenName: 'Belzoni'),
+    Canteen(canteenAndress: 'Viale Giuseppe Colombo, 1', canteenName: 'Piovego'),
+    Canteen(canteenAndress: 'Via Antonio Grassi, 42', canteenName: 'Murialdo'),
+    Canteen(canteenAndress: 'Via Antonio Francesco Bonporti, 20', canteenName: 'Pio X'),
+    Canteen(canteenAndress: 'Via Gianbattista Belzoni, 146', canteenName: 'Belzoni'),
   ];
 
   QuerySnapshot ?boxes;
