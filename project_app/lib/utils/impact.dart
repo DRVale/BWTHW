@@ -29,7 +29,8 @@ class Impact {
 
 
   // HEART RATE
-  static const heartrateURL = 'data/v1/heart_rate/patients/'; 
+  static const heartrateURL = 'data/v1/heart_rate/patients/';
+  static const restingHR_URL = 'data/v1/resting_heart_rate/patients/'; 
   
 
   // EXERCISE
@@ -74,7 +75,7 @@ class Impact {
 
 
 
-Future<int> loggingIn(String username, String password) async {
+  Future<int> loggingIn(String username, String password) async {
     
   //final url = 'https://impact.dei.unipd.it/bwthw/gate/v1/token/';
   final url = Impact.baseURL + Impact.tokenURL;
@@ -100,7 +101,7 @@ Future<int> loggingIn(String username, String password) async {
   }
 
   return response.statusCode;
-  }
+}
 
   static Future<dynamic> fetchDistanceDataRange(String startTime, String endTime) async{
 
@@ -231,6 +232,36 @@ Future<int> loggingIn(String username, String password) async {
     }
 
     // Return the response body
+    return result;
+  }
+
+  static Future<dynamic> fetchRestingHRData(String day) async{
+
+    // Check access 
+    final sp = await SharedPreferences.getInstance();
+    var access = sp.getString('access');
+
+    // If access token is expired, refresh it
+    if(JwtDecoder.isExpired(access!)){
+      await Impact().refreshTokens();
+      access = sp.getString('access');
+    }
+
+    //Create the (representative) request
+    final url = Impact.baseURL + Impact.restingHR_URL + Impact.patientUsername + '/day/$day/';
+    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    var result = null;
+
+    // Check response code
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+
+    // Return the response body
+
     return result;
   }
 }

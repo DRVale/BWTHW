@@ -38,7 +38,7 @@ class OptionsPage extends StatelessWidget {
         
                   // For debug
                   print('Done');
-                  return DistanceDataPlot(distanceData: data.distances);
+                  return DistanceDataPlot(distanceData: []);
                 }//else
               }),
         
