@@ -339,14 +339,9 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column( 
             children: [
-              Container(
-                child: Text('Your Progress',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
+              SizedBox(height: 50),
+              Center(child: DeliveryCounterPanel(total: total, perMethod: methodCounts)),
+              SizedBox(height: 50,),
               Consumer<DataProvider>(builder: (context, data, child) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,8 +355,15 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 10),
-              //Inserimento Counter delle corse: 
-              Center(child: DeliveryCounterPanel(total: total, perMethod: methodCounts))
+              Container(
+                child: Text('Your Progress',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ),
+               
             ],
           ),
         ),

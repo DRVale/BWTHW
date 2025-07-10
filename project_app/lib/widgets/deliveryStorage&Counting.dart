@@ -98,44 +98,44 @@ class DeliveryCounterPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: const Color.fromARGB(255, 6, 108, 10)),
+        //border: Border.all(color: const Color.fromARGB(255, 6, 108, 10)),
         //color: Colors.green,
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
       ),
-      child: Column(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Totale consegne
           const Text(
-            "Total Deliveries",
+            "Total deliveries:  ",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 25,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
           FlipCounter(value: total),
           const SizedBox(height: 12),
       
-          // Consegne per metodo (in una riga orizzontale)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: perMethod.entries.map((entry) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    entry.key,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 2),
-                  FlipCounter(value: entry.value),
-                ],
-            );
-            }).toList(),
-          ),
-          SizedBox(height: 16)
+          // // Consegne per metodo (in una riga orizzontale)
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: perMethod.entries.map((entry) {
+          //     return Column(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Text(
+          //           entry.key,
+          //           style: const TextStyle(fontSize: 14),
+          //         ),
+          //         const SizedBox(height: 2),
+          //         FlipCounter(value: entry.value),
+          //       ],
+          //   );
+          //   }).toList(),
+          // ),
+          // SizedBox(height: 16)
       ],
       ),
     );

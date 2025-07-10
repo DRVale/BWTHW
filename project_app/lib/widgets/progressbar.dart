@@ -59,7 +59,7 @@ class XPProgressBar extends StatelessWidget {
                 )
               ),
         
-              // Tachometer needle
+              // Tachimetro
               Positioned(
                 bottom: 20,
                 child: Transform.rotate(
@@ -80,20 +80,20 @@ class XPProgressBar extends StatelessWidget {
         
               // Central XP label
               Positioned(
-                bottom: 20,
+                bottom: 5,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       '${currentXP.toInt()} XP',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       'out of $maxXP',
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
