@@ -46,7 +46,8 @@ class DataProvider extends ChangeNotifier{
     await fetchDistanceData(time1, time2);
     await fetchHeartRateData(time1, time2);
     await fetchRestingHRData(time1);
-    // calculateSumOfDistances();
+    calculateSumOfDistances();
+    getAvgSpeed();
     // fetchDistanceData(time1, time2); //doppia chiamata?
     
     updateXPtrimp();
@@ -270,8 +271,8 @@ class DataProvider extends ChangeNotifier{
     // Clear the xpIncrement from previous deliveries
     xpIncrement = 0;
 
-    calculateSumOfDistances();
-    getAvgSpeed();
+    // calculateSumOfDistances();
+    // getAvgSpeed();
 
     // Consider different ranges for "Corsa", "Camminata", "Bici"
     if(deliveryMethod == 'Camminata'){

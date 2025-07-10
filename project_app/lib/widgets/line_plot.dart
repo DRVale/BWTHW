@@ -87,11 +87,12 @@ class TrimpDataPlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+      palette: [Colors.green],
       plotAreaBorderWidth: 0,
       title: ChartTitle(text: 'Activity TRIMP'),
       primaryXAxis: const DateTimeAxis(majorGridLines: MajorGridLines(width: 0)),
       primaryYAxis: const NumericAxis(
-          labelFormat: '{value} [unità di misura]',
+          labelFormat: '{value}',
           axisLine: AxisLine(width: 0),
           majorTickLines: MajorTickLines(color: Colors.transparent)),
       series: _getTrimpDataSeries(),

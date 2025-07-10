@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/utils/impact.dart';
+import 'package:project_app/utils/firebase.dart';
+
+// Provider
+import 'package:provider/provider.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -95,7 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
                   if(loginCode == 200){
-                    
+                    // Call the DB to fetch the past deliveries
+                    await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+                    Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
                   }else{
                     ScaffoldMessenger.of(context)

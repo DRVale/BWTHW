@@ -267,7 +267,7 @@ Widget build(BuildContext context) {
                                               ),
                                               actions: [
                                                 TextButton(
-                                                  onPressed: () => _toHomePage(context),
+                                                  onPressed: () async => _toHomePage(context),
                                                   child: Text("Confirm"),
                                                 ),
                                               ],
@@ -299,29 +299,38 @@ Widget build(BuildContext context) {
     floatingActionButton: Visibility(
       visible: !isTextVisible,
       child: Container(
-        color: Colors.white,
-        height: 50,
-        width: 75,
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 10,
-              right: 17,
-              child: IconButton(
-                onPressed: (){
-                  setState(() {
-                    isTextVisible = !isTextVisible;
-                  });
-                },
-                icon: Icon(Icons.timer)
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 250, 250, 238),
+          borderRadius: BorderRadius.circular(50)
+        ),
+        
+        height: 80,
+        width: 80,
+        child: Center(
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 35,
+                right: 17,
+                child: IconButton(
+                  onPressed: (){
+                    setState(() {
+                      isTextVisible = !isTextVisible;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.timer,
+                    size: 28,
+                  )
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 10,
-              child: Text(_elapsedTime)
-            )
-          ],
+              Positioned(
+                bottom: 20,
+                right: 10,
+                child: Text(_elapsedTime)
+              )
+            ],
+          ),
         ),
       ),
     ),
@@ -329,7 +338,9 @@ Widget build(BuildContext context) {
 }
 }
 
-void _toHomePage(BuildContext context) {
+Future<void> _toHomePage(BuildContext context) async {
+  await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
   Navigator.of(context).pop();  // Remove the alertDialog from stack
   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
 }

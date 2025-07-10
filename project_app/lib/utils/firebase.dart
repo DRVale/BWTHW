@@ -14,7 +14,10 @@ class FirebaseDB extends ChangeNotifier{
   List<Delivery> deliveries = [];
   List<Trimp> trimp_per_min = [];
 
+  // AGGIUNGERE CONTEGGIO DELIVERIES
+
   void getTrimpPerMin(Delivery delivery){
+    trimp_per_min.clear();
     DateTime startTime = delivery.heartRate[0].time;
     DateTime endTime = delivery.heartRate[delivery.heartRate.length-1].time;
 
@@ -59,6 +62,7 @@ class FirebaseDB extends ChangeNotifier{
     // 2) loop across the minutes
     // 3) for each minute, calculate the trimp, sum it and divide by the number of measures in the time span
     // 4) add the value (time + value) to the trimp_per_min list
+    notifyListeners();
   }
 
   static final db = FirebaseFirestore.instance;
@@ -113,9 +117,15 @@ class FirebaseDB extends ChangeNotifier{
   }
 
 
-  Future<void> fetchDeliveriesDB() async {
+  Future<void> fetchDeliveriesDB({String? deliveryMethod}) async {
 
-    final queryResult = await db.collection('deliveries').get();
+    deliveries.clear();
+
+    final queryResult = deliveryMethod == null? 
+      await db.collection('deliveries').get() 
+      : 
+      await db.collection('deliveries').where("deliveryMethod", isEqualTo: deliveryMethod).get();
+
 
     for (var doc in queryResult.docs) {
 

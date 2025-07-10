@@ -13,6 +13,7 @@ import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:project_app/utils/firebase.dart';
 import 'package:project_app/widgets/line_plot.dart';
 import 'package:project_app/widgets/deliveryStorage&Counting.dart';
+import 'package:intl/intl.dart';
 
 
 // PROVA PER PROVIDER
@@ -31,6 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int bodyIndex = 0;
+  int selected_delivery_idx = 0;
 
   Delivery? selectedDelivery;
   // Delivery selectedDelivery = list_of_deliveries[0];  IN FUTURO SARA' COSI'
@@ -60,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   int total = 0;
   Map<String, int> methodCounts = {};
   final methods = ['Bici', 'Corsa', 'Camminata'];
+  final methods_en = ['Bike', 'Running', 'On Foot'];
 
 
   @override
@@ -83,7 +86,7 @@ class _HomePageState extends State<HomePage> {
 
   
     //if(firstLaunch) _toGraphPage(context);
-    if(firstLaunch){
+    if(firstLaunch == false){
       showDialog(
        
         context: context,
@@ -105,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               Center(child: Text('Is this the first time using PastOn? Tell us your personal information',)),
               SizedBox(height: 30,),
               TextField(
-                cursorColor: Colors.black,
+                cursorColor: Colors.black54,
                 textAlign: TextAlign.center,
                 controller: userController,
                 // onTap: ()async{
@@ -129,7 +132,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 10,),
               TextField(
-                cursorColor: Colors.black,
+                cursorColor: Colors.black54,
                 textAlign: TextAlign.center,
                 controller: surnameController,
                 // onTap: ()async{
@@ -158,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                Consumer<DataProvider>(builder: (context, data, child) {
                 return
               TextField(
-                  cursorColor: Colors.black,
+                  cursorColor: Colors.black54,
                   textAlign: TextAlign.center,
                   controller: birthdateController,
                   //readOnly: true,
@@ -340,7 +343,8 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Your Progress',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,                  ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 )
               ),
               Consumer<DataProvider>(builder: (context, data, child) {
@@ -363,94 +367,244 @@ class _HomePageState extends State<HomePage> {
         ),
       )
       :
-      Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+
+      Consumer<FirebaseDB>(
+
+        builder: (context, data, child) {
+
+                
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
           children: [
 
             Text('Select a delivery'),
 
-            Consumer<FirebaseDB>(
+            Center(
+              child: Container(
+                // width: MediaQuery.sizeOf(context).width,
+                height: 100,
+                child: ListView.builder(
+                  
+                            scrollDirection: Axis.horizontal,
+                            // shrinkWrap: true,
+                            itemCount: methods_en.length,
+                            itemBuilder: (context, index){
+                
+                              String selectedDeliveryMethod = '';
+                
+                              return Center(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      InkWell(
+                                        child: Container( //Aggiunto container per abbellire i pacchi
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black54),
+                                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                                          ),
+                                                
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              methods_en[index],
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () async {
+                                          // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
+                                          selectedDeliveryMethod = methods_en[index];
+                                          selected_delivery_idx = 0;
 
-              // AGGIUNGERE GRAFICI/DATI RELATIVI ALLA SINGOLA CONSEGNA
+                                          // Remove existing data
+                                          data.deliveries.clear();
 
-              builder: (context, data, child) {
-
-                int selected_delivery_idx = 0;
-
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: data.deliveries.length,
-                        itemBuilder: (context, index){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                child: Container( //Aggiunto container per abbellire i pacchi
-                                  width: MediaQuery.sizeOf(context).width - 50,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black54),
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                                  ),
-                                  child: Text('${data.deliveries[index].address}, ${data.deliveries[index].packageType}, ${data.deliveries[index].start}'),                          
+                                          await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB(deliveryMethod: selectedDeliveryMethod);
+                                          Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[0]);
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      //SizedBox(height: 60)
+                                    ],
                                 ),
-                                onTap: () async {
-                                  // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
-                                  selected_delivery_idx = index;
-                                  print(data.deliveries[selected_delivery_idx].start);
-
-                                  // CAMBIARE QUA, però in linea di massima funziona.
-
-                                  selectedDelivery = data.deliveries[index];
-                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-                                  await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
-                                  // Now make the firebase query to get the data of a specific delivery
+                              );
+                            },
+                          ),
+              ),
+            ),
+        
+             
+                  
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Left Arrow Button
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: selected_delivery_idx == 0? Colors.grey : Colors.green,
+                            ),
+                            borderRadius: BorderRadius.circular(50)
+                          ),
+                          child: IconButton(
+                            iconSize: 20,
+                            color: Color.fromARGB(255, 250, 250, 238),
+                            onPressed: selected_delivery_idx > 0 ? (){
+                              setState(() {
+                                if (selected_delivery_idx > 0) {
+                                  selected_delivery_idx--;
+                                }
+                                selectedDelivery = data.deliveries[selected_delivery_idx];
+                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                              });
+                            } : null, // Disable if at first item
+                            icon: Icon(
+                              Icons.arrow_back_ios_new,
+                              color: selected_delivery_idx == 0? Colors.grey : Colors.green,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 40), // Space between buttons
                     
+                        Container( //Aggiunto container per abbellire i pacchi
+                          // width: MediaQuery.sizeOf(context).width - 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                          ),
                     
-                                  // Select the appropriate delivery or specific delivery data
-                                },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: 
+                            Text(
+                              '${data.deliveries[selected_delivery_idx].address.split(',')[0]}, ${formatDateTime(data.deliveries[selected_delivery_idx].start)}',
+                              style: TextStyle(
+                                color: Colors.black54
                               ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              //SizedBox(height: 60)
-                            ],
-                          );
-                        },
-                      ),
+                            ),
+                          ),
+                        ),
+                    
+                        const SizedBox(width: 40),
+                    
+                        // Right Arrow Button
+                    
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                            ),
+                            borderRadius: BorderRadius.circular(50)
+                          ),
+                          child: IconButton(
+                            color: Color.fromARGB(255, 250, 250, 238),
+                            // foregroundColor: Colors.green,
+                            onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
+                              setState(() {
+                                if (selected_delivery_idx < data.deliveries.length - 1) {
+                                  selected_delivery_idx++;
+                                }
+                                selectedDelivery = data.deliveries[selected_delivery_idx];
+                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                              });
+                            } : null, // Disable if at first item
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
-                    data.deliveries.length == 0? 
-                    Text('data is null')
-                    :
-                    Container(
-                      // color: Colors.amber,
-                      height: 250,
-                      child: TrimpDataPlot(trimpData: data.trimp_per_min),
-                    )
-                  ],
-                );
-              },
-            ),
-            
-            ElevatedButton(
-              onPressed: () async {
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        height: 250,
+                        child: TrimpDataPlot(trimpData: data.trimp_per_min)
+                      ),
+                    ),
+                  
+        
+              
+              
+              
+              // builder: (context, data, child) {
 
-                await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+              //   int selected_delivery_idx = 0;
 
-                print(Provider.of<FirebaseDB>(context, listen: false).deliveries[0].toString());
-              }, 
-              child: Text('Get data from firebase'),
-            )
+              //   return Column(
+              //     children: [
+              //       SizedBox(
+              //         height: 50,
+              //         width: double.infinity,
+              //         child: ListView.builder(
+              //           scrollDirection: Axis.horizontal,
+              //           shrinkWrap: true,
+              //           itemCount: data.deliveries.length,
+              //           itemBuilder: (context, index){
+              //             return Row(
+              //               mainAxisAlignment: MainAxisAlignment.center,
+              //               children: [
+              //                 InkWell(
+              //                   child: Container( //Aggiunto container per abbellire i pacchi
+              //                     // width: MediaQuery.sizeOf(context).width - 50,
+              //                     decoration: BoxDecoration(
+              //                       border: Border.all(color: Colors.black54),
+              //                       borderRadius: BorderRadius.all(Radius.circular(20)),                    
+              //                     ),
+
+              //                     child: Padding(
+              //                       padding: const EdgeInsets.all(8.0),
+              //                       child: 
+              //                       Text('${data.deliveries[index].address.split(',')[0]}, ${formatDateTime(data.deliveries[index].start)}'),
+              //                     ),
+              //                   ),
+              //                   onTap: (){
+              //                     // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
+              //                     selected_delivery_idx = index;
+              //                     print(data.deliveries[selected_delivery_idx].start);
+
+              //                     // CAMBIARE QUA, però in linea di massima funziona.
+
+              //                     selectedDelivery = data.deliveries[index];
+              //                     Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+              //                     // Now make the firebase query to get the data of a specific delivery
+
+                    
+                    
+              //                     // Select the appropriate delivery or specific delivery data
+              //                   },
+              //                 ),
+              //                 SizedBox(
+              //                   width: 20,
+              //                 ),
+              //                 //SizedBox(height: 60)
+              //               ],
+              //             );
+              //           },
+              //         ),
+              //       ),
+              //       Container(
+              //         // color: Colors.amber,
+              //         height: 250,
+              //         child: TrimpDataPlot(trimpData: data.trimp_per_min),
+              //       )
+              //     ],
+              //   );
           ],
         )
-      ),
+      );
+        },),
 
 
       // body: Consumer<XP_notifier>
@@ -545,5 +699,39 @@ Color getRandomColor(){
   random.nextInt(256),
   random.nextInt(256),
   );
-  
 }
+
+String formatDateTime(String dateString){
+
+  DateTime date = DateTime.parse(dateString);
+
+  // Get month and year
+  final monthYearFormatter = DateFormat('MMMM yyyy');
+  final monthYear = monthYearFormatter.format(date);
+
+  // Get the day 
+  final day = date.day;
+
+  String ordinalSuffix = '';
+
+  switch (day % 10) {
+    case 1:
+      ordinalSuffix = 'st';
+    case 2:
+      ordinalSuffix = 'nd';
+    case 3:
+      ordinalSuffix = 'rd';
+    default:
+      ordinalSuffix = 'th';
+  }
+  if (day >= 11 && day <= 13) {
+    ordinalSuffix = 'th';
+  }
+
+
+  return '${monthYear.split(' ')[0]} ${day}$ordinalSuffix ${monthYear.split(' ')[1]}';
+
+}
+
+
+

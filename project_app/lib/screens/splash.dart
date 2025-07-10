@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project_app/screens/homepage.dart';
 import 'package:project_app/screens/loginpage.dart';
 import 'package:project_app/utils/impact.dart';
+import 'package:project_app/utils/firebase.dart';
+
+// Provider
+import 'package:provider/provider.dart';
+
 
 
 class Splash extends StatelessWidget {
@@ -43,7 +48,9 @@ class Splash extends StatelessWidget {
   }
 
   // Method for navigation SplashPage -> ExposurePage
-  void _toHomePage(BuildContext context)  {
+  void _toHomePage(BuildContext context) async {
+    await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+    Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
   }
 
