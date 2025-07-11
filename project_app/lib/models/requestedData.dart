@@ -19,6 +19,36 @@ class Distance{
 
 }
 
+class Delivery{ // Move it into models folder
+
+  final String canteen;
+  final String address;
+  final String packageType;
+  final String deliveryMethod;
+  final String start;
+  final String end;
+  final List<Distance> distances;
+  final List<HeartRate> heartRate;
+  final RestingHR restingHR;
+
+  Delivery({
+    required this.canteen,
+    required this.address,
+    required this.packageType,
+    required this.deliveryMethod,
+    required this.start, 
+    required this.end,
+    required this.distances,
+    required this.heartRate,
+    required this.restingHR
+  });
+    
+  @override
+  String toString() {
+    return 'Delivery started at $start and ended at $end. First values of HR and Distance: ${heartRate[0].value}, ${distances[0].value}';
+  } //toString
+}
+
 class Exercise{
   /* 
   "activityName": "Camminata",

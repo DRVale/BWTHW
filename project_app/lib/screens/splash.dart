@@ -18,6 +18,8 @@ class Splash extends StatelessWidget {
     Future.delayed(const Duration(seconds: 1), () => _checkLogin(context));
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+      // SE DA' PROBLEMI TOGLIERE
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,14 +49,17 @@ class Splash extends StatelessWidget {
     );
   }
 
-  // Method for navigation SplashPage -> ExposurePage
-  void _toHomePage(BuildContext context) async {
+  Future<void> _toHomePage(BuildContext context) async {
+
+    // Before calling the HomePage, get all the deliveries, the total XP, and the data for the graphs
     await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+    await Provider.of<FirebaseDB>(context, listen: false).getTotalXP();
+    Provider.of<FirebaseDB>(context, listen: false).getTotalDeliveries();
     Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
+
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
   }
 
-  // Method for navigation SplashPage -> LoginPage
   void _toLoginPage(BuildContext context) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => LoginPage())));
   } 
@@ -64,7 +69,7 @@ class Splash extends StatelessWidget {
   void _checkLogin(BuildContext context) async {
     final result = await Impact().refreshTokens();
     if (result == 200) {
-      _toHomePage(context);
+      await _toHomePage(context);
     } else {
     _toLoginPage(context);
     }

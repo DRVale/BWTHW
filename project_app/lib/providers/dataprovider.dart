@@ -19,6 +19,8 @@ class DataProvider extends ChangeNotifier{
   List<HeartRate> heartRate = [];
   RestingHR ?restingHR;
 
+  int totalXP = 0;
+
   List<Trimp> trimp_per_min = [];
 
   // variables for TRIMP 
@@ -50,7 +52,7 @@ class DataProvider extends ChangeNotifier{
     getAvgSpeed();
     // fetchDistanceData(time1, time2); //doppia chiamata?
     
-    updateXPtrimp();
+    // await updateXPtrimp();
   }
 
   void setTime(String time1, String time2){
@@ -346,12 +348,12 @@ class DataProvider extends ChangeNotifier{
   // HR_rest deve essere calcolato come media di un intervallo a riposo
   // Ipotesi: chiediamo al paziente di caricare un valore medio. 
   // 
-  Future<void> updateXPtrimp() async {
+  Future<void> updateXPtrimp(Delivery delivery) async {
     
     //HR ESERCIZIO
     double HR_sum = 0;
     for (var i = 0; i < heartRate.length; i++) {
-    HR_sum += heartRate[i].value; // Somma cumulativa
+      HR_sum += heartRate[i].value; // Somma cumulativa
     }
     HRexe = HR_sum / heartRate.length; // Calcola la media
 
@@ -359,8 +361,8 @@ class DataProvider extends ChangeNotifier{
     if (restingHR != null) {
       HRr = restingHR!.value;
     } else {
-      HRr = 70; // fallback default
-}
+      HRr = 60; // fallback default
+    }
 
 
     // HR MAX stimato serve richiesta età da salvare nelle sharedPreferences 
@@ -391,16 +393,14 @@ class DataProvider extends ChangeNotifier{
     else if(TRIMP_N > 2){
       xpIncrement = 45;
     }
-
     xp = xpIncrement + xp!;
     
     // Store the value in the SP
     sp.setDouble('XP', xp!);
 
     // Quando calcolo un nuovo xpIncrement poi azzero la distanza percorsa 
-    
-    notifyListeners();
 
+    notifyListeners();
   }
 
   Future<void> pickDate(BuildContext context) async{

@@ -14,6 +14,7 @@ import 'package:project_app/utils/firebase.dart';
 import 'package:project_app/widgets/line_plot.dart';
 import 'package:project_app/widgets/deliveryStorage&Counting.dart';
 import 'package:intl/intl.dart';
+import 'package:project_app/models/requesteddata.dart';
 
 
 // PROVA PER PROVIDER
@@ -221,7 +222,6 @@ class _HomePageState extends State<HomePage> {
       );
 
       showDialog(
-        
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -310,6 +310,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // SE DA' PROBLEMI TOGLIERE
+      resizeToAvoidBottomInset: false,
       extendBody: true,
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
@@ -347,12 +349,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )
               ),
-              Consumer<DataProvider>(builder: (context, data, child) {
+              Consumer<FirebaseDB>(builder: (context, data, child) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ 
                     XPProgressBar(
-                      currentXP: data.xp ?? xp,
+                      currentXP: data.totalXP,
                       maxXP: 500,
                       checkpoints: checkpoints,
                     ),
@@ -360,8 +362,11 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 10),
-              //Inserimento Counter delle corse: 
-              Center(child: DeliveryCounterPanel(total: total, perMethod: methodCounts))
+
+              // Delivery counter
+              Center(
+                child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)
+              ),
             ],
           ),
         ),

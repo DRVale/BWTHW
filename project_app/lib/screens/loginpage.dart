@@ -101,6 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                   if(loginCode == 200){
                     // Call the DB to fetch the past deliveries
                     await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
+                    await Provider.of<FirebaseDB>(context, listen: false).getTotalXP();
+                    Provider.of<FirebaseDB>(context, listen: false).getTotalDeliveries();
                     Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
                   }else{

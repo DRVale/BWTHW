@@ -233,14 +233,28 @@ Widget build(BuildContext context) {
                           
                                     // await Provider.of<DataProvider>(context, listen: false).delivery(startDate!, endDate);
                                     await Provider.of<DataProvider>(context, listen: false).delivery(startDate_prova, endDate_prova);
-                                    
+
                                     String deliveryMethod = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
                                     
                                     RestingHR deliveryRestingHR = Provider.of<DataProvider>(context, listen: false).restingHR!;
                                     List<Distance> deliveryDistances = Provider.of<DataProvider>(context, listen: false).distances;
                                     List<HeartRate> deliveryHeartRate = Provider.of<DataProvider>(context, listen: false).heartRate;
+
+                                    Delivery newDelivery = Delivery(
+                                      canteen: widget.canteen, 
+                                      address: widget.address, 
+                                      packageType: widget.packageType, 
+                                      deliveryMethod: deliveryMethod, 
+                                      start: startDate_prova, 
+                                      end: endDate_prova, 
+                                      distances: deliveryDistances, 
+                                      heartRate: deliveryHeartRate, 
+                                      restingHR: deliveryRestingHR
+                                    );
+
+                                    int xpIncrement = Provider.of<FirebaseDB>(context, listen: false).updateXPtrimp(newDelivery);
                           
-                                    await Provider.of<FirebaseDB>(context, listen: false).addDeliveryDB(widget.canteen, widget.address, widget.packageType, deliveryMethod, startDate_prova, endDate_prova, deliveryRestingHR, deliveryDistances, deliveryHeartRate);
+                                    await Provider.of<FirebaseDB>(context, listen: false).addDeliveryDB(newDelivery.canteen, newDelivery.address, newDelivery.packageType, newDelivery.deliveryMethod, newDelivery.start, newDelivery.end, newDelivery.restingHR, newDelivery.distances, newDelivery.heartRate);
                           
                                     // DELIVERY STORAGE: Quando fermo timer richiedo al provider il metodo e richiamo la classe di storage
                                     // String method = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
@@ -248,6 +262,7 @@ Widget build(BuildContext context) {
                           
                                     showDialog(
                                       context: context,
+                                      barrierDismissible: false,
                                       builder: (context) {
                                         return Consumer<DataProvider>(
                                           builder: (context, data, child) {
@@ -259,7 +274,7 @@ Widget build(BuildContext context) {
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Text("You obtained: ${data.xpIncrement} XP", style: TextStyle(color: Colors.black54),),
+                                                  Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
                                                   // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                                   Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
                                                   Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
@@ -339,8 +354,11 @@ Widget build(BuildContext context) {
 }
 
 Future<void> _toHomePage(BuildContext context) async {
-  await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
-  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
-  Navigator.of(context).pop();  // Remove the alertDialog from stack
+  await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();  // Get all the deliveries
+  await Provider.of<FirebaseDB>(context, listen: false).getTotalXP();
+  Provider.of<FirebaseDB>(context, listen: false).getTotalDeliveries();       // Get the number of deliveries
+  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);  // Calculate the trimp of the first delivery (for history page)
+  Navigator.of(context).pop();                                                // Remove the alertDialog from stack
   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
 }
+

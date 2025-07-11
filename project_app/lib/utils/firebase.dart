@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_app/screens/deliverypage.dart';
+import 'dart:math' as math;
 
 // Models
 import 'package:project_app/models/requesteddata.dart';
+
+// Providers
+import 'package:provider/provider.dart';
+import 'package:project_app/providers/dataprovider.dart';
+
 
 
 // Firebase class
@@ -14,7 +21,72 @@ class FirebaseDB extends ChangeNotifier{
   List<Delivery> deliveries = [];
   List<Trimp> trimp_per_min = [];
 
+  int totalDeliveries = 0;
+  int bikeDeliveries = 0;
+  int footDeliveries = 0;
+  int runningDeliveries = 0;
+
+  int totalXP = 0;
+  int historyXP = 0;  // Store the value of all the XP that has been obtained
+
+  void getTotalDeliveries(){
+    totalDeliveries = deliveries.length;
+  }
+
   // AGGIUNGERE CONTEGGIO DELIVERIES
+
+  Future<void> getTotalXP() async { // From all the deliveries, get one at a time. Then, calculate the xp increment related to the delivery
+    
+    totalXP = 0; // Before computing the total, clear the past value
+
+    for(var i = 0; i < deliveries.length; i++){
+      totalXP = totalXP + updateXPtrimp(deliveries[i]);
+    }
+
+    historyXP = totalXP;
+    totalXP = totalXP % 500;  // If the totalXP is above 500, get the remainder of the division  
+  }
+
+    
+  int updateXPtrimp(Delivery delivery){
+
+    int xpIncrement = 0;
+      
+    //HR ESERCIZIO
+    double HR_sum = 0;
+    for (var i = 0; i < delivery.heartRate.length; i++) {
+      HR_sum += delivery.heartRate[i].value; // Somma cumulativa
+    }
+    double HRexe = HR_sum / delivery.heartRate.length; // Calcola la media
+
+    // HR MAX stimato serve richiesta età da salvare nelle sharedPreferences 
+    // Inserire nel peak_date il calcolo age. 
+    // SharedPreferences sp = await SharedPreferences.getInstance();
+    // double ?age;
+    // age = sp.getDouble('age')!;
+    double HRmax = 220 - 24;
+
+    DateTime start = DateTime.parse(delivery.start);
+    DateTime end = DateTime.parse(delivery.end);
+
+    Duration deliveryTime = end.difference(start);
+    int time = deliveryTime.inSeconds;
+
+    // Calculate TRIMP and normalized TRIMP 
+    double TRIMP = time * ((HRexe - delivery.restingHR.value)/(HRmax - delivery.restingHR.value))*0.64*math.exp(1.92*((HRexe - delivery.restingHR.value)/(HRmax - delivery.restingHR.value)));
+    double TRIMP_N = TRIMP / time;
+
+    if(TRIMP_N < 1){
+      xpIncrement = 15;
+    }
+    else if(TRIMP_N > 1 && TRIMP_N < 2){
+      xpIncrement = 30;
+    }
+    else if(TRIMP_N > 2){
+      xpIncrement = 45;
+    }  
+    return xpIncrement;
+  }
 
   void getTrimpPerMin(Delivery delivery){
     trimp_per_min.clear();
@@ -122,9 +194,9 @@ class FirebaseDB extends ChangeNotifier{
     deliveries.clear();
 
     final queryResult = deliveryMethod == null? 
-      await db.collection('deliveries').get() 
+      await db.collection('deliveries').get() // Get all the deliveries
       : 
-      await db.collection('deliveries').where("deliveryMethod", isEqualTo: deliveryMethod).get();
+      await db.collection('deliveries').where("deliveryMethod", isEqualTo: deliveryMethod).get(); // Get only the deliveries made with the selected deliveryMethod
 
 
     for (var doc in queryResult.docs) {
@@ -217,35 +289,4 @@ class FirebaseDB extends ChangeNotifier{
     
     await db.collection("boxes").add(data);
   }
-}
-
-
-class Delivery{ // Move it into models folder
-
-  final String canteen;
-  final String address;
-  final String packageType;
-  final String deliveryMethod;
-  final String start;
-  final String end;
-  final List<Distance> distances;
-  final List<HeartRate> heartRate;
-  final RestingHR restingHR;
-
-  Delivery({
-    required this.canteen,
-    required this.address,
-    required this.packageType,
-    required this.deliveryMethod,
-    required this.start, 
-    required this.end,
-    required this.distances,
-    required this.heartRate,
-    required this.restingHR
-  });
-    
-  @override
-  String toString() {
-    return 'Delivery started at $start and ended at $end. First values of HR and Distance: ${heartRate[0].value}, ${distances[0].value}';
-  } //toString
 }
