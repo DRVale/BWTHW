@@ -59,8 +59,8 @@ class _BoxPageState extends State<BoxPage> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10,),
-                    Container( //Aggiunto container per abbellire i pacchi
+                    SizedBox(height: 6),
+                    Container(
                       width: MediaQuery.sizeOf(context).width - 50,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black54),
@@ -83,7 +83,7 @@ class _BoxPageState extends State<BoxPage> {
                         ],
                       ),
                     ),
-                    //SizedBox(height: 60)
+                    SizedBox(height: 6),
                   ],
                 );
 

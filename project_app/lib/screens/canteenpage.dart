@@ -35,28 +35,42 @@ class CanteenPage extends StatelessWidget {
               ListView.builder( 
                 itemCount: canteen_list.length,
                 itemBuilder: (context, index){
-                  final canteen = canteen_list[index];  //indice della lista
+                  final canteen = canteen_list[index];  //List index
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 10,),
-                      ListTile(
-                      shape:  RoundedRectangleBorder( side: const 
-                      BorderSide(color: Colors.black54, width: 1.0), 
-                      borderRadius: BorderRadius.circular(20),  // bordi arrotondati opzionali
+                      SizedBox(height: 6),
+                      Container(
+                        width: MediaQuery.sizeOf(context).width - 50,
+                        child: ListTile(
+                          shape:  RoundedRectangleBorder( 
+                            side: const BorderSide(color: Colors.black54, width: 1.0), 
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          leading: const Icon(
+                            Icons.add_home, 
+                            color: Colors.green, 
+                            size: 20
+                          ),
+                          title: Text(
+                            'Canteen: ${canteen.canteenName}',
+                            style: const TextStyle(color: Colors.black54, fontSize: 16)
+                          ),
+                          subtitle: Text(
+                            'Address: ${canteen.canteenAndress}',
+                            style: const TextStyle(fontSize: 12, color: Colors.black54)
+                          ),
+                          trailing: const Icon(
+                            Icons.keyboard_arrow_right, 
+                            color: Colors.green
+                          ),
+                          onTap: () async {
+                            await fetchBoxes(context, canteen.canteenName);
+                            _toBoxPage(context, canteen: canteen.canteenName, boxes: boxes!);
+                          },
+                        ),
                       ),
-                        leading: const Icon(Icons.add_home, color: Colors.green, size: 20),
-                        title: Text('Canteen: ${canteen.canteenName}',
-                            style: const TextStyle(color: Colors.black54, fontSize: 16)),
-                        subtitle: Text('Address: ${canteen.canteenAndress}',
-                            style: const TextStyle(fontSize: 12, color: Colors.black54)),
-                        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.green),
-                        onTap: () async {
-                          await fetchBoxes(context, canteen.canteenName);
-                          _toBoxPage(context, canteen: canteen.canteenName, boxes: boxes!);
-                        },
-                      ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 6),
                     ],
                   );
                 },

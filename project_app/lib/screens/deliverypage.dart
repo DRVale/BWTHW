@@ -172,7 +172,11 @@ Widget build(BuildContext context) {
                         child: Visibility(
                           visible: isTextVisible,
                           child: Container(
-                            color: const Color.fromARGB(255, 250, 250, 238),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 250, 238),
+                              borderRadius: BorderRadius.all(Radius.circular(40)),                    
+                            ),
+                            
                             // padding: const EdgeInsets.all(16.0),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16,
@@ -187,7 +191,6 @@ Widget build(BuildContext context) {
                                       Icons.minimize,
                                       color: Colors.black,
                                     ),
-                                    tooltip: 'Minimize',
                                     onPressed: () {
                                       setState(() {
                                         isTextVisible = false; // Hide the container with the text
@@ -203,9 +206,9 @@ Widget build(BuildContext context) {
                                   Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20),)
                                 ]),
                                 SizedBox(height: 20,),
-                                Text('Go to: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                Text('Destination: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
-                                Text("Tempo trascorso: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                Text("Time: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -292,7 +295,12 @@ Widget build(BuildContext context) {
                                       },
                                     );
                                   },
-                                  child: Text("Ferma Timer"),
+                                  child: Text(
+                                    "Stop Timer",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 11,
@@ -335,6 +343,7 @@ Widget build(BuildContext context) {
                   },
                   icon: Icon(
                     Icons.timer,
+                    color: Colors.green,
                     size: 28,
                   )
                 ),
@@ -342,7 +351,12 @@ Widget build(BuildContext context) {
               Positioned(
                 bottom: 20,
                 right: 10,
-                child: Text(_elapsedTime)
+                child: Text(
+                  _elapsedTime,
+                  style: TextStyle(
+                    // color: Colors.green
+                  ),
+                )
               )
             ],
           ),

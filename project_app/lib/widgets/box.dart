@@ -156,8 +156,15 @@ class _BoxState extends State<Box> {
                               return AlertDialog(
                                 backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                 scrollable: true,
-                                title: Center(child: 
-                                Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
+                                title: Center(
+                                  child: Text(
+                                    "Recap",
+                                    style: TextStyle(
+                                      color: Colors.black54, 
+                                      fontWeight: FontWeight.bold 
+                                    ),
+                                  )
+                                ),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -172,7 +179,7 @@ class _BoxState extends State<Box> {
                                         Text.rich(
                                           TextSpan(
                                             children: [
-                                              TextSpan(text: '${widget.canteen}', style: TextStyle(color: Colors.black54,) ),
+                                              TextSpan(text: widget.canteen, style: TextStyle(color: Colors.black54,) ),
                                             ]
                                           )
                                         )
@@ -188,7 +195,7 @@ class _BoxState extends State<Box> {
                                          Text.rich(
                                           TextSpan(
                                             children: [
-                                              TextSpan(text: '${widget.address}', style: TextStyle(color: Colors.black54,) ),
+                                              TextSpan(text: widget.address.split('-')[0], style: TextStyle(color: Colors.black54,) ),
                                             ]
                                           )
                                         )
@@ -204,7 +211,7 @@ class _BoxState extends State<Box> {
                                         Text.rich(
                                           TextSpan(
                                             children: [
-                                              TextSpan(text: '${widget.packageType}', style: TextStyle(color: Colors.black54,) ),
+                                              TextSpan(text: widget.packageType, style: TextStyle(color: Colors.black54,) ),
                                             ]
                                           )
                                         )
@@ -220,7 +227,7 @@ class _BoxState extends State<Box> {
                                         Text.rich(
                                           TextSpan(
                                             children: [
-                                              TextSpan(text: '${selectedMethod}', style: TextStyle(color: Colors.black54,) ),
+                                              TextSpan(text: selectedMethod, style: TextStyle(color: Colors.black54,) ),
                                             ]
                                           )
                                         )
@@ -237,7 +244,13 @@ class _BoxState extends State<Box> {
                                       Provider.of<DataProvider>(context, listen: false).setPackageType(widget.packageType);
                                       Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
                                     },
-                                    child: Text("Confirm",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
+                                    child: Text(
+                                      "Confirm",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
                                   ),
                                 ],
                               );
@@ -250,7 +263,7 @@ class _BoxState extends State<Box> {
                           ..showSnackBar(SnackBar(content: Text('You must select a delivery method')));
                         }
                       },
-                      child: Text('Conferma'),
+                      child: Text('Confirm'),
                       style: ElevatedButton.styleFrom(
                         textStyle: TextStyle(color: Colors.green),
                         backgroundColor:  Color.fromARGB(255, 107, 165, 109),
