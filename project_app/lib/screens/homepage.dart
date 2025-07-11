@@ -341,6 +341,11 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column( 
             children: [
+              SizedBox(height: 50),
+              Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)),
+              SizedBox(height: 50,),
+
+              
               Container(
                 child: Text('Your Progress',
                   style: TextStyle(
@@ -362,11 +367,16 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 10),
-
-              // Delivery counter
-              Center(
-                child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)
+              Container(
+                child: Text('Your Progress',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
               ),
+              //Inserimento Counter delle corse: 
+              // Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts))
             ],
           ),
         ),
