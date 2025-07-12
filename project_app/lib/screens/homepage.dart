@@ -382,29 +382,33 @@ class _HomePageState extends State<HomePage> {
         ),
       )
       :
-
       Consumer<FirebaseDB>(
-
         builder: (context, data, child) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
-                Text('Select a delivery'),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'Select a delivery or filter by delivery modality',
+                    style: TextStyle(
+                      fontSize: 18
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
                 Container(
                   width: MediaQuery.sizeOf(context).width,
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    // shrinkWrap: true,
-                    itemCount: methods_en.length,
-                    itemBuilder: (context, index){
-        
-                      String selectedDeliveryMethod = '';
-        
+                  height: 50,
+                  child: Row( 
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(methods_en.length, (index){
+                    String selectedDeliveryMethod = '';
+                    
                       return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(width: 10),
@@ -442,8 +446,9 @@ class _HomePageState extends State<HomePage> {
                     },  
                   ),
                 ),
-                  
-        
+                ),
+
+                SizedBox(height: 20),
              
                   
                     Container(
@@ -455,14 +460,10 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           // Left Arrow Button
                           Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: selected_delivery_idx == 0? Colors.grey : Colors.green,
-                              ),
-                              borderRadius: BorderRadius.circular(50)
-                            ),
+                            height: 38,
+                            width: 38,
                             child: IconButton(
-                              iconSize: 20,
+                              iconSize: 25,
                               color: Color.fromARGB(255, 250, 250, 238),
                               onPressed: selected_delivery_idx > 0 ? (){
                                 setState(() {
@@ -482,6 +483,7 @@ class _HomePageState extends State<HomePage> {
                           // SizedBox(width: 20),
                       
                           Container(
+                            width: 225,
                             // width: MediaQuery.sizeOf(context).width - 50,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.green),
@@ -490,12 +492,21 @@ class _HomePageState extends State<HomePage> {
                       
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: 
-                              Text(
-                                '${data.deliveries[selected_delivery_idx].address.split(',')[0]}, ${formatDateTime(data.deliveries[selected_delivery_idx].start)}',
-                                style: TextStyle(
-                                  color: Colors.black54
-                                ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${data.deliveries[selected_delivery_idx].address.split(',')[0]},',
+                                    style: TextStyle(
+                                      color: Colors.black54
+                                    ),
+                                  ),
+                                  Text(
+                                    formatDateTime(data.deliveries[selected_delivery_idx].start),
+                                    style: TextStyle(
+                                      color: Colors.black54
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -505,13 +516,10 @@ class _HomePageState extends State<HomePage> {
                           // Right Arrow Button
                       
                           Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
-                              ),
-                              borderRadius: BorderRadius.circular(50)
-                            ),
+                            height: 38,
+                            width: 38,
                             child: IconButton(
+                              iconSize: 25,
                               color: Color.fromARGB(255, 250, 250, 238),
                               // foregroundColor: Colors.green,
                               onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
@@ -532,6 +540,8 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
+
+                    SizedBox(height: 20,),
 
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
