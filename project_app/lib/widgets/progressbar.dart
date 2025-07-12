@@ -53,7 +53,7 @@ class XPProgressBar extends StatelessWidget {
                     sweepAngle: angle,
                     radius: width/3,
                     gradient: const LinearGradient(
-                      colors: [Colors.yellow, Colors.orange, Colors.red],
+                      colors: [Color.fromARGB(255, 235, 255, 59), Color.fromARGB(255, 146, 236, 44), Color.fromARGB(255, 31, 206, 19)],
                     ),
                   ),
                 )
