@@ -52,9 +52,9 @@ class _HomePageState extends State<HomePage> {
   double xp = 0;
 
   final List<Checkpoint> checkpoints = [
-  Checkpoint(xpRequired: 100, icon: Icons.star, label: '100 XP'),
-  Checkpoint(xpRequired: 250, icon: Icons.military_tech, label: '250 XP'),
-  Checkpoint(xpRequired: 500, icon: Icons.workspace_premium, label: '500 XP'),
+  Checkpoint(xpRequired: 100, icon: Icons.icecream_outlined, label: '100 XP'),
+  Checkpoint(xpRequired: 250, icon: Icons.dining_outlined, label: '250 XP'),
+  Checkpoint(xpRequired: 500, icon: Icons.dining, label: '500 XP'),
   ];
 
 
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
   
     //if(firstLaunch) _toGraphPage(context);
-    if(firstLaunch == false){
+    if(firstLaunch == true){
       showDialog(
        
         context: context,
@@ -344,16 +344,6 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 50),
               Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)),
               SizedBox(height: 50,),
-
-              
-              Container(
-                child: Text('Your Progress',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
               Consumer<FirebaseDB>(builder: (context, data, child) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,16 +357,77 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 10),
-              Container(
-                child: Text('Your Progress',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
-              //Inserimento Counter delle corse: 
-              // Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts))
+              Center(
+                child: Row(
+                  children: [
+                    Container(
+                      child: Text('Your Progress',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      )
+                    ),
+                    SizedBox(height: 10,),
+                    IconButton(
+                      icon: const Icon(Icons.info_outline),
+                      iconSize: 40,
+                      color: Colors.black54,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Rewards"),
+                              content: Container(
+                                width: double.maxFinite,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Riga 1
+                                    Row(
+                                      children: const [
+                                        Icon(Icons.icecream, color: Colors.black54, size: 40,),
+                                        SizedBox(width: 10),
+                                        Text("100 XP: FREE dessert or coffee!"),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    // Riga 2
+                                    Row(
+                                      children: const [
+                                        Icon(Icons.dining_outlined, color: Colors.black54, size: 40,),
+                                        SizedBox(width: 10),
+                                        Text("250 XP: FREE Small meal!"),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    // Riga 3
+                                    Row(
+                                      children: const [
+                                        Icon(Icons.dining, color: Colors.black54, size: 40,),
+                                        SizedBox(width: 10),
+                                        Text("500 XP: FREE Complete meal!",)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("Close",style: TextStyle(color: Colors.green),),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),   
             ],
           ),
         ),

@@ -89,6 +89,7 @@ class XPProgressBar extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black54,
                       ),
                     ),
                     Text(
@@ -115,7 +116,7 @@ class XPProgressBar extends StatelessWidget {
                 final cpAngle = pi * (cp.xpRequired / maxXP).clamp(0.0, 0.95);
                 final radius = width/3 + 40;
                 final dx = radius * cos(cpAngle - pi);
-                final dy = radius * sin(cpAngle - pi) + 80;
+                final dy = radius * sin(cpAngle - pi) + 75;
                 final isReached = currentXP >= cp.xpRequired;
         
                 return Transform.translate(

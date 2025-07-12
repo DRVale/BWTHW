@@ -27,7 +27,7 @@ class Splash extends StatelessWidget {
             Image.asset('assets/PastOn.gif', scale: 1.5, ),
             SizedBox(height: 2,),
             Text(
-              'PastOn',
+              'CantWaste',
               style: TextStyle(
                 color: Colors.green,
                 fontSize: 50,
