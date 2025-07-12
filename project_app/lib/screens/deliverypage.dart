@@ -41,66 +41,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
   String _elapsedTime = "00:00:00";
   Timer? _timer;
   String? startDate;
-  String _backgroundImage = 'assets/Piovego-OrtoBontanico.png';
+  
 
   @override
   void initState() {
     super.initState();
     //_startTimer();
     _startStopwatch();
-    _updateBackground(widget.address);
+    
   }
-   void _updateBackground(String address){
-    setState(() {
-      if (address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Piovego'){
-        _backgroundImage = 'assets/Piovego-OrtoBontanico.png';
-    } else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Murialdo' ){
-        _backgroundImage = 'assets/Murialdo-OrtoBotanico.png';
-        }
-        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Pio X' ){
-        _backgroundImage = 'assets/Pio-ortobotonico.png';
-        }
-        else if(address =='Via Orto Botanico, 11 - 35123 Padova' && widget.canteen == 'Belzoni' ){
-        _backgroundImage = 'assets/Belzoni-ortobotanico.png';
-        }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Piovego' ){
-        _backgroundImage = 'assets/piovego-TizianoMinio.png';
-        }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Murialdo' ){
-        _backgroundImage = 'assets/Murialdo-Tiziano.png';
-        }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Pio X' ){
-        _backgroundImage = 'assets/Pio-Tiziano.png';
-        }
-        else if(address =='Via Tiziano Minio, 15 - 35134 Padova' && widget.canteen == 'Belzoni' ){
-        _backgroundImage = 'assets/Belzoni-tiziano.png';
-        }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Piovego' ){
-        _backgroundImage = 'assets/Piovego-SanMassimo.png';
-        }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Murialdo' ){
-        _backgroundImage = 'assets/Murialdo-SanMassimo.png';
-        }
-         else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Pio X' ){
-        _backgroundImage = 'assets/Pio-SanMassimo.png';
-        }
-        else if(address == 'Via S.massimo, 49, 35129 Padova' && widget.canteen == 'Belzoni' ){
-        _backgroundImage = 'assets/Belzoni-Massimo.png';
-        }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Piovego' ){
-        _backgroundImage = 'assets/Piovego-Boccaccio.png';
-        }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Murialdo' ){
-        _backgroundImage = 'assets/Murialdo-Boccaccio.png';
-        }
-        else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Pio X' ){
-        _backgroundImage = 'assets/Pio-Boccaccio.png';
-        }
-         else if(address =='Via Giovanni Boccaccio, 96, 35128 Padova' && widget.canteen == 'Belzoni' ){
-        _backgroundImage = 'assets/Belzoni-Boccaccio.png';
-        }
-    });
-   }
+   
 
   void _startStopwatch() {
     _stopwatch.start();
@@ -147,15 +97,10 @@ class _DeliveryPageState extends State<DeliveryPage> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
+    backgroundColor:  const Color.fromARGB(255, 250, 250, 238),
     body: Stack(
       children: [
-        // Immagine di sfondo che riempie TUTTO
-        Positioned.fill(
-          child: Image.asset(
-            _backgroundImage,
-            fit: BoxFit.cover,
-          ),
-        ),
+        
 
         // Contenuto sovrapposto
         Positioned.fill(
@@ -169,58 +114,55 @@ Widget build(BuildContext context) {
                   ),
                 
                 Expanded(
-                  child: SingleChildScrollView(
+                  
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Visibility(
-                          visible: isTextVisible,
                           child: Container(
+                            
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black54,
+                                width: 2.0,
+                              ),
                               color: const Color.fromARGB(255, 250, 250, 238),
                               borderRadius: BorderRadius.all(Radius.circular(40)),                    
                             ),
                             
                             // padding: const EdgeInsets.all(16.0),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 5
-                            ),
+                            //padding: const EdgeInsets.symmetric(
+                             // horizontal: 16,
+                              //vertical: 5
+                           // ),
                             child: Column(
                               children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.minimize,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        isTextVisible = false; // Hide the container with the text
-                                      });
-                                    },
-                                  ),
-                                ),
+                                SizedBox(height: 20,),
+                                Icon(Icons.panorama_fisheye_outlined, color: Colors.black54, size:  17, ),
+                                SizedBox(height: 20,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                  Icon(Icons.fastfood_outlined, color: Colors.black54, size:  20, ),
+                                  Icon(Icons.fastfood_outlined, color: Colors.black54, size:  17, ),
                                   SizedBox(width: 5),
-                                  Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 20),)
+                                  Text("Time to deliver - your box is waiting", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 17),)
                                 ]),
-                                SizedBox(height: 20,),
-                                Text('Destination: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(255, 107, 165, 109),
-                                  foregroundColor: Colors.black54,),
-                                  child: Text(''),
+                                SizedBox(height: 40,),
+                                Text('Destination: ${widget.address}', style: TextStyle(fontSize: 13, color: Colors.black54, )),
+                                SizedBox(height: 4),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  Text("Open in Google Maps: ", style: TextStyle(color: Colors.black54,  fontSize: 13),),
+                                  SizedBox(width: 5),
+                                  IconButton(
+                                  icon: Icon(Icons.fmd_good_outlined, color: Colors.black54, size:  20, ),
                                   onPressed: () async => await launchGoogleMapsSearch(context, widget.address),
                                 ),
-                                const SizedBox(height: 20),
-                                Text("Time: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                ]),
+
+                                
+                                const SizedBox(height: 15),
+                                Text("Time: $_elapsedTime", style: const TextStyle(fontSize: 17, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -266,6 +208,7 @@ Widget build(BuildContext context) {
                                       heartRate: deliveryHeartRate, 
                                       restingHR: deliveryRestingHR
                                     );
+                                    
 
                                     int xpIncrement = Provider.of<FirebaseDB>(context, listen: false).updateXPtrimp(newDelivery);
                           
@@ -285,20 +228,51 @@ Widget build(BuildContext context) {
                                               backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                               scrollable: true,
                                               title: Center(child: 
-                                              Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold ),)),
+                                              Text("Recap",style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,  ),)),
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
+<<<<<<< Updated upstream
                                                   Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
                                                   // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                                   Text("Total covered distance: ${data.sumOfDistances.toStringAsFixed(1)} km", style: TextStyle(color: Colors.black54),),
                                                   Text("${data.avgSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.black54),),
+=======
+                                                  SizedBox(height: 15,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'You obtained: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '$xpIncrement XP', style: TextStyle(  color: Colors.black54)),
+                                                        ]
+                                                        ),
+                                                        ),
+                                                  
+                                                  SizedBox(height: 13,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'Total covered distance: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '${data.sumOfDistances}', style: TextStyle(  color: Colors.black54)),
+                                                        ]
+                                                        ),
+                                                        ),
+                                                  SizedBox(height: 13,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'Speed: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '${data.avgSpeed} km/h', style: TextStyle(  color: Colors.black54)),
+                                                        ]
+                                                        ),
+                                                        ),
+>>>>>>> Stashed changes
                                                 ],
                                               ),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () async => _toHomePage(context),
-                                                  child: Text("Confirm"),
+                                                  child: Text("Confirm", style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold, ),),
                                                 ),
                                               ],
                                             );
@@ -316,15 +290,17 @@ Widget build(BuildContext context) {
                                 ),
                                 SizedBox(
                                   height: 11,
-                                )
+                                ),
+                                Image.asset('assets/PastOn.gif', scale: 1.5, ),
                               ],
                             ),
                           ),
+                          
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  
+                
               ],
             ),
           ),
