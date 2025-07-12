@@ -37,6 +37,7 @@ dependencies:
   intl: 
   syncfusion_flutter_charts:
   cloud_firestore:
+  url_launcher: ^6.3.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

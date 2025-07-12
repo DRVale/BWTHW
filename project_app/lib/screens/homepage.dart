@@ -205,8 +205,8 @@ class _HomePageState extends State<HomePage> {
 
                   }else{
                     ScaffoldMessenger.of(context)
-                  ..removeCurrentSnackBar()
-                  ..showSnackBar(SnackBar(content: Text('All fields must be filled!')));
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(content: Text('All fields must be filled!')));
                   }
                 },
                 child: Text(
@@ -227,8 +227,8 @@ class _HomePageState extends State<HomePage> {
           return AlertDialog(
             backgroundColor: const Color.fromARGB(255, 250, 250, 238),
             content: Container(
-              child: AboutUsPage().build(context),
               width: 1000,
+              child: AboutUsPage().build(context),
             ),
             
           );
@@ -386,159 +386,151 @@ class _HomePageState extends State<HomePage> {
       Consumer<FirebaseDB>(
 
         builder: (context, data, child) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
 
-                
-
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
-            Text('Select a delivery'),
-
-            Center(
-              child: Container(
-                // width: MediaQuery.sizeOf(context).width,
-                height: 100,
-                child: ListView.builder(
-                  
-                            scrollDirection: Axis.horizontal,
-                            // shrinkWrap: true,
-                            itemCount: methods_en.length,
-                            itemBuilder: (context, index){
-                
-                              String selectedDeliveryMethod = '';
-                
-                              return Center(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      InkWell(
-                                        child: Container( //Aggiunto container per abbellire i pacchi
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Colors.black54),
-                                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                                          ),
-                                                
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              methods_en[index],
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: () async {
-                                          // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
-                                          selectedDeliveryMethod = methods_en[index];
-                                          selected_delivery_idx = 0;
-
-                                          // Remove existing data
-                                          data.deliveries.clear();
-
-                                          await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB(deliveryMethod: selectedDeliveryMethod);
-                                          Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[0]);
-                                        },
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      //SizedBox(height: 60)
-                                    ],
+                Text('Select a delivery'),
+                Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    // shrinkWrap: true,
+                    itemCount: methods_en.length,
+                    itemBuilder: (context, index){
+        
+                      String selectedDeliveryMethod = '';
+        
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(width: 10),
+                          InkWell(
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black54),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  methods_en[index],
+                                  textAlign: TextAlign.center,
                                 ),
-                              );
+                              ),
+                            ),
+                            onTap: () async {
+                              // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
+                              selectedDeliveryMethod = methods_en[index];
+                              selected_delivery_idx = 0;
+
+                              // Remove existing data
+                              data.deliveries.clear();
+
+                              await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB(deliveryMethod: selectedDeliveryMethod);
+                              Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[0]);
                             },
                           ),
-              ),
-            ),
+                          SizedBox(width: 10),
+                          //SizedBox(height: 60)
+                        ],
+                      );
+                    },  
+                  ),
+                ),
+                  
         
              
                   
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Left Arrow Button
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: selected_delivery_idx == 0? Colors.grey : Colors.green,
+                    Container(
+                      width: MediaQuery.sizeOf(context).width - 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        
+                        children: [
+                          // Left Arrow Button
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: selected_delivery_idx == 0? Colors.grey : Colors.green,
+                              ),
+                              borderRadius: BorderRadius.circular(50)
                             ),
-                            borderRadius: BorderRadius.circular(50)
-                          ),
-                          child: IconButton(
-                            iconSize: 20,
-                            color: Color.fromARGB(255, 250, 250, 238),
-                            onPressed: selected_delivery_idx > 0 ? (){
-                              setState(() {
-                                if (selected_delivery_idx > 0) {
-                                  selected_delivery_idx--;
-                                }
-                                selectedDelivery = data.deliveries[selected_delivery_idx];
-                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-                              });
-                            } : null, // Disable if at first item
-                            icon: Icon(
-                              Icons.arrow_back_ios_new,
-                              color: selected_delivery_idx == 0? Colors.grey : Colors.green,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 40), // Space between buttons
-                    
-                        Container( //Aggiunto container per abbellire i pacchi
-                          // width: MediaQuery.sizeOf(context).width - 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.green),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                          ),
-                    
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: 
-                            Text(
-                              '${data.deliveries[selected_delivery_idx].address.split(',')[0]}, ${formatDateTime(data.deliveries[selected_delivery_idx].start)}',
-                              style: TextStyle(
-                                color: Colors.black54
+                            child: IconButton(
+                              iconSize: 20,
+                              color: Color.fromARGB(255, 250, 250, 238),
+                              onPressed: selected_delivery_idx > 0 ? (){
+                                setState(() {
+                                  if (selected_delivery_idx > 0) {
+                                    selected_delivery_idx--;
+                                  }
+                                  selectedDelivery = data.deliveries[selected_delivery_idx];
+                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                                });
+                              } : null, // Disable if at first item
+                              icon: Icon(
+                                Icons.arrow_back_ios_new,
+                                color: selected_delivery_idx == 0? Colors.grey : Colors.green,
                               ),
                             ),
                           ),
-                        ),
-                    
-                        const SizedBox(width: 40),
-                    
-                        // Right Arrow Button
-                    
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                          // SizedBox(width: 20),
+                      
+                          Container(
+                            // width: MediaQuery.sizeOf(context).width - 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green),
+                              borderRadius: BorderRadius.all(Radius.circular(20)),                    
                             ),
-                            borderRadius: BorderRadius.circular(50)
-                          ),
-                          child: IconButton(
-                            color: Color.fromARGB(255, 250, 250, 238),
-                            // foregroundColor: Colors.green,
-                            onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
-                              setState(() {
-                                if (selected_delivery_idx < data.deliveries.length - 1) {
-                                  selected_delivery_idx++;
-                                }
-                                selectedDelivery = data.deliveries[selected_delivery_idx];
-                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-                              });
-                            } : null, // Disable if at first item
-                            icon: Icon(
-                              Icons.arrow_forward_ios,
-                              color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                      
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: 
+                              Text(
+                                '${data.deliveries[selected_delivery_idx].address.split(',')[0]}, ${formatDateTime(data.deliveries[selected_delivery_idx].start)}',
+                                style: TextStyle(
+                                  color: Colors.black54
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                      
+                          // const SizedBox(width: 40),
+                      
+                          // Right Arrow Button
+                      
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                              ),
+                              borderRadius: BorderRadius.circular(50)
+                            ),
+                            child: IconButton(
+                              color: Color.fromARGB(255, 250, 250, 238),
+                              // foregroundColor: Colors.green,
+                              onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
+                                setState(() {
+                                  if (selected_delivery_idx < data.deliveries.length - 1) {
+                                    selected_delivery_idx++;
+                                  }
+                                  selectedDelivery = data.deliveries[selected_delivery_idx];
+                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                                });
+                              } : null, // Disable if at first item
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
 
                     Padding(

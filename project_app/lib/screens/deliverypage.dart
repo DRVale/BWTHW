@@ -11,6 +11,10 @@ import 'package:project_app/utils/firebase.dart';
 
 import 'package:project_app/widgets/deliveryStorage&Counting.dart';
 
+import 'package:url_launcher/url_launcher.dart'; 
+import 'dart:convert'; 
+
+
 class DeliveryPage extends StatefulWidget {
 
   final String canteen;
@@ -208,6 +212,14 @@ Widget build(BuildContext context) {
                                 SizedBox(height: 20,),
                                 Text('Destination: ${widget.address}', style: TextStyle(fontSize: 14, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 107, 165, 109),
+                                  foregroundColor: Colors.black54,),
+                                  child: Text(''),
+                                  onPressed: () async => await launchGoogleMapsSearch(context, widget.address),
+                                ),
+                                const SizedBox(height: 20),
                                 Text("Time: $_elapsedTime", style: const TextStyle(fontSize: 20, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
                                 ElevatedButton(
@@ -376,3 +388,24 @@ Future<void> _toHomePage(BuildContext context) async {
   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
 }
 
+
+Future<void> launchGoogleMapsSearch(BuildContext context, String address) async {
+
+  // Encode address
+  final String encodedAddress = Uri.encodeComponent(address);
+
+  // Construct the Google Maps search URL
+  // 'api=1' is recommended for launching external maps apps
+  final String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
+
+  final Uri uri = Uri.parse(googleMapsUrl);
+
+  // Check if the URL can be launched
+  // if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication); // Opens in browser or maps app
+  // } else {
+  //   ScaffoldMessenger.of(context)
+  //   ..removeCurrentSnackBar()
+  //   ..showSnackBar(SnackBar(content: Text('Could not launch Google Maps for: $address')));
+  // }
+}
