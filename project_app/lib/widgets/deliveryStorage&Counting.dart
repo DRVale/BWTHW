@@ -47,7 +47,7 @@ class FlipDigit extends StatelessWidget {
       height: 40,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: const Color.fromARGB(255, 43, 42, 42),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Colors.white, width: 1),
       ),
@@ -112,6 +112,7 @@ class DeliveryCounterPanel extends StatelessWidget {
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
+              color: Colors.black54,
             ),
           ),
           const SizedBox(height: 12),
