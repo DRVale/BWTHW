@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
   
     //if(firstLaunch) _toGraphPage(context);
-    if(firstLaunch == true){
+    if(firstLaunch == false){
       showDialog(
        
         context: context,
