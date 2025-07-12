@@ -70,7 +70,7 @@ class _BoxPageState extends State<BoxPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(data["canteen"]),
+                          
 
                           Box(
                             canteen: data["canteen"],
