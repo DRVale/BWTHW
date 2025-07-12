@@ -291,8 +291,8 @@ Widget build(BuildContext context) {
                                                 children: [
                                                   Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
                                                   // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
-                                                  Text("Total covered distance: ${data.sumOfDistances}", style: TextStyle(color: Colors.black54),),
-                                                  Text("${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
+                                                  Text("Total covered distance: ${data.sumOfDistances.toStringAsFixed(1)} km", style: TextStyle(color: Colors.black54),),
+                                                  Text("${data.avgSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.black54),),
                                                 ],
                                               ),
                                               actions: [

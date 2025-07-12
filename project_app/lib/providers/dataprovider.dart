@@ -186,7 +186,7 @@ class DataProvider extends ChangeNotifier{
       for(var i = 0; i < distances.length; i++){
         sumOfDistances = sumOfDistances + distances[i].value;
       }
-      sumOfDistances = (sumOfDistances / 100).round();
+      sumOfDistances = (sumOfDistances / 100000).round();
     }
   }
 
@@ -258,7 +258,7 @@ class DataProvider extends ChangeNotifier{
   }
 
   void getAvgSpeed(){
-    avgSpeed = sumOfDistances/time * (3600/1000); // [km/h]
+    avgSpeed = sumOfDistances/time * (3600); // [km/h]
   }
 
   Future<void> updateXP() async {

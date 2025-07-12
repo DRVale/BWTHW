@@ -442,12 +442,66 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 10,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    'Select a delivery or filter by delivery modality',
-                    style: TextStyle(
-                      fontSize: 18
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            'Select a delivery or filter by delivery modality',
+                            style: TextStyle(
+                              fontSize: 18
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        IconButton(
+                          icon: const Icon(Icons.info_outline),
+                          iconSize: 20,
+                          color: Colors.black54,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Center(child: Text("TRIMP legend")),
+                                  content: Container(
+                                    width: double.maxFinite,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('TRIMP < 1: Low intensity activity'),
+                                        SizedBox(height: 10),
+                                        Text('1 < TRIMP < 2: Medium intensity activity'),
+                                        SizedBox(height: 10),
+                                        Text('2 < TRIMP: High intensity activity'),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text("Close",style: TextStyle(color: Colors.green),),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
                 ),
                 SizedBox(height: 10),
                 Container(

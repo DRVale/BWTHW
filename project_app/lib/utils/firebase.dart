@@ -76,15 +76,11 @@ class FirebaseDB extends ChangeNotifier{
     double TRIMP = time * ((HRexe - delivery.restingHR.value)/(HRmax - delivery.restingHR.value))*0.64*math.exp(1.92*((HRexe - delivery.restingHR.value)/(HRmax - delivery.restingHR.value)));
     double TRIMP_N = TRIMP / time;
 
-    if(TRIMP_N < 1){
-      xpIncrement = 15;
-    }
-    else if(TRIMP_N > 1 && TRIMP_N < 2){
-      xpIncrement = 30;
-    }
-    else if(TRIMP_N > 2){
-      xpIncrement = 45;
-    }  
+    if(TRIMP_N <= 0.2) xpIncrement = 0;
+    else if(TRIMP_N > 0.2 && TRIMP_N <= 1) xpIncrement = 15;
+    else if(TRIMP_N > 1 && TRIMP_N <= 2) xpIncrement = 30;
+    else if(TRIMP_N > 2) xpIncrement = 45;
+     
     return xpIncrement;
   }
 
