@@ -20,10 +20,12 @@ class AboutUsPage extends StatelessWidget {
             Center(
               child: Text(
               'Welcome in our App!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black54),
+              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Colors.black54),
             ),
             ),
-            SizedBox(height: 250),
+            SizedBox(height: 15),
+            Image.asset('assets/NOI.jpg', scale: 0.5, ),
+            SizedBox(height: 15),
             Row(
               children: [
                 Icon(Icons.arrow_forward_ios_rounded, size: 17, color: Colors.green,),

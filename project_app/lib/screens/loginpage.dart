@@ -25,9 +25,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Image.asset('assets/logo_nome.png', scale: 1, ),
+            Image.asset('assets/LOGO.png', scale: 1, ),
             SizedBox(height: 30,),
-            Text('Welcome', textAlign: TextAlign.left, style: TextStyle(color: Colors.black54),),
+            Text('Welcome!', textAlign: TextAlign.left, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
             SizedBox(height: 5,),
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
