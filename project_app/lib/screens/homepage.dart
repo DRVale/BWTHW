@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
 
-  Color _headerColor = getRandomColor();
+  //Color _headerColor = getRandomColor();
   
   bool firstLaunch = true;
 
@@ -79,11 +79,11 @@ class _HomePageState extends State<HomePage> {
   Future<void> _checkFirstLauch() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      sp.getBool('FirstLauch') == null? firstLaunch = true : firstLaunch = true;
+      sp.getBool('FirstLauch') == null? firstLaunch = true : firstLaunch = false;
       // If the value in the SP is not null, then an access was made. 
       // If it is null, then it is the first launch of the app => set firstLaunch to true
     });
-    sp.setBool('FirstLauch', true); 
+    sp.setBool('FirstLauch', false); 
 
   
     //if(firstLaunch) _toGraphPage(context);
@@ -357,8 +357,9 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 10),
-              Center(
+              Container(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       child: Text('Your Progress',
@@ -372,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 10,),
                     IconButton(
                       icon: const Icon(Icons.info_outline),
-                      iconSize: 40,
+                      iconSize: 30,
                       color: Colors.black54,
                       onPressed: () {
                         showDialog(
@@ -389,7 +390,7 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.icecream, color: Colors.black54, size: 25,),
+                                        Icon(Icons.icecream, color: Color.fromARGB(255, 235, 255, 59), size: 25,),
                                         SizedBox(width: 10),
                                         Text("FREE dessert or coffee!"),
                                       ],
@@ -397,7 +398,7 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.dining_outlined, color: Colors.black54, size: 25,),
+                                        Icon(Icons.dining_outlined, color: Color.fromARGB(255, 146, 236, 44), size: 25,),
                                         SizedBox(width: 10),
                                         Text("FREE small meal!"),
                                       ],
@@ -405,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.dining, color: Colors.black54, size: 25,),
+                                        Icon(Icons.dining, color: Color.fromARGB(255, 31, 206, 19), size: 25,),
                                         SizedBox(width: 10),
                                         Text("FREE complete meal!",)
                                       ],
@@ -763,7 +764,7 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: _headerColor),
+              decoration: BoxDecoration(color: Colors.green),
               child: Center(
                 child: 
                 Text(_username.isNotEmpty ? _username[0].toUpperCase(): '',
@@ -787,19 +788,19 @@ class _HomePageState extends State<HomePage> {
               onTap: () => _toAboutUsPage(context),
             ),
             ListTile(
-              trailing: Icon(Icons.logout, color: Colors.black54, ),
+              trailing: Icon(Icons.logout, color: Colors.red, ),
               title: Text(
                 'Logout',
-                style: TextStyle(color: Colors.black54, ),
+                style: TextStyle(color: Colors.red, ),
               ),
               onTap: () async => await _toLoginPage(context),
             ),
 
             ListTile(
-              trailing: Icon(Icons.settings, color: Colors.red, ),
+              trailing: Icon(Icons.settings, color: Colors.black54, ),
               title: Text(
                 'Da togliere (serve per provare)',
-                style: TextStyle(color: Colors.red, ),
+                style: TextStyle(color: Colors.black54, ),
               ),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage())),
             ),
