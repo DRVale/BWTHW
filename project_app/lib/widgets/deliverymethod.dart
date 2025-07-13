@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 
 class DeliveryMethod extends StatelessWidget {
 
@@ -30,7 +29,7 @@ class DeliveryMethod extends StatelessWidget {
             color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           )
         ]
       ),

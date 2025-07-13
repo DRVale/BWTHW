@@ -1,4 +1,3 @@
-//import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:provider/provider.dart';
@@ -38,10 +37,7 @@ class _BoxState extends State<Box> {
   bool isRunningSelected = false;
 
   @override
-  Widget build(BuildContext context) {
-
-    //final deliveryMethodNotifier = Provider.of<DeliveryMethodNotifier>(context, listen: false);
-  
+  Widget build(BuildContext context) {  
     return Column(
        mainAxisAlignment: MainAxisAlignment.center,
        children: [
@@ -86,16 +82,6 @@ class _BoxState extends State<Box> {
                             if(!isBikeSelected) selectedMethod = '';
 
                             Provider.of<DataProvider>(context, listen: false).setDeliveryMethod(selectedMethod);
-                    
-                            // if (isBikeSelected) {
-                            //   deliveryMethodNotifier.updateMethod('Bici');
-                            // } else if (!isFootSelected && !isRunningSelected) {
-                            //   deliveryMethodNotifier.updateMethod(null); // Or some default value
-                            // }
-                            
-                            // Salvare l'opzione nelle shared_preferences per utilizzarla quando si pescano i dati
-                            // OPPURE si può passare il valore di selectedMethod alla pagina successiva tramite navigator.
-                            // In questo modo si può salvare tutto nelle shared preferences dopo.
                           }),
                           child: DeliveryMethod(
                             isSelected: isBikeSelected, 
@@ -146,7 +132,6 @@ class _BoxState extends State<Box> {
 
                     ElevatedButton(
                       onPressed: (){
-
                         String selectedMethod = Provider.of<DataProvider>(context, listen: false).getDeliveryMethod();
 
                         if(selectedMethod == 'Bike' || selectedMethod == 'On Foot' || selectedMethod == 'Running'){
@@ -256,7 +241,6 @@ class _BoxState extends State<Box> {
                               );
                             },
                           );
-
                         } else {
                           ScaffoldMessenger.of(context)
                           ..removeCurrentSnackBar()
@@ -268,7 +252,6 @@ class _BoxState extends State<Box> {
                         textStyle: TextStyle(color: Colors.green),
                         backgroundColor:  Color.fromARGB(255, 107, 165, 109),
                         foregroundColor:  Colors.black54,
-                        // backgroundColor: Color.fromARGB(10, 0, 255, 0),
                       ),
                     ),
                     

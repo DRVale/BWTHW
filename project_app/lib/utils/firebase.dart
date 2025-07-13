@@ -3,16 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:project_app/screens/deliverypage.dart';
 import 'dart:math' as math;
 
 // Models
 import 'package:project_app/models/requesteddata.dart';
-
-// Providers
-import 'package:provider/provider.dart';
-import 'package:project_app/providers/dataprovider.dart';
-
 
 
 // Firebase class
@@ -33,8 +27,6 @@ class FirebaseDB extends ChangeNotifier{
     totalDeliveries = deliveries.length;
   }
 
-  // AGGIUNGERE CONTEGGIO DELIVERIES
-
   Future<void> getTotalXP() async { // From all the deliveries, get one at a time. Then, calculate the xp increment related to the delivery
     
     totalXP = 0; // Before computing the total, clear the past value
@@ -47,7 +39,6 @@ class FirebaseDB extends ChangeNotifier{
     totalXP = totalXP % 500;  // If the totalXP is above 500, get the remainder of the division  
   }
 
-    
   int updateXPtrimp(Delivery delivery){
 
     int xpIncrement = 0;
@@ -55,15 +46,9 @@ class FirebaseDB extends ChangeNotifier{
     //HR ESERCIZIO
     double HR_sum = 0;
     for (var i = 0; i < delivery.heartRate.length; i++) {
-      HR_sum += delivery.heartRate[i].value; // Somma cumulativa
+      HR_sum += delivery.heartRate[i].value; 
     }
-    double HRexe = HR_sum / delivery.heartRate.length; // Calcola la media
-
-    // HR MAX stimato serve richiesta età da salvare nelle sharedPreferences 
-    // Inserire nel peak_date il calcolo age. 
-    // SharedPreferences sp = await SharedPreferences.getInstance();
-    // double ?age;
-    // age = sp.getDouble('age')!;
+    double HRexe = HR_sum / delivery.heartRate.length;
     double HRmax = 220 - 24;
 
     DateTime start = DateTime.parse(delivery.start);
@@ -91,32 +76,22 @@ class FirebaseDB extends ChangeNotifier{
 
     DateTime currentTime = startTime;
 
-    // var user;
-    var age = 35;
+    var age = 24;
 
     while(endTime.difference(currentTime) >= Duration.zero){
 
       double trimp = 0;  // trimp temporary variable to store the total trimp in a minute
-      int counter = 0; // counter to check how many times I sum a trimp in a minute
+      int counter = 0;   // counter to check how many times I sum a trimp in a minute
 
       // Loop across all HR values
       for(var i = 0; i < delivery.heartRate.length; i++){
 
         // Check if the current index of the time is in the considered minute
         if(delivery.heartRate[i].time.difference(currentTime) > Duration.zero  && delivery.heartRate[i].time.difference(currentTime.add(Duration(minutes: 1))) < Duration.zero){
-
-          // Calculate the trimp and update the counter
-          // trimp = T * (HRex - HRrest) / (HRmax - HRrest) * 0.64 * exp(1.92 * (HRex - HRrest) / (HRmax - HRrest))
-          // where 𝑇: duration of the workout (min) 
-          // 𝐻𝑅𝑒𝑥: average heart rate during the workout (bpm) 
-          // 𝐻𝑅𝑚𝑎𝑥: maximal heart rate (bpm) - estimated as (220 – age)
-          // 𝐻𝑅𝑟𝑒𝑠𝑡: resting heart rate (bpm)
           trimp = trimp + (delivery.heartRate[i].value - delivery.restingHR.value)/(220 - age - delivery.restingHR.value) * 0.64 * exp(1.92 * (delivery.heartRate[i].value - delivery.restingHR.value) / (220 - age - delivery.restingHR.value));
-          // trimp = trimp + delivery.heartRate[i].value;
           counter = counter + 1;
         }
       }
-
       // Calculate the average trimp
       double trimpAvg = trimp / counter;
 
@@ -126,10 +101,6 @@ class FirebaseDB extends ChangeNotifier{
       // Update the current minute for the next loop iteration
       currentTime = currentTime.add(Duration(minutes: 1));
     }
-    // 1) Get the total minutes of the delivery
-    // 2) loop across the minutes
-    // 3) for each minute, calculate the trimp, sum it and divide by the number of measures in the time span
-    // 4) add the value (time + value) to the trimp_per_min list
     notifyListeners();
   }
 
@@ -183,7 +154,6 @@ class FirebaseDB extends ChangeNotifier{
     
     await db.collection("deliveries").add(data);
   }
-
 
   Future<void> fetchDeliveriesDB({String? deliveryMethod}) async {
 
@@ -255,7 +225,7 @@ class FirebaseDB extends ChangeNotifier{
   }
 
   Future<void> removeBox(String canteen, String address, String packageType) {
-  WriteBatch batch = FirebaseFirestore.instance.batch(); // Better for multiple write operations as a single batch that can contain any combination of set, update, or delete operations
+  WriteBatch batch = FirebaseFirestore.instance.batch();
 
   return db.collection("boxes")
     .where("canteen", isEqualTo: canteen) // Define which box we want to delete
@@ -274,8 +244,7 @@ class FirebaseDB extends ChangeNotifier{
     });
   }
 
-
-  // Just to add boxes to the database
+  // Add boxes to the database
   Future<dynamic> addBox(String canteen, String address, String packageType) async {
     final data = {
       "canteen": canteen,
@@ -284,5 +253,24 @@ class FirebaseDB extends ChangeNotifier{
     };
     
     await db.collection("boxes").add(data);
+  }
+
+
+
+  Future<void> removeDeliveries() async {
+
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    return db.collection("deliveries")
+      .limit(1)
+      .get()
+      .then((querySnapshot) {
+
+        querySnapshot.docs.forEach((document){
+          batch.delete(document.reference);
+        });
+
+        return batch.commit();
+      });
   }
 }

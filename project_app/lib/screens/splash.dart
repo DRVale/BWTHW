@@ -8,17 +8,14 @@ import 'package:project_app/utils/firebase.dart';
 import 'package:provider/provider.dart';
 
 
-
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //Future.delayed(const Duration(seconds: 15), () => _checkLogin(context));
-    Future.delayed(const Duration(seconds: 1), () => _checkLogin(context));
+    Future.delayed(const Duration(seconds: 4), () => _checkLogin(context));
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-      // SE DA' PROBLEMI TOGLIERE
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
@@ -55,7 +52,6 @@ class Splash extends StatelessWidget {
     await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
     await Provider.of<FirebaseDB>(context, listen: false).getTotalXP();
     Provider.of<FirebaseDB>(context, listen: false).getTotalDeliveries();
-    Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  HomePage()));
   }
@@ -73,6 +69,6 @@ class Splash extends StatelessWidget {
     } else {
     _toLoginPage(context);
     }
-  } //_checkLogin
+  }
 
 }

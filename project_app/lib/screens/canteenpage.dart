@@ -31,119 +31,51 @@ class CanteenPage extends StatelessWidget {
           Text('Chose a canteen for your new delivery: ', style: TextStyle(color: Colors.black54, fontSize: 15,fontWeight: FontWeight.normal),),
           SizedBox(height: 7,),
           Expanded(
-            child: 
-              ListView.builder( 
-                itemCount: canteen_list.length,
-                itemBuilder: (context, index){
-                  final canteen = canteen_list[index];  //List index
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 6),
-                      Container(
-                        width: MediaQuery.sizeOf(context).width - 50,
-                        child: ListTile(
-                          shape:  RoundedRectangleBorder( 
-                            side: const BorderSide(color: Colors.black54, width: 1.0), 
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          leading: const Icon(
-                            Icons.add_home, 
-                            color: Colors.green, 
-                            size: 20
-                          ),
-                          title: Text(
-                            'Canteen: ${canteen.canteenName}',
-                            style: const TextStyle(color: Colors.black54, fontSize: 16)
-                          ),
-                          subtitle: Text(
-                            'Address: ${canteen.canteenAndress}',
-                            style: const TextStyle(fontSize: 12, color: Colors.black54)
-                          ),
-                          trailing: const Icon(
-                            Icons.keyboard_arrow_right, 
-                            color: Colors.green
-                          ),
-                          onTap: () async {
-                            await fetchBoxes(context, canteen.canteenName);
-                            _toBoxPage(context, canteen: canteen.canteenName, boxes: boxes!);
-                          },
+            child: ListView.builder( 
+              itemCount: canteen_list.length,
+              itemBuilder: (context, index){
+                final canteen = canteen_list[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 6),
+                    Container(
+                      width: MediaQuery.sizeOf(context).width - 50,
+                      child: ListTile(
+                        shape:  RoundedRectangleBorder( 
+                          side: const BorderSide(color: Colors.black54, width: 1.0), 
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
-                      SizedBox(height: 6),
-                    ],
-                  );
-                },
-              ),
-            
-            
-            /*
-              ListView(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.add_home, color: Colors.green, size: 20),
-                    title: Text('Canteen: Piovego',style: TextStyle(
-                        color: Colors.black54
-                      ),),
-                      subtitle: Text('Address: Viale Giuseppe Colombo, 1, 35131 Padova PD',style: TextStyle(fontSize: 9),),
-                    trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
-                    onTap: (){
-                      final String id_mensa = 'Piovego';
-                      _toBoxPage(context,canteen: id_mensa);
-                    },
-                  ),
-                  SizedBox(height: 20,),
-                  ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.green,size: 20,),
-                    title: Text('Canteen: Murialdo', style: TextStyle(
-                        color: Colors.black54
-                      ),),
-                      subtitle: Text('Address: Via Antonio Grassi, 42, 35129 Padova PD',style: TextStyle(fontSize: 9),),
-                    trailing: Icon(Icons.arrow_right_sharp, color: Colors.black54,),
-                    onTap: (){
-                      final String id_mensa = 'Murialdo';
-                      _toBoxPage(context,canteen: id_mensa);
-                    },
-                  ),
-                  SizedBox(height: 20,),
-
-                  ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.green, size: 20),
-                    title: Text('Canteen: PioX',
-                      style: TextStyle(
-                        color: Colors.black54
+                        leading: const Icon(
+                          Icons.add_home, 
+                          color: Colors.green, 
+                          size: 20
+                        ),
+                        title: Text(
+                          'Canteen: ${canteen.canteenName}',
+                          style: const TextStyle(color: Colors.black54, fontSize: 16)
+                        ),
+                        subtitle: Text(
+                          'Address: ${canteen.canteenAndress}',
+                          style: const TextStyle(fontSize: 12, color: Colors.black54)
+                        ),
+                        trailing: const Icon(
+                          Icons.keyboard_arrow_right, 
+                          color: Colors.green
+                        ),
+                        onTap: () async {
+                          await fetchBoxes(context, canteen.canteenName);
+                          _toBoxPage(context, canteen: canteen.canteenName, boxes: boxes!);
+                        },
                       ),
                     ),
-                    subtitle: Text('Address: Via Antonio Francesco Bonporti, 20, 35141 Padova PD',style: TextStyle(fontSize: 9),),
-                    trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
-                    onTap: (){
-                      final String id_mensa = 'PioX';
-                      _toBoxPage(context,canteen: id_mensa);
-                    },
-                  ),
-                  SizedBox(height: 20,),
-
-                  ListTile(
-                    leading: Icon(Icons.add_home,color: Colors.green, size: 20),
-                    title: Text('Canteen: Belzoni',
-                      style: TextStyle(
-                        color: Colors.black54
-                      ),
-                    ),
-                    subtitle: Text('Address: Via Giambattista Belzoni, 146, 35121 Padova PD',style: TextStyle(fontSize: 9),),
-                    trailing: Icon(Icons.arrow_right_sharp, color:Colors.black54),
-                    onTap: (){
-                      final String id_mensa = 'Belzoni';
-                      _toBoxPage(context, canteen: id_mensa);
-                    },
-                  ),
-                ]
-              )
-          ),
-          */
-      )
-      ],
-        
+                    SizedBox(height: 6),
+                  ],
+                );
+              },
+            ),
+          )
+        ],
       )
     );
   }

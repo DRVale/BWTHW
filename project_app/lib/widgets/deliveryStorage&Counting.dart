@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// DELIVERY STORAGE: per memorizzare nelle SP il numero di consegne effettuate e mostrarle nella HP
 class DeliveryStorage {
   static const String totalKey = 'total_deliveries';
 
@@ -64,7 +63,6 @@ class FlipDigit extends StatelessWidget {
   }
 }
 
-
 //Displays a number with as many digits as needed
 class FlipCounter extends StatelessWidget {
   final int value;
@@ -82,31 +80,24 @@ class FlipCounter extends StatelessWidget {
   }
 }
 
-
-//ORGANIZES COUNTERS WITH LABELS 
 class DeliveryCounterPanel extends StatelessWidget {
   final int total;
-  final Map<String, int> perMethod;
 
   const DeliveryCounterPanel({
     super.key,
     required this.total,
-    required this.perMethod,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        //border: Border.all(color: const Color.fromARGB(255, 6, 108, 10)),
-        //color: Colors.green,
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Totale consegne
           const Text(
             "Total deliveries:  ",
             style: TextStyle(
@@ -118,26 +109,7 @@ class DeliveryCounterPanel extends StatelessWidget {
           const SizedBox(height: 12),
           FlipCounter(value: total),
           const SizedBox(height: 12),
-      
-          // // Consegne per metodo (in una riga orizzontale)
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: perMethod.entries.map((entry) {
-          //     return Column(
-          //       mainAxisSize: MainAxisSize.min,
-          //       children: [
-          //         Text(
-          //           entry.key,
-          //           style: const TextStyle(fontSize: 14),
-          //         ),
-          //         const SizedBox(height: 2),
-          //         FlipCounter(value: entry.value),
-          //       ],
-          //   );
-          //   }).toList(),
-          // ),
-          // SizedBox(height: 16)
-      ],
+        ],
       ),
     );
   }

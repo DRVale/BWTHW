@@ -30,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
             Text('Welcome!', textAlign: TextAlign.left, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
             SizedBox(height: 5,),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding:  EdgeInsets.only(
                 left: 70, right: 70, top: 15, bottom: 15),
               child: TextField(
@@ -58,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(
                 left: 70, right: 70, top: 15, bottom: 15),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
               child: 
               TextField(
                 cursorColor: Colors.black,
@@ -75,9 +73,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   labelText: 'Password',
                   labelStyle: TextStyle(color: Colors.green),
-                  // label: Center(
-                  //   child: Text('Password')
-                  // ),
                   hintText: 'Enter password',
                   hintStyle: TextStyle(color: Colors.green),
                   prefixIcon: Icon(Icons.password,color: Colors.green,size: 17,),
@@ -99,11 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   final loginCode = await Impact().loggingIn(userController.text, passwordController.text); //await
                   if(loginCode == 200){
+
                     // Call the DB to fetch the past deliveries
                     await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB();
                     await Provider.of<FirebaseDB>(context, listen: false).getTotalXP();
                     Provider.of<FirebaseDB>(context, listen: false).getTotalDeliveries();
-                    Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(Provider.of<FirebaseDB>(context, listen: false).deliveries[0]);
+
+                    // Go to homepage
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
                   }else{
                     ScaffoldMessenger.of(context)

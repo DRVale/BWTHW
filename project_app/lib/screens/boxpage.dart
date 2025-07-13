@@ -27,18 +27,6 @@ class _BoxPageState extends State<BoxPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    // Invece che mettere boxList, si puo:
-    // Fare una chiamata limitandosi alla mensa selezionata salvando il risultato in queryResult
-    // Fare il builder della lunghezza di queryResult.docs e creare di volta in volta una box nuova
-
-    // List<Box> boxList = [
-    //   Box(address: 'Via Orto Botanico, 11 - 35123 Padova', packageType: 'Small', canteen: widget.canteen),
-    //   Box(address: 'Via Tiziano Minio, 15 - 35134 Padova', packageType: 'Large', canteen: widget.canteen),
-    //   Box(address: 'Via S.massimo, 49 - 35129 Padova', packageType: 'Huge', canteen: widget.canteen),
-    //   Box(address: 'Via Giovanni Boccaccio, 96 - 35128 Padova', packageType: 'Medium', canteen: widget.canteen),
-    // ];
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
       appBar: AppBar(
@@ -66,19 +54,14 @@ class _BoxPageState extends State<BoxPage> {
                         border: Border.all(color: Colors.black54),
                         borderRadius: BorderRadius.all(Radius.circular(20)),                    
                       ),
-                      
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          
-
                           Box(
                             canteen: data["canteen"],
                             address: data["address"],
                             packageType: data["packageType"],
                           ),
-                          
-                          // boxList[index],
                           SizedBox(height: 10),
                         ],
                       ),
@@ -86,7 +69,6 @@ class _BoxPageState extends State<BoxPage> {
                     SizedBox(height: 6),
                   ],
                 );
-
               },
             ),  
           )
@@ -95,15 +77,3 @@ class _BoxPageState extends State<BoxPage> {
     );
   }
 }
-
-
-// class DeliveryMethodNotifier extends ChangeNotifier{
-//   String ?_selectedMethod;
-
-//   String? get selectedDeliveryMethod => _selectedMethod;
-
-//   void updateMethod(String? method){
-//     _selectedMethod = method;
-//     notifyListeners();
-//   }
-// }

@@ -13,16 +13,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
+
   String _currentName = '';
   String _currentSurname = '';
   String _currentBirthDate = '';
-
-  // Definizione di start-end date per calcolo del HR at rest (Da definire)
-  String startDate = '2025-06-30 23:59:00';
-  String endDate = '2025-07-01 00:01:00';
 
   @override
   void initState() {
@@ -46,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     if (result == true) {
       _loadProfileData();
-      Navigator.pop(context, true); // notifica alla home che qualcosa è cambiato
+      Navigator.pop(context, true);
     }
   }
 
@@ -60,29 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-             //Text('Current name: $_currentName' ,style: TextStyle(color: Colors.black54),),
             SizedBox(height: 10),
-
-            // Consumer<DataProvider>(builder: (context, data, child) {
-            //     return TextField(
-            //       controller: _nameController,
-            //       readOnly: true,
-            //       enabled: false,
-            //       //onTap: (){},
-            //       decoration: InputDecoration(
-            //         labelText: data.name ?? _currentName, //deve mostrarsi cognome corrente 
-            //         labelStyle: TextStyle(color: Colors.black54),
-            //         prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
-            //         enabledBorder: UnderlineInputBorder(
-            //           borderSide: BorderSide(color: Colors.black54),
-            //         ),
-            //         focusedBorder: UnderlineInputBorder(
-            //           borderSide: BorderSide(color: Colors.green),
-            //         ),
-            //       ),
-            // );
-            // }),
-
             TextField(
               readOnly: true,
               enabled: false,
@@ -94,25 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),),
             
             SizedBox(height: 10),
-
-            // Consumer<DataProvider>(builder: (context, data, child) {
-            //     return TextField(
-            //       controller: _surnameController,
-            //       readOnly: true,
-            //       enabled: false,
-            //       //onTap: (){},
-            //       decoration: InputDecoration(
-            //         labelText: data.surname ?? _currentSurname, //deve mostrarsi cognome corrente 
-            //         labelStyle: TextStyle(color: Colors.black54),
-            //         prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
-            //         enabledBorder: UnderlineInputBorder(
-            //           borderSide: BorderSide(color: Colors.black54),
-            //         ),
-            //         focusedBorder: UnderlineInputBorder(
-            //           borderSide: BorderSide(color: Colors.green),
-            //         ),
-            //       ),
-            // );}),
 
             TextField(
               readOnly: true,
@@ -131,9 +88,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   controller: _birthdateController,
                   readOnly: true,
                   enabled: false,
-                  //onTap: (){},
                   decoration: InputDecoration(
-                    labelText: _currentBirthDate, //deve mostrarsi quello corrente 
+                    labelText: _currentBirthDate, 
                     labelStyle: TextStyle(color: Colors.black54),
                     prefixIcon: Icon(Icons.edit_calendar,color: Colors.green,size: 17,),
                     enabledBorder: UnderlineInputBorder(
@@ -143,7 +99,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderSide: BorderSide(color: Colors.green),
                     ),
                   ),
-            );}),
+                );
+              }
+            ),
 
             SizedBox(height: 20),
             ElevatedButton(
@@ -159,17 +117,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
-/*
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  static const routename = 'Homepage';
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-    
-  }
-}*/

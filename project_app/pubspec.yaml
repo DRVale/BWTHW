@@ -72,25 +72,7 @@ flutter:
      - assets/LOGO.png
      - assets/NOI.jpg
 
-     - assets/Piovego-OrtoBontanico.png
-     - assets/Piovego-Boccaccio.png
-     - assets/Piovego-SanMassimo.png
-     - assets/piovego-TizianoMinio.png
-
-     - assets/Belzoni-Boccaccio.png
-     - assets/Belzoni-Massimo.png
-     - assets/Belzoni-ortobotanico.png
-     - assets/Belzoni-tiziano.png
-
-     - assets/Murialdo-Boccaccio.png
-     - assets/Murialdo-OrtoBotanico.png
-     - assets/Murialdo-SanMassimo.png
-     - assets/Murialdo-Tiziano.png
      
-     - assets/Pio-Boccaccio.png
-     - assets/Pio-ortobotonico.png
-     - assets/Pio-SanMassimo.png
-     - assets/Pio-Tiziano.png
 
   #   - images/a_dot_ham.jpeg
 
