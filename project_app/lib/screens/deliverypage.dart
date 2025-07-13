@@ -152,13 +152,14 @@ Widget build(BuildContext context) {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                  Text("Open in Google Maps: ", style: TextStyle(color: Colors.black54,  fontSize: 13),),
-                                  SizedBox(width: 5),
-                                  IconButton(
-                                  icon: Icon(Icons.fmd_good_outlined, color: Colors.black54, size:  20, ),
-                                  onPressed: () async => await launchGoogleMapsSearch(context, widget.address),
+                                    Text("Click to open in Google Maps: ", style: TextStyle(color: Colors.black54,  fontSize: 13),),
+                                    SizedBox(width: 5),
+                                    IconButton(
+                                      icon: Icon(Icons.fmd_good_outlined, color: Colors.black54, size:  20, ),
+                                      onPressed: () async => await launchGoogleMapsSearch(context, widget.address),
+                                    ),
+                                  ]
                                 ),
-                                ]),
 
                                 
                                 const SizedBox(height: 15),
@@ -232,10 +233,42 @@ Widget build(BuildContext context) {
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
+<<<<<<< HEAD
                                                   Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
                                                   // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                                   Text("Total covered distance: ${data.sumOfDistances.toStringAsFixed(1)} km", style: TextStyle(color: Colors.black54),),
                                                   Text("${data.avgSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.black54),),
+=======
+
+                                                  SizedBox(height: 15,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'You obtained: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '$xpIncrement XP', style: TextStyle(  color: Colors.black54)),
+                                                      ]
+                                                    ),
+                                                  ),
+                                                  
+                                                  SizedBox(height: 13,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'Total covered distance: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '${data.sumOfDistances.toStringAsFixed(1)} km', style: TextStyle(  color: Colors.black54)),
+                                                      ]
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 13,),
+                                                  Text.rich(
+                                                    TextSpan(
+                                                      children: [
+                                                        TextSpan(text: 'Speed: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                                        TextSpan(text: '${data.avgSpeed.toStringAsFixed(1)} km/h', style: TextStyle(  color: Colors.black54)),
+                                                      ]
+                                                    ),
+                                                  ),
+>>>>>>> 17fe1e3788958a0e52b0cdcb6d6b2038594f1718
                                                 ],
                                               ),
                                               actions: [
