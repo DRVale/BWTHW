@@ -379,36 +379,35 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                               title: const Text("Rewards"),
                               content: Container(
                                 width: double.maxFinite,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Riga 1
+                                    SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.icecream, color: Colors.black54, size: 40,),
+                                        Icon(Icons.icecream, color: Colors.black54, size: 25,),
                                         SizedBox(width: 10),
-                                        Text("100 XP: FREE dessert or coffee!"),
+                                        Text("FREE dessert or coffee!"),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
-                                    // Riga 2
+                                    SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.dining_outlined, color: Colors.black54, size: 40,),
+                                        Icon(Icons.dining_outlined, color: Colors.black54, size: 25,),
                                         SizedBox(width: 10),
-                                        Text("250 XP: FREE Small meal!"),
+                                        Text("FREE small meal!"),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
-                                    // Riga 3
+                                    SizedBox(height: 15),
                                     Row(
                                       children: const [
-                                        Icon(Icons.dining, color: Colors.black54, size: 40,),
+                                        Icon(Icons.dining, color: Colors.black54, size: 25,),
                                         SizedBox(width: 10),
-                                        Text("500 XP: FREE Complete meal!",)
+                                        Text("FREE complete meal!",)
                                       ],
                                     ),
                                   ],
@@ -448,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Container(
                           child: Text(
-                            'Select a delivery or filter by delivery modality',
+                            'Select a delivery',
                             style: TextStyle(
                               fontSize: 18
                             ),
@@ -457,24 +456,25 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: 10,),
                         IconButton(
                           icon: const Icon(Icons.info_outline),
-                          iconSize: 20,
+                          iconSize: 25,
                           color: Colors.black54,
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
+                                  backgroundColor: const Color.fromARGB(255, 250, 250, 238),
                                   title: Center(child: Text("TRIMP legend")),
                                   content: Container(
                                     width: double.maxFinite,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('TRIMP < 1: Low intensity activity'),
+                                        Text('TRIMP < 1: Low intensity'),
                                         SizedBox(height: 10),
-                                        Text('1 < TRIMP < 2: Medium intensity activity'),
+                                        Text('1 < TRIMP < 2: Medium intensity'),
                                         SizedBox(height: 10),
-                                        Text('2 < TRIMP: High intensity activity'),
+                                        Text('2 < TRIMP: High intensity'),
                                       ],
                                     ),
                                   ),
