@@ -232,41 +232,10 @@ Widget build(BuildContext context) {
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-<<<<<<< Updated upstream
                                                   Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
                                                   // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
                                                   Text("Total covered distance: ${data.sumOfDistances.toStringAsFixed(1)} km", style: TextStyle(color: Colors.black54),),
                                                   Text("${data.avgSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.black54),),
-=======
-                                                  SizedBox(height: 15,),
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(text: 'You obtained: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
-                                                        TextSpan(text: '$xpIncrement XP', style: TextStyle(  color: Colors.black54)),
-                                                        ]
-                                                        ),
-                                                        ),
-                                                  
-                                                  SizedBox(height: 13,),
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(text: 'Total covered distance: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
-                                                        TextSpan(text: '${data.sumOfDistances}', style: TextStyle(  color: Colors.black54)),
-                                                        ]
-                                                        ),
-                                                        ),
-                                                  SizedBox(height: 13,),
-                                                  Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        TextSpan(text: 'Speed: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
-                                                        TextSpan(text: '${data.avgSpeed} km/h', style: TextStyle(  color: Colors.black54)),
-                                                        ]
-                                                        ),
-                                                        ),
->>>>>>> Stashed changes
                                                 ],
                                               ),
                                               actions: [
