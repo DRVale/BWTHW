@@ -28,38 +28,23 @@ class Impact {
   static const heartrateURL = 'data/v1/heart_rate/patients/';
   static const restingHR_URL = 'data/v1/resting_heart_rate/patients/'; 
   
-
-  // EXERCISE
-  static const exerciseURL = 'data/v1/exercise/patients/';
-
- 
-
-  // oppure posso creare degli URL più lunghi, ex gateURL 
-
   Future<int> refreshTokens() async {
     final sp = await SharedPreferences.getInstance(); 
     final refresh_token = sp.getString('refresh');
 
     if(refresh_token != null){
-      //final url = 'https://impact.dei.unipd.it/bwthw/gate/v1/token/';
       final url = Impact.baseURL + Impact.refreshURL;
       final uri = Uri.parse(url);
-      // NB: creo corpo per la richiesta: Metodo post richiede parametro body CORREGGERE CREDENZIALI
       final body = {'refresh': refresh_token};
-      //Richiesta completa di uri e body
       final response = await http.post(uri, body: body);  
-      //richiesta token è post: attenzione a inserire user e psw nella richiesta. body come parametro del metodo post
-      // Controllo status code
-      //print(response.statusCode);
+
 
       if(response.statusCode == 200){
-        final decodedResponse = jsonDecode(response.body); // conversione formato Json
-        //print(decodedResponse['access']);
+        final decodedResponse = jsonDecode(response.body);
 
-        //Interrogo SharedPreferences
+        // SharedPreferences
         final credentials = await SharedPreferences.getInstance();
 
-        // Salvo token d'accesso e di refresh
         credentials.setString('access', decodedResponse['access']); 
         credentials.setString('refresh', decodedResponse['refresh']); 
       }
@@ -73,25 +58,15 @@ class Impact {
 
   Future<int> loggingIn(String username, String password) async {
     
-  //final url = 'https://impact.dei.unipd.it/bwthw/gate/v1/token/';
   final url = Impact.baseURL + Impact.tokenURL;
   final uri = Uri.parse(url);
-  // NB: creo corpo per la richiesta: Metodo post richiede parametro body CORREGGERE CREDENZIALI
   final body = {'username': username, 'password': password};
-  //Richiesta completa di uri e body
   final response = await http.post(uri, body: body);  
-  //richiesta token è post: attenzione a inserire user e psw nella richiesta. body come parametro del metodo post
-  // Controllo status code
-  //print(response.statusCode);
 
   if(response.statusCode == 200){
-    final decodedResponse = jsonDecode(response.body); // conversione formato Json
-    //print(decodedResponse['access']);
-
-    //Interrogo SharedPreferences
+    final decodedResponse = jsonDecode(response.body);
     final credentials = await SharedPreferences.getInstance();
 
-    // Salvo token d'accesso e di refresh
     credentials.setString('access', decodedResponse['access']); 
     credentials.setString('refresh', decodedResponse['refresh']);   
   }
@@ -113,11 +88,7 @@ class Impact {
 
     //Create the (representative) request
     final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/daterange/start_date/$startTime/end_date/$endTime/';
-
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
-
-    // For debug
-    print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
 
@@ -148,9 +119,6 @@ class Impact {
     //Create the (representative) request
     final url = Impact.baseURL + Impact.distanceURL + Impact.patientUsername + '/day/$day/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
-
-    // For debug
-    //print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
 
@@ -194,37 +162,6 @@ class Impact {
     return result;
   }
 
-  static Future<dynamic> fetchExerciseData(String day) async{
-
-    // Check access 
-    final sp = await SharedPreferences.getInstance();
-    var access = sp.getString('access');
-
-    // If access token is expired, refresh it
-    if(JwtDecoder.isExpired(access!)){
-      await Impact().refreshTokens();
-      access = sp.getString('access');
-    }
-
-    //Create the (representative) request
-    final url = Impact.baseURL + Impact.exerciseURL + Impact.patientUsername + '/day/$day/';
-    final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
-
-    // For debug
-    // print('Calling: $url');
-
-    final response = await http.get(Uri.parse(url), headers: headers);
-
-    var result = null;
-
-    // Check response code
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    }
-    
-    // Return the response body
-    return result;
-  }
 
 
   static Future<dynamic> fetchHeartRateData(String day) async{
@@ -239,13 +176,9 @@ class Impact {
       access = sp.getString('access');
     }
 
-    //'{username}/daterange/start_date/{start_date}/end_date/{end_date}/';
     //Create the (representative) request
     final url = Impact.baseURL + Impact.heartrateURL + Impact.patientUsername + '/day/$day/';
     final headers = {HttpHeaders.authorizationHeader: 'Bearer $access'};
-
-    // For debug
-    // print('Calling: $url');
 
     final response = await http.get(Uri.parse(url), headers: headers);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AboutUsPage extends StatelessWidget {
   const AboutUsPage({Key? key}) : super(key: key);
 
@@ -58,7 +57,7 @@ class AboutUsPage extends StatelessWidget {
                   TextSpan(text:' affiliated canteens ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54)),
                   TextSpan(text: ', we recover, ' ,style: TextStyle(fontSize: 12, color: Colors.black54)),
                   TextSpan(text: 'fresh, unserved meals and pack them into special boxes. ',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54)),
-                 ]
+                  ]
                   ),
                   ),
               SizedBox(height: 13,),
@@ -163,9 +162,9 @@ class AboutUsPage extends StatelessWidget {
             )
           ]
           )
-          ),
+        ),
       ),
-          );
-      }
-          
+    );
+  }
+         
 }

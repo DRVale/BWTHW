@@ -13,10 +13,6 @@ class XPProgressBar extends StatelessWidget {
     required this.checkpoints,
   });
 
-  // il meccanismo di costruzione è lo stesso: all'interno di una sizedbox viene utilizzata una stack. 
-  // Prima costruisco arco di background, poi arco di riempimento ed infine posizione il pointer e le icone dei checkpoint. 
-  // In questo caso utilizza una classe "terzi" per disegnare gli archi. 
-
   @override
   Widget build(BuildContext context) {
     final progress = currentXP / maxXP;
@@ -24,7 +20,7 @@ class XPProgressBar extends StatelessWidget {
     
     return LayoutBuilder(
       builder: (context,constraints) {
-        final width = constraints.maxWidth; //rendo adattiva la progressbar alle dimensioni dello schermo
+        final width = constraints.maxWidth; 
         return SizedBox(
           height: width * 0.7, 
           width: width,
@@ -59,7 +55,6 @@ class XPProgressBar extends StatelessWidget {
                 )
               ),
         
-              // Tachimetro
               Positioned(
                 bottom: 20,
                 child: Transform.rotate(
@@ -100,18 +95,7 @@ class XPProgressBar extends StatelessWidget {
                 ),
               ),
         
-        
-              // // Rocket pointer: non utilizza ArcPainter ma Transform.rotate 
-              // Transform.rotate(
-              //   angle: angle - pi/2,
-              //   child: Transform.translate(
-              //     offset: const Offset(0, -90),
-              //     child: const Icon(Icons.rocket_launch, size: 25, color: Colors.black),
-              //   ),
-              // ),
-        
               // Checkpoints
-              
               ...checkpoints.map((cp) {
                 final cpAngle = pi * (cp.xpRequired / maxXP).clamp(0.0, 0.95);
                 final radius = width/3 + 40;
@@ -138,10 +122,6 @@ class XPProgressBar extends StatelessWidget {
     );
   }
 }
-
-// La classe ArcPainter è una classe personalizzata che estende CustomPainter (fornita da flutter) e utilizza il metodo di DISEGNO MANUALE Paint
-// A sua volta Paint, per disegnare archi, usa il metodo drawArc.
-// Potrebbe usare altri metodi come drawLine, drawRect, drawCircle ecc...  
 
 class ArcPainter extends CustomPainter {
   final double sweepAngle;

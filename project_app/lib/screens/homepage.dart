@@ -1,15 +1,11 @@
-
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_app/screens/loginPage.dart';
 import 'package:project_app/screens/canteenpage.dart';
-import 'package:project_app/screens/optionspage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_app/widgets/custombottomappbar.dart';
 import 'package:project_app/screens/profilepage.dart';
 import 'package:project_app/screens/aboutuspage.dart';
 import 'package:project_app/widgets/progressbar.dart';
-import 'package:project_app/widgets/deliverymethod.dart';
 import 'package:project_app/utils/firebase.dart';
 import 'package:project_app/widgets/line_plot.dart';
 import 'package:project_app/widgets/deliveryStorage&Counting.dart';
@@ -36,20 +32,17 @@ class _HomePageState extends State<HomePage> {
   int selected_delivery_idx = 0;
 
   Delivery? selectedDelivery;
-  // Delivery selectedDelivery = list_of_deliveries[0];  IN FUTURO SARA' COSI'
 
   String _username = '';
   String surname = '';
   TextEditingController userController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
-
-  //Color _headerColor = getRandomColor();
   
   bool firstLaunch = true;
 
   //PROGRESS BAR VARIABLES
-  double xp = 0;
+  // double xp = 0;
 
   final List<Checkpoint> checkpoints = [
   Checkpoint(xpRequired: 100, icon: Icons.icecream_outlined, label: '100 XP'),
@@ -59,9 +52,7 @@ class _HomePageState extends State<HomePage> {
 
 
   // DELIVERY COUNT 
-  // Utilizzo una mappa dove memorizzo metodo-count
   int total = 0;
-  Map<String, int> methodCounts = {};
   final methods = ['Bici', 'Corsa', 'Camminata'];
   final methods_en = ['Bike', 'Running', 'On Foot'];
 
@@ -70,10 +61,7 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     _loadUsername();
-    _loadXP();
     _checkFirstLauch();
-    _loadDeliveries();
-    // Prendere valore progress bar 
   }
 
   Future<void> _checkFirstLauch() async {
@@ -86,13 +74,12 @@ class _HomePageState extends State<HomePage> {
     sp.setBool('FirstLauch', false); 
 
   
-    //if(firstLaunch) _toGraphPage(context);
-    if(firstLaunch == false){
+    if(firstLaunch){
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          String? errorMessage; // Qui la variabile locale di errore
+          String? errorMessage;
 
           return StatefulBuilder(
             builder: (context, setStateDialog) {
@@ -194,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                           _username = userController.text;
                         });
 
-                        Navigator.pop(context); // Chiudi il dialog
+                        Navigator.pop(context); // Pop the dialog
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Saved!')),
@@ -242,36 +229,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _loadXP() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-
-    // double? storedXP = sp.getDouble('XP');
-    // double finalXP = storedXP ?? 0;
-    double finalXP = sp.getDouble('XP') ?? 0;
-
-    await sp.setDouble('XP', finalXP);
-
-    setState(() {
-      // If XP is null (it was never initialized in the SP) we set it to zero and save it in the SP
-      xp = finalXP;
-      //sp.setDouble('XP', xp);
-    });
-
-  }
 
   Future<void> _toLoginPage(BuildContext context) async {
     final logoutReset = await SharedPreferences.getInstance();
 
-    // Ho tolto i remove di Username e XP: rimane salvato il tuo nome alrimenti torna USER,
-    // poi rimangono XP altrimenti la barra si azzera quando fai login appena dopo una nuova consegna. 
-
-    //await logoutReset.remove('username');
-    await logoutReset.remove('password');
     await logoutReset.remove('access');
     await logoutReset.remove('refresh');
-    //await logoutReset.remove('XP');
-    await logoutReset.remove('FirstLaunch');
-    // Vedere se togliere anche firstLaunch (Per me si può rimuovere - Lorenz)
 
     Navigator.pop(context);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
@@ -293,21 +256,9 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUsPage()));
   }
 
-  // Metodo per gestire, con le SP, il count delle consegne. Esiste una classe apposita, in deliverymethod
-  Future<void> _loadDeliveries() async {
-    final service = DeliveryStorage();
-    final totalCount = await service.getTotalDeliveries();
-    final methodMap = await service.getMethodCounts(methods);
-    setState(() {
-      total = totalCount;
-      methodCounts = methodMap;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // SE DA' PROBLEMI TOGLIERE
       resizeToAvoidBottomInset: false,
       extendBody: true,
       backgroundColor: const Color.fromARGB(255, 250, 250, 238),
@@ -359,7 +310,6 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                       onPressed: () {
                         showDialog(
-                          
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -425,8 +375,7 @@ class _HomePageState extends State<HomePage> {
                 );
               }),
               SizedBox(height: 30),
-              Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)),
-                 
+              Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries)),
             ],
           ),
         ),
@@ -514,16 +463,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
                 ),
                 SizedBox(height: 10),
                 Container(
@@ -533,7 +472,6 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(methods_en.length, (index){
                     String selectedDeliveryMethod = '';
-                    
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -555,7 +493,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             onTap: () async {
-                              // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
                               selectedDeliveryMethod = methods_en[index];
                               selected_delivery_idx = 0;
 
@@ -563,197 +500,110 @@ class _HomePageState extends State<HomePage> {
                               data.deliveries.clear();
 
                               await Provider.of<FirebaseDB>(context, listen: false).fetchDeliveriesDB(deliveryMethod: selectedDeliveryMethod);
-                              Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[0]);
+                              if(Provider.of<FirebaseDB>(context, listen: false).deliveries.length > 0) Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[0]);
                             },
                           ),
                           SizedBox(width: 10),
-                          //SizedBox(height: 60)
                         ],
                       );
                     },  
                   ),
                 ),
-                ),
+              ),
 
-                SizedBox(height: 20),
-             
-                  
-                    Container(
-                      width: MediaQuery.sizeOf(context).width - 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        
-                        children: [
-                          // Left Arrow Button
-                          Container(
-                            height: 38,
-                            width: 38,
-                            child: IconButton(
-                              iconSize: 25,
-                              color: Color.fromARGB(255, 250, 250, 238),
-                              onPressed: selected_delivery_idx > 0 ? (){
-                                setState(() {
-                                  if (selected_delivery_idx > 0) {
-                                    selected_delivery_idx--;
-                                  }
-                                  selectedDelivery = data.deliveries[selected_delivery_idx];
-                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-                                });
-                              } : null, // Disable if at first item
-                              icon: Icon(
-                                Icons.arrow_back_ios_new,
-                                color: selected_delivery_idx == 0? Colors.grey : Colors.green,
-                              ),
+              SizedBox(height: 20),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width - 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,                        
+                      children: [
+                        // Left Arrow Button
+                        Container(
+                          height: 38,
+                          width: 38,
+                          child: IconButton(
+                            iconSize: 25,
+                            color: Color.fromARGB(255, 250, 250, 238),
+                            onPressed: selected_delivery_idx > 0 ? (){
+                              setState(() {
+                                if (selected_delivery_idx > 0) {
+                                  selected_delivery_idx--;
+                                }
+                                selectedDelivery = data.deliveries[selected_delivery_idx];
+                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                              });
+                            } : null,
+                            icon: Icon(
+                              Icons.arrow_back_ios_new,
+                              color: selected_delivery_idx == 0? Colors.grey : Colors.green,
                             ),
                           ),
-                          // SizedBox(width: 20),
-                      
-                          Container(
-                            width: 225,
-                            // width: MediaQuery.sizeOf(context).width - 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.green),
-                              borderRadius: BorderRadius.all(Radius.circular(20)),                    
-                            ),
-                      
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '${data.deliveries[selected_delivery_idx].address.split(',')[0]},',
-                                    style: TextStyle(
-                                      color: Colors.black54
-                                    ),
+                        ),
+                        Container(
+                          width: 225,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.green),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),                    
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(data.deliveries.length == 0? '' :
+                                  '${data.deliveries[selected_delivery_idx].address.split(',')[0]},',
+                                  style: TextStyle(
+                                    color: Colors.black54
                                   ),
-                                  Text(
-                                    formatDateTime(data.deliveries[selected_delivery_idx].start),
-                                    style: TextStyle(
-                                      color: Colors.black54
-                                    ),
+                                ),
+                                Text(data.deliveries.length == 0? '' :
+                                  formatDateTime(data.deliveries[selected_delivery_idx].start),
+                                  style: TextStyle(
+                                    color: Colors.black54
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                      
-                          // const SizedBox(width: 40),
-                      
-                          // Right Arrow Button
-                      
-                          Container(
-                            height: 38,
-                            width: 38,
-                            child: IconButton(
-                              iconSize: 25,
-                              color: Color.fromARGB(255, 250, 250, 238),
-                              // foregroundColor: Colors.green,
-                              onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
-                                setState(() {
-                                  if (selected_delivery_idx < data.deliveries.length - 1) {
-                                    selected_delivery_idx++;
-                                  }
-                                  selectedDelivery = data.deliveries[selected_delivery_idx];
-                                  Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-                                });
-                              } : null, // Disable if at first item
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
-                              ),
+                        ),
+                        // Right Arrow Button
+                        Container(
+                          height: 38,
+                          width: 38,
+                          child: IconButton(
+                            iconSize: 25,
+                            color: Color.fromARGB(255, 250, 250, 238),
+                            onPressed: selected_delivery_idx < data.deliveries.length - 1 ? (){
+                              setState(() {
+                                if (selected_delivery_idx < data.deliveries.length - 1) {
+                                  selected_delivery_idx++;
+                                }
+                                selectedDelivery = data.deliveries[selected_delivery_idx];
+                                Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
+                              });
+                            } : null,
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: selected_delivery_idx == data.deliveries.length-1? Colors.grey : Colors.green,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-
-                    SizedBox(height: 20,),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        height: 250,
-                        child: TrimpDataPlot(trimpData: data.trimp_per_min)
-                      ),
+                  ),
+                  SizedBox(height: 20,),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      height: 250,
+                      child: TrimpDataPlot(trimpData: data.deliveries.length > 0? data.trimp_per_min : [])
                     ),
-                  
-        
-              
-              
-              
-              // builder: (context, data, child) {
+                  ),
+                ],
+              )
+            );
+          },
+        ),
 
-              //   int selected_delivery_idx = 0;
-
-              //   return Column(
-              //     children: [
-              //       SizedBox(
-              //         height: 50,
-              //         width: double.infinity,
-              //         child: ListView.builder(
-              //           scrollDirection: Axis.horizontal,
-              //           shrinkWrap: true,
-              //           itemCount: data.deliveries.length,
-              //           itemBuilder: (context, index){
-              //             return Row(
-              //               mainAxisAlignment: MainAxisAlignment.center,
-              //               children: [
-              //                 InkWell(
-              //                   child: Container( //Aggiunto container per abbellire i pacchi
-              //                     // width: MediaQuery.sizeOf(context).width - 50,
-              //                     decoration: BoxDecoration(
-              //                       border: Border.all(color: Colors.black54),
-              //                       borderRadius: BorderRadius.all(Radius.circular(20)),                    
-              //                     ),
-
-              //                     child: Padding(
-              //                       padding: const EdgeInsets.all(8.0),
-              //                       child: 
-              //                       Text('${data.deliveries[index].address.split(',')[0]}, ${formatDateTime(data.deliveries[index].start)}'),
-              //                     ),
-              //                   ),
-              //                   onTap: (){
-              //                     // Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(data.deliveries[index]);
-              //                     selected_delivery_idx = index;
-              //                     print(data.deliveries[selected_delivery_idx].start);
-
-              //                     // CAMBIARE QUA, però in linea di massima funziona.
-
-              //                     selectedDelivery = data.deliveries[index];
-              //                     Provider.of<FirebaseDB>(context, listen: false).getTrimpPerMin(selectedDelivery!);
-              //                     // Now make the firebase query to get the data of a specific delivery
-
-                    
-                    
-              //                     // Select the appropriate delivery or specific delivery data
-              //                   },
-              //                 ),
-              //                 SizedBox(
-              //                   width: 20,
-              //                 ),
-              //                 //SizedBox(height: 60)
-              //               ],
-              //             );
-              //           },
-              //         ),
-              //       ),
-              //       Container(
-              //         // color: Colors.amber,
-              //         height: 250,
-              //         child: TrimpDataPlot(trimpData: data.trimp_per_min),
-              //       )
-              //     ],
-              //   );
-          ],
-        )
-      );
-        },),
-
-
-      // body: Consumer<XP_notifier>
-      
-      // BNB and FAB
       bottomNavigationBar: CustomBottomAppBar(
         tabnames: ['HOME', 'HISTORY'],
         currentIndex: bodyIndex,
@@ -820,15 +670,14 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               trailing: Icon(Icons.settings, color: Colors.black54, ),
               title: Text(
-                'Da togliere (serve per provare)',
+                'DEBUG: remove 1 delivery',
                 style: TextStyle(color: Colors.black54, ),
               ),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OptionsPage())),
+              onTap: () {
+                Provider.of<FirebaseDB>(context, listen: false).removeDeliveries();
+                // delete one delivery
+              },
             ),
-
-            
-            
-            
           ],
         ),
       ),
@@ -836,14 +685,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Color getRandomColor(){
-  final random = Random();
-  return Color.fromARGB(255,
-  random.nextInt(256),
-  random.nextInt(256),
-  random.nextInt(256),
-  );
-}
 
 String formatDateTime(String dateString){
 
@@ -871,10 +712,7 @@ String formatDateTime(String dateString){
   if (day >= 11 && day <= 13) {
     ordinalSuffix = 'th';
   }
-
-
   return '${monthYear.split(' ')[0]} ${day}$ordinalSuffix ${monthYear.split(' ')[1]}';
-
 }
 
 
