@@ -94,7 +94,7 @@ class XPProgressBar extends StatelessWidget {
                     ),
                     Text(
                       'out of $maxXP',
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16, color: Colors.black54),
                     ),
                   ],
                 ),
@@ -124,7 +124,7 @@ class XPProgressBar extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(cp.label, style: const TextStyle(fontSize: 10)),
+                      Text(cp.label, style: const TextStyle(fontSize: 10, color: Colors.black54)),
                       Icon(cp.icon, size: width/10, color: isReached ? Colors.amber : Colors.grey),
                     ],
                   ),

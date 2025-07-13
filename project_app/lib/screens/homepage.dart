@@ -89,137 +89,134 @@ class _HomePageState extends State<HomePage> {
     //if(firstLaunch) _toGraphPage(context);
     if(firstLaunch == false){
       showDialog(
-       
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return AlertDialog(
-            backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-            title: Center(
-              child: Text(
-                "Welcome to our App!",
-                style: TextStyle(
-                  color: Colors.green
-                ),
-              ),
-            ),
-            //content: Center(child: Text('Is this the first time using PastOn? Tell us your personal information')),
-            actions: [
-              //SizedBox(height: 10,),
-              Center(child: Text('Is this the first time using PastOn? Tell us your personal information',)),
-              SizedBox(height: 30,),
-              TextField(
-                cursorColor: Colors.black54,
-                textAlign: TextAlign.center,
-                controller: userController,
-                // onTap: ()async{
-                //     await Provider.of<DataProvider>(context, listen: false).setName(context,userController.text);
-                //   },
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
-                  ),
-                  labelText: 'Name',
-                  labelStyle: TextStyle(color: Colors.black54),
-                  hintText: 'Enter your name!',
-                  //hintStyle: TextStyle(color: Colors.green),
-                  //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                )
-              ),
-              SizedBox(height: 10,),
-              TextField(
-                cursorColor: Colors.black54,
-                textAlign: TextAlign.center,
-                controller: surnameController,
-                // onTap: ()async{
-                //     await Provider.of<DataProvider>(context, listen: false).setSurname(context,surnameController.text);
-                //   },
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
-                  ),
-                  labelText: 'Surname',
-                  labelStyle: TextStyle(color: Colors.black54),
-                  hintText: 'Enter your surname!',
-                  //hintStyle: TextStyle(color: Colors.green),
-                  //prefixIcon: Icon(Icons.person,color: Colors.green,size: 17,),
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                )
-              ),
-              SizedBox(
-                height: 10,
-              ),
+          String? errorMessage; // Qui la variabile locale di errore
 
-               Consumer<DataProvider>(builder: (context, data, child) {
-                return
-              TextField(
-                  cursorColor: Colors.black54,
-                  textAlign: TextAlign.center,
-                  controller: birthdateController,
-                  //readOnly: true,
-                  onTap: ()async{
-                    await Provider.of<DataProvider>(context, listen: false).pickDate(context);
-                    birthdateController.text = data.first_birthdate!;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'birthdate',//data.first_birthdate ?? birthdateController.text,
-                    hintText: 'Insert your birthdate',
-                    labelStyle: TextStyle(color: Colors.black54),
-                    enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    borderSide: BorderSide(color: Colors.black54,width: 2.0),
+          return StatefulBuilder(
+            builder: (context, setStateDialog) {
+              return AlertDialog(
+                backgroundColor: const Color.fromARGB(255, 250, 250, 238),
+                title: Center(
+                  child: Text(
+                    "Welcome to our App!",
+                    style: TextStyle(color: Colors.green),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    //borderSide: BorderSide(color: Colors.green,width: 2.0),
+                ),
+                actions: [
+                  Center(
+                    child: Text(
+                      'Is this the first time using PastOn? Tell us your personal information',
+                    ),
                   ),
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
+                  const SizedBox(height: 30),
+                  TextField(
+                    cursorColor: Colors.black54,
+                    textAlign: TextAlign.center,
+                    controller: userController,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
+                        borderSide: const BorderSide(color: Colors.black54, width: 2.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(),
+                      labelText: 'Name',
+                      labelStyle: const TextStyle(color: Colors.black54),
+                      hintText: 'Enter your name!',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                    ),
                   ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    cursorColor: Colors.black54,
+                    textAlign: TextAlign.center,
+                    controller: surnameController,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
+                        borderSide: const BorderSide(color: Colors.black54, width: 2.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(),
+                      labelText: 'Surname',
+                      labelStyle: const TextStyle(color: Colors.black54),
+                      hintText: 'Enter your surname!',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Consumer<DataProvider>(
+                    builder: (context, data, child) {
+                      return TextField(
+                        cursorColor: Colors.black54,
+                        textAlign: TextAlign.center,
+                        controller: birthdateController,
+                        onTap: () async {
+                          await Provider.of<DataProvider>(context, listen: false).pickDate(context);
+                          birthdateController.text = data.first_birthdate!;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Birthdate',
+                          hintText: 'Insert your birthdate',
+                          labelStyle: const TextStyle(color: Colors.black54),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(color: Colors.black54, width: 2.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(),
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                      );
+                    },
+                  ),
+                  if (errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () async {
+                      if (userController.text.isNotEmpty &&
+                          surnameController.text.isNotEmpty &&
+                          birthdateController.text.isNotEmpty) {
+                        String birthdate = birthdateController.text;
+                        SharedPreferences sp = await SharedPreferences.getInstance();
+                        await sp.setString('username', userController.text);
+                        await sp.setString('surname', surnameController.text);
+                        await sp.setString('birthdate', birthdate);
+
+                        setState(() {
+                          _username = userController.text;
+                        });
+
+                        Navigator.pop(context); // Chiudi il dialog
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Saved!')),
+                        );
+                      } else {
+                        setStateDialog(() {
+                          errorMessage = "All fields must be filled!";
+                        });
+                      }
+                    },
+                    child: const Text(
+                      "Confirm",
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ),
+                ],
               );
-              }),
-
-              SizedBox(height: 10,),
-              
-              TextButton(
-                onPressed: () async {
-                  if(userController.text.isNotEmpty && surnameController.text.isNotEmpty && birthdateController.text.isNotEmpty){
-                    String birthdate = birthdateController.text;
-                    SharedPreferences sp = await SharedPreferences.getInstance();
-                    await sp.setString('username', userController.text);
-                    await sp.setString('surname', surnameController.text);
-                    await sp.setString('birthdate', birthdate);
-
-                    setState(() {
-                      _username = userController.text;                      
-                  });
-
-                  Navigator.pop(context); // Return to HomePage
-
-                  }else{
-                    ScaffoldMessenger.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(content: Text('All fields must be filled!')));
-                  }
-                },
-                child: Text(
-                  "Confirm",
-                  style: TextStyle(
-                    color: Colors.green
-                  ),
-                ),
-              ),
-            ],
+            },
           );
         },
       );
+
 
       showDialog(
         context: context,
@@ -341,22 +338,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column( 
             children: [
-              SizedBox(height: 50),
-              Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)),
-              SizedBox(height: 50,),
-              Consumer<FirebaseDB>(builder: (context, data, child) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [ 
-                    XPProgressBar(
-                      currentXP: data.totalXP,
-                      maxXP: 500,
-                      checkpoints: checkpoints,
-                    ),
-                  ],
-                );
-              }),
-              SizedBox(height: 10),
+              SizedBox(height: 30),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -364,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       child: Text('Your Progress',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.black54,
                         ),
@@ -377,11 +359,12 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black54,
                       onPressed: () {
                         showDialog(
+                          
                           context: context,
                           builder: (context) {
                             return AlertDialog(
                               backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-                              title: const Text("Rewards"),
+                              title: Center(child: const Text("Rewards", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold))),
                               content: Container(
                                 width: double.maxFinite,
                                 child: Column(
@@ -427,7 +410,23 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              ),   
+              ),
+              SizedBox(height: 20,),
+              Consumer<FirebaseDB>(builder: (context, data, child) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [ 
+                    XPProgressBar(
+                      currentXP: data.totalXP,
+                      maxXP: 500,
+                      checkpoints: checkpoints,
+                    ),
+                  ],
+                );
+              }),
+              SizedBox(height: 30),
+              Center(child: DeliveryCounterPanel(total: Provider.of<FirebaseDB>(context, listen: false).totalDeliveries, perMethod: methodCounts)),
+                 
             ],
           ),
         ),
@@ -466,24 +465,45 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) {
                                 return AlertDialog(
                                   backgroundColor: const Color.fromARGB(255, 250, 250, 238),
-                                  title: Center(child: Text("TRIMP legend")),
+                                  title: Center(child: Text("TRIMP legend", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold))),
                                   content: Container(
                                     width: double.maxFinite,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('TRIMP < 1: Low intensity'),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: 'TRIMP < 1: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                              TextSpan(text: 'Low intensity', style: TextStyle(  color: Colors.black54)),
+                                            ]
+                                          ),
+                                        ),
                                         SizedBox(height: 10),
-                                        Text('1 < TRIMP < 2: Medium intensity'),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '1 < TRIMP < 2: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                              TextSpan(text: 'Medium intensity', style: TextStyle(  color: Colors.black54)),
+                                            ]
+                                          ),
+                                        ),
                                         SizedBox(height: 10),
-                                        Text('2 < TRIMP: High intensity'),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(text: '2 < TRIMP: ',style: TextStyle( color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                              TextSpan(text: 'High intensity', style: TextStyle(  color: Colors.black54)),
+                                            ]
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.of(context).pop(),
-                                      child: const Text("Close",style: TextStyle(color: Colors.green),),
+                                      child: const Text("Close",style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold,), ),
                                     ),
                                   ],
                                 );

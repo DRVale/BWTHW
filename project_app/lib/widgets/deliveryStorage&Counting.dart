@@ -110,7 +110,7 @@ class DeliveryCounterPanel extends StatelessWidget {
           const Text(
             "Total deliveries:  ",
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 23,
               fontWeight: FontWeight.bold,
               color: Colors.black54,
             ),
