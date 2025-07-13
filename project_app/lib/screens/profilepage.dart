@@ -130,6 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 return TextField(
                   controller: _birthdateController,
                   readOnly: true,
+                  enabled: false,
                   //onTap: (){},
                   decoration: InputDecoration(
                     labelText: _currentBirthDate, //deve mostrarsi quello corrente 

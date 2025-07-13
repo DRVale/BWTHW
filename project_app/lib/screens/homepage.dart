@@ -450,7 +450,8 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             'Select a delivery',
                             style: TextStyle(
-                              fontSize: 18
+                              fontSize: 18,
+                              color: Colors.black54
                             ),
                           ),
                         ),

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project_app/models/requesteddata.dart';
 import 'package:project_app/screens/homepage.dart';
@@ -107,17 +107,13 @@ Widget build(BuildContext context) {
           child: SafeArea(
             child: Column(
               children: [
-                AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  
-                  ),
+                
                 
                 Expanded(
                   
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all( 16),
                           child: Container(
                             
                             decoration: BoxDecoration(
@@ -137,8 +133,12 @@ Widget build(BuildContext context) {
                             child: Column(
                               children: [
                                 SizedBox(height: 20,),
-                                Icon(Icons.panorama_fisheye_outlined, color: Colors.black54, size:  17, ),
-                                SizedBox(height: 20,),
+                                Transform.rotate(angle: pi / 4,
+                                child: 
+                                Icon(Icons.push_pin, color: Colors.black54, size:  35, ),
+                                ),
+                               
+                                SizedBox(height: 40,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -148,21 +148,28 @@ Widget build(BuildContext context) {
                                 ]),
                                 SizedBox(height: 40,),
                                 Text('Destination: ${widget.address}', style: TextStyle(fontSize: 13, color: Colors.black54, )),
-                                SizedBox(height: 4),
+                                SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Click to open in Google Maps: ", style: TextStyle(color: Colors.black54,  fontSize: 13),),
                                     SizedBox(width: 5),
-                                    IconButton(
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black54,),
+                                        borderRadius: BorderRadius.circular(60),
+
+                                      ),
+                                      child: IconButton(
                                       icon: Icon(Icons.fmd_good_outlined, color: Colors.black54, size:  20, ),
                                       onPressed: () async => await launchGoogleMapsSearch(context, widget.address),
                                     ),
+                                    )
                                   ]
                                 ),
 
                                 
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 20),
                                 Text("Time: $_elapsedTime", style: const TextStyle(fontSize: 17, color: Colors.black54, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 20),
                                 ElevatedButton(
@@ -233,12 +240,6 @@ Widget build(BuildContext context) {
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-<<<<<<< HEAD
-                                                  Text("You obtained: $xpIncrement XP", style: TextStyle(color: Colors.black54),),
-                                                  // Text("Total covered distance: ${data.sumOfDistances} at ${data.avgSpeed} km/h", style: TextStyle(color: Colors.black54),),
-                                                  Text("Total covered distance: ${data.sumOfDistances.toStringAsFixed(1)} km", style: TextStyle(color: Colors.black54),),
-                                                  Text("${data.avgSpeed.toStringAsFixed(1)} km/h", style: TextStyle(color: Colors.black54),),
-=======
 
                                                   SizedBox(height: 15,),
                                                   Text.rich(
@@ -268,7 +269,6 @@ Widget build(BuildContext context) {
                                                       ]
                                                     ),
                                                   ),
->>>>>>> 17fe1e3788958a0e52b0cdcb6d6b2038594f1718
                                                 ],
                                               ),
                                               actions: [
